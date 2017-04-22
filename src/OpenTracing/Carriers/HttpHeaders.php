@@ -29,7 +29,7 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
 
     public function set($key, $value)
     {
-        $this->items[$key] = $value;
+        $this->items[(string) $key] = (string) $value;
     }
 
     public function foreachKey(callable $callback)

@@ -2,7 +2,7 @@
 
 namespace OpenTracing\Ext;
 
-class Tags
+final class Tags
 {
     // SpanKind hints at relationship between spans, e.g. client/server
     const SPAN_KIND = 'span.kind';

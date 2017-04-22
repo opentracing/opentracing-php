@@ -5,7 +5,7 @@ namespace OpenTracing;
 use OpenTracing\Propagators\TextMapReader;
 use OpenTracing\Propagators\TextMapWriter;
 
-class NoopTracer implements Tracer
+final class NoopTracer implements Tracer
 {
     public static function create()
     {
