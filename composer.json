@@ -1,5 +1,5 @@
 {
-    "name": "jcchavezs/open-tracing",
+    "name": "jcchavezs/opentracing",
     "description": "OpenTracing interfaces for PHP",
     "type": "library",
     "license": "GPLv3",
