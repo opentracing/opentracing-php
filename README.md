@@ -1,5 +1,7 @@
 # OpenTracing API for PHP
 
+[![Build Status](https://travis-ci.org/jcchavezs/opentracing-php.svg?branch=master)](https://travis-ci.org/jcchavezs/opentracing-php)
+
 PHP library for the OpenTracing's API.
 
 ## Required Reading

@@ -19,7 +19,11 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
 
     public static function fromRequest(RequestInterface $request)
     {
-        return self::withHeaders($request->getHeaders());
+        return new self(
+            array_map(function($values) {
+                return $values[0];
+            }, $request->getHeaders())
+        );
     }
 
     public static function withHeaders(array $headers)
