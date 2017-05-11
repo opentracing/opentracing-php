@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTracingTests\Unit;
+namespace OpenTracingTests\Unit\Carriers;
 
 use GuzzleHttp\Psr7\Request;
 use OpenTracing\Carriers\HttpHeaders;

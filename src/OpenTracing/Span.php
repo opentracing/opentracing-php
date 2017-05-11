@@ -11,13 +11,13 @@ interface Span
     /** @return SpanContext */
     public function context();
 
-    public function finish(Nanotime $finishTime = null);
+    public function finish(Nanotime $finishTime = null, $logRecords = []);
 
     public function overwriteOperationName($newOperationName);
 
     public function setTag(Tag $tag);
 
-    public function logFields(Log ...$logs);
+    public function logFields(LogField ...$logs);
 
     /** @return Span */
     public function setBaggageItem($key, $value);
