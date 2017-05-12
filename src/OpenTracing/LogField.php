@@ -2,6 +2,7 @@
 
 namespace OpenTracing;
 
+use Exception;
 use InvalidArgumentException;
 use stdClass;
 use Throwable;
@@ -70,10 +71,19 @@ final class LogField
         return $this->type === self::TYPE_BOOLEAN;
     }
 
-    public static function asError($key, Throwable $value)
+    public static function asError($key, $value)
     {
         self::validateKey($key);
-        return new self($key, $value, self::TYPE_ERROR);
+
+        if ($value instanceof Exception) {
+            return new self($key, $value, self::TYPE_ERROR);
+        }
+
+        if ($value instanceof Throwable) {
+            return new self($key, $value, self::TYPE_ERROR);
+        }
+
+        throw new InvalidArgumentException(sprintf("Value should be either exception or throwable. Got %s", gettype($value)));
     }
 
     public function isError()
