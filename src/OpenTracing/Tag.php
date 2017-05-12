@@ -17,8 +17,16 @@ final class Tag
 
     public static function create($key, $value)
     {
+        if (is_object($value)) {
+            if (method_exists($value, '__toString')) {
+                return new self($key, $value);
+            }
+
+            throw InvalidTagValue::notStringable($value);
+        }
+
         if (!is_scalar($value)) {
-            throw InvalidTagValue::create($value);
+            throw InvalidTagValue::notScalar($value);
         }
 
         return new self($key, $value);
