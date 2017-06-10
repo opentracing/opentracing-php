@@ -2,7 +2,9 @@
 
 namespace OpenTracing\Propagators;
 
-interface TextMapReader
+use IteratorAggregate;
+
+interface TextMapReader extends IteratorAggregate
 {
-    public function foreachKey(callable $callback);
+
 }
