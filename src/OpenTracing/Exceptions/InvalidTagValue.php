@@ -13,6 +13,8 @@ final class InvalidTagValue extends InvalidArgumentException
 
     public static function notStringable($value)
     {
-        return new self(sprintf('Tag should be either scalar or an object implementing __toString, got %s.', get_class($value)));
+        return new self(
+            sprintf('Tag should be either scalar or an object implementing __toString, got %s.', get_class($value))
+        );
     }
 }

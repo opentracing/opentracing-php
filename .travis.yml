@@ -9,4 +9,5 @@ install:
   - composer install
 
 script:
+  - make check-linting
   - make test

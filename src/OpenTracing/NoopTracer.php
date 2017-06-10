@@ -13,8 +13,12 @@ final class NoopTracer implements Tracer
     }
 
     /** @return Span */
-    public function startSpan($operationName, SpanReference $parentReference = null, $startTimestamp = null, Tag ...$tags)
-    {
+    public function startSpan(
+        $operationName,
+        SpanReference $parentReference = null,
+        $startTimestamp = null,
+        Tag ...$tags
+    ) {
         // TODO: Implement startSpan() method.
     }
 

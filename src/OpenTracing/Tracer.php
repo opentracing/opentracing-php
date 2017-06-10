@@ -8,7 +8,12 @@ use OpenTracing\Propagators\TextMapWriter;
 interface Tracer
 {
     /** @return Span */
-    public function startSpan($operationName, SpanReference $parentReference = null, $startTimestamp = null, Tag ...$tags);
+    public function startSpan(
+        $operationName,
+        SpanReference $parentReference = null,
+        $startTimestamp = null,
+        Tag ...$tags
+    );
 
     public function inject(SpanContext $spanContext, $format, TextMapWriter $carrier);
 

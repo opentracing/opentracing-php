@@ -83,7 +83,9 @@ final class LogField
             return new self($key, $value, self::TYPE_ERROR);
         }
 
-        throw new InvalidArgumentException(sprintf("Value should be either exception or throwable. Got %s", gettype($value)));
+        throw new InvalidArgumentException(
+            sprintf("Value should be either exception or throwable. Got %s", gettype($value))
+        );
     }
 
     public function isError()

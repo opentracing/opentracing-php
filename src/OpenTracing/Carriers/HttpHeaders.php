@@ -20,7 +20,7 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
     public static function fromRequest(RequestInterface $request)
     {
         return new self(
-            array_map(function($values) {
+            array_map(function ($values) {
                 return $values[0];
             }, $request->getHeaders())
         );
@@ -38,7 +38,7 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
 
     public function foreachKey(callable $callback)
     {
-        array_walk($this->items, function($value, $key) use ($callback) {
+        array_walk($this->items, function ($value, $key) use ($callback) {
             $callback($key, $value);
         });
     }

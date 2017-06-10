@@ -6,21 +6,6 @@ use OpenTracing\Exceptions\InvalidTagValue;
 use OpenTracing\Tag;
 use PHPUnit_Framework_TestCase;
 
-final class Stringable
-{
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    public function __toString()
-    {
-        return $this->value;
-    }
-}
-
 final class TagTest extends PHPUnit_Framework_TestCase
 {
     const TEST_VALUE = 'test_value';
@@ -57,7 +42,7 @@ final class TagTest extends PHPUnit_Framework_TestCase
 
     private function givenAStringableObjectValue()
     {
-        $this->value = new Stringable(self::TEST_VALUE);
+        $this->value = new TagTestStringable(self::TEST_VALUE);
     }
 
     private function givenAScalarValue()

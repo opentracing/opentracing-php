@@ -28,7 +28,7 @@ final class TextMap implements TextMapReader, TextMapWriter
 
     public function foreachKey(callable $callback)
     {
-        array_walk($this->items, function($value, $key) use ($callback) {
+        array_walk($this->items, function ($value, $key) use ($callback) {
             $callback($key, $value);
         });
     }
