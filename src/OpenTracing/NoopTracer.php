@@ -4,6 +4,7 @@ namespace OpenTracing;
 
 use OpenTracing\Propagators\TextMapReader;
 use OpenTracing\Propagators\TextMapWriter;
+use TracingContext\TracingContext;
 
 final class NoopTracer implements Tracer
 {
@@ -12,24 +13,21 @@ final class NoopTracer implements Tracer
         return new self();
     }
 
-    /** @return Span */
     public function startSpan(
         $operationName,
         SpanReference $parentReference = null,
         $startTimestamp = null,
         Tag ...$tags
     ) {
-        // TODO: Implement startSpan() method.
+        return NoopSpan::create();
     }
 
     public function inject(SpanContext $spanContext, $format, TextMapWriter $carrier)
     {
-        // TODO: Implement inject() method.
     }
 
-    /** @return SpanContext */
     public function extract($format, TextMapReader $carrier)
     {
-        // TODO: Implement extract() method.
+        return SpanContext::create(Context::create(TracingContext::create()));
     }
 }
