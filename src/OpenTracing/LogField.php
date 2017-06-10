@@ -27,6 +27,11 @@ final class LogField
         $this->type = $type;
     }
 
+    public function value()
+    {
+        return $this->value;
+    }
+
     public static function asString($key, $value)
     {
         self::validateKey($key);
@@ -41,6 +46,11 @@ final class LogField
     public static function asInt($key, $value)
     {
         self::validateKey($key);
+
+        if (!is_numeric($value)) {
+            throw new InvalidArgumentException(sprintf('Value is not numeric, got %s', $value));
+        }
+
         return new self($key, (int) $value, self::TYPE_INT);
     }
 
@@ -52,6 +62,11 @@ final class LogField
     public static function asFloat($key, $value)
     {
         self::validateKey($key);
+
+        if (!is_numeric($value)) {
+            throw new InvalidArgumentException(sprintf('Value is not numeric, got %s', $value));
+        }
+
         return new self($key, (float) $value, self::TYPE_FLOAT);
     }
 
@@ -63,7 +78,16 @@ final class LogField
     public static function asBool($key, $value)
     {
         self::validateKey($key);
-        return new self($key, (bool) $value, self::TYPE_BOOLEAN);
+
+        if (in_array($value, [0, '0', false], true)) {
+            $booleanValue = false;
+        } elseif (in_array($value, [1, '1', true], true)) {
+            $booleanValue = true;
+        } else {
+            throw new InvalidArgumentException(sprintf('Value is not a boolean nor a binary, got %s', $value));
+        }
+
+        return new self($key, $booleanValue, self::TYPE_BOOLEAN);
     }
 
     public function isBool()
@@ -84,7 +108,7 @@ final class LogField
         }
 
         throw new InvalidArgumentException(
-            sprintf("Value should be either exception or throwable. Got %s", gettype($value))
+            sprintf('Value should be either exception or throwable. Got %s', gettype($value))
         );
     }
 
