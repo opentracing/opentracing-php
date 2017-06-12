@@ -20,11 +20,11 @@ function interleavedKVToFieldsConverter(array $keyValueFields)
             case $value === (bool) $value:
                 $fields[] = LogField::asBool($key, $value);
                 break;
-            case $value === (float) $value || is_numeric($value):
-                $fields[] = LogField::asFloat($key, $value);
-                break;
             case $value === (int) $value:
                 $fields[] = LogField::asInt($key, $value);
+                break;
+            case $value === (float) $value || is_numeric($value):
+                $fields[] = LogField::asFloat($key, $value);
                 break;
             case $value === (string) $value:
                 $fields[] = LogField::asString($key, $value);
