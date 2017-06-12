@@ -48,15 +48,15 @@ To start a new `Span`, you can use the `StartSpanFromContext` method.
     function doSomething(SpanContext $spanContext, ...) {
         ...
         
-        $span = GlobalTracer::globalTracer()->startSpan('operation_name', ChildOf::withContext($spanContext), null);
+        $span = GlobalTracer::globalTracer()->startSpan('operation_name', ChildOf::withContext($spanContext));
         
         ...
         
-        $span->logFields(
-            Log::asString('event', 'soft error'),
-            Log::asString('type', 'cache timeout'),
-            Log::asInt('waited.millis', 1500))        
-        )
+        $span->log([
+            'event' => 'soft error',
+            'type' => 'cache timeout',
+            'waiter.millis' => 1500,
+        ])
         
         $span->finish();
     }
@@ -107,7 +107,7 @@ reference.
     );
     
     try {
-        $span = $tracer->startSpan('operation_name', ChildOf::withContext($spanContext), null);
+        $span = $tracer->startSpan('operation_name', ChildOf::withContext($spanContext),);
 
         $client = new GuzzleHttp\Client;
         
@@ -125,4 +125,19 @@ reference.
         ...
     }
     ...        
+```
+
+## Deserializing from the wire
+
+When using http header for context propagation you can use either the `Request` or the `$_SERVER` variable:
+
+```php
+    use OpenTracing\Carriers\HttpHeaders;
+    use OpenTracing\SpanReference\ChildOf;
+    use OpenTracing\GlobalTracer;
+    
+    $request = Request::createFromGlobals();
+    $tracer = GlobalTracer::globalTracer();
+    $spanContext = $tracer->extract(Propagator::HTTP_HEADERS, HttpHeaders::fromGlobals());
+    $tracer->startSpan('my_span', ChildOf::withContext($spanContext)); 
 ```

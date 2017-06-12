@@ -27,6 +27,11 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
         );
     }
 
+    public static function fromGlobals()
+    {
+        return new self($_SERVER);
+    }
+
     public static function withHeaders(array $headers)
     {
         return new self($headers);
