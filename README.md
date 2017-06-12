@@ -127,7 +127,7 @@ reference.
     ...        
 ```
 
-## Deserializing from the wire
+#### Deserializing from the wire
 
 When using http header for context propagation you can use either the `Request` or the `$_SERVER` variable:
 

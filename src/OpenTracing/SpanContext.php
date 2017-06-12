@@ -2,6 +2,8 @@
 
 namespace OpenTracing;
 
+use TracingContext\TracingContext;
+
 final class SpanContext
 {
     private $baggageItems;
@@ -17,11 +19,17 @@ final class SpanContext
         return new self($context);
     }
 
+    public static function createAsDefault()
+    {
+        return new self(Context::createAsDefault());
+    }
+
     public function foreachBaggageItem(callable $closure)
     {
         return array_map($closure, $this->baggageItems);
     }
 
+    /** @return TracingContext */
     public function context()
     {
         return $this->context->context();

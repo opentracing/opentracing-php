@@ -39,7 +39,6 @@ class NoopSpan implements Span
 
     public function setBaggageItem($key, $value)
     {
-        return $this;
     }
 
     public function baggageItem($key)

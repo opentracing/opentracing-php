@@ -28,6 +28,6 @@ final class NoopTracer implements Tracer
 
     public function extract($format, TextMapReader $carrier)
     {
-        return SpanContext::create(Context::create(TracingContext::create()));
+        return SpanContext::createAsDefault();
     }
 }
