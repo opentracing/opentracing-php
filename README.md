@@ -138,6 +138,6 @@ When using http header for context propagation you can use either the `Request` 
     
     $request = Request::createFromGlobals();
     $tracer = GlobalTracer::globalTracer();
-    $spanContext = $tracer->extract(Propagator::HTTP_HEADERS, HttpHeaders::fromGlobals());
+    $spanContext = $tracer->extract(Propagator::HTTP_HEADERS, HttpHeaders::fromRequest($request));
     $tracer->startSpan('my_span', ChildOf::withContext($spanContext)); 
 ```
