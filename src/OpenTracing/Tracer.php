@@ -10,7 +10,8 @@ interface Tracer
     /**
      * @param string $operationName
      * @param SpanReference|null $parentReference
-     * @param float|\DateTimeInterface|mixed $startTimestamp
+     * @param float|\DateTimeInterface|null $startTimestamp if passing a float it should
+     * represent the number of seconds
      * @param Tag[] $tags
      * @return Span
      */
@@ -26,7 +27,7 @@ interface Tracer
      * @param array|SpanOptions $options
      * @return Span
      */
-    public function startSpanWithOptions($operationName, array $options);
+    public function startSpanWithOptions($operationName, $options);
 
     /**
      * @param SpanContext $spanContext

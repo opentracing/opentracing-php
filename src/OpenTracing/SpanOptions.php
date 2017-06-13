@@ -22,6 +22,11 @@ final class SpanOptions
      */
     private $startTime;
 
+    private function __construct()
+    {
+        new self();
+    }
+
     public static function create(array $options)
     {
         $spanOptions = new self();
@@ -50,6 +55,8 @@ final class SpanOptions
                     throw InvalidSpanOption::create($key);
             }
         }
+
+        return $spanOptions;
     }
 
     private static function buildChildOf($value)
