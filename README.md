@@ -48,7 +48,7 @@ To start a new `Span`, you can use the `StartSpanFromContext` method.
     function doSomething(SpanContext $spanContext, ...) {
         ...
         
-        $span = GlobalTracer::globalTracer()->startSpan('operation_name', ChildOf::withContext($spanContext));
+        $span = GlobalTracer::globalTracer()->startSpan('my_span', ChildOf::withContext($spanContext));
         
         ...
         
@@ -68,7 +68,7 @@ It's always possible to create a "root" `Span` with no parent or other causal
 reference.
 
 ```php
-    $span = $tracer->startSpan('operation_name');
+    $span = $tracer->startSpan('my_span');
     ...
     $span->finish();
 ```
@@ -81,7 +81,7 @@ reference.
     function xyz(Span $parentSpan, ...) {
         ...
         $span = GlobalTracer::globalTracer()->startSpan(
-            'operation_name',
+            'my_span',
             ChildOf::withContext($span->context())
         );
         
@@ -107,7 +107,7 @@ reference.
     );
     
     try {
-        $span = $tracer->startSpan('operation_name', ChildOf::withContext($spanContext),);
+        $span = $tracer->startSpanWithOptions('my_span', ['child_of' => $spanContext]);
 
         $client = new GuzzleHttp\Client;
         
