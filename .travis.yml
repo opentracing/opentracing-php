@@ -10,5 +10,4 @@ install:
 
 script:
   - make check-linting
-  - make analyze-code
   - make test

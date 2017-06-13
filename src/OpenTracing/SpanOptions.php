@@ -56,7 +56,7 @@ final class SpanOptions
     {
         if ($value instanceof Span) {
             return ChildOf::withContext($value->context());
-        } else if ($value instanceof SpanContext) {
+        } elseif ($value instanceof SpanContext) {
             return ChildOf::withContext($value);
         }
 
