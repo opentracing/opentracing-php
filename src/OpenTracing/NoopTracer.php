@@ -22,7 +22,7 @@ final class NoopTracer implements Tracer
         return NoopSpan::create();
     }
 
-    public function startSpanWithOptions($operationName, array $options)
+    public function startSpanWithOptions($operationName, $options)
     {
         return NoopSpan::create();
     }

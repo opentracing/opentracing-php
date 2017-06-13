@@ -15,7 +15,8 @@ interface Span
     public function context();
 
     /**
-     * @param \DateTimeInterface|float|mixed|null $finishTime
+     * @param \DateTimeInterface|float|null $finishTime if passing a float it should represent
+     * the number of seconds.
      * @param array $logRecords
      * @return mixed
      */
