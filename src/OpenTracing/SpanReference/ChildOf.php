@@ -7,6 +7,11 @@ use OpenTracing\SpanReference;
 
 final class ChildOf implements SpanReference
 {
+    use DefaultTypeChecker;
+
+    /**
+     * @var SpanContext
+     */
     private $spanContext;
 
     private function __construct(SpanContext $spanContext)
@@ -29,14 +34,6 @@ final class ChildOf implements SpanReference
     public function isTypeChildOf()
     {
         return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTypeFollowsFrom()
-    {
-        return false;
     }
 
     /**
