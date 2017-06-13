@@ -18,6 +18,12 @@ final class Context
         return new self($context);
     }
 
+    public static function createAsDefault()
+    {
+        return new self(TracingContext::create());
+    }
+
+    /** @return TracingContext */
     public function context()
     {
         return $this->context;
