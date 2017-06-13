@@ -7,7 +7,13 @@ use InvalidArgumentException;
 use OpenTracing\LogField;
 use Throwable;
 
-function interleavedKVToFieldsConverter(array $keyValueFields)
+/**
+ * Converts key => value array into a LogField[] collection.
+ *
+ * @param array $keyValueFields
+ * @return array
+ */
+function keyValueLogFieldsConverter(array $keyValueFields)
 {
     $fields = [];
 

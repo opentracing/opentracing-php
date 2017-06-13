@@ -18,6 +18,10 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
         }
     }
 
+    /**
+     * @param RequestInterface $request
+     * @return HttpHeaders
+     */
     public static function fromRequest(RequestInterface $request)
     {
         return new self(
@@ -27,22 +31,36 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
         );
     }
 
+    /**
+     * @return HttpHeaders
+     */
     public static function fromGlobals()
     {
         return new self($_SERVER);
     }
 
+    /**
+     * @param array $headers
+     * @return HttpHeaders
+     */
     public static function withHeaders(array $headers)
     {
         return new self($headers);
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     */
     public function set($key, $value)
     {
         $this->items[(string) $key] = (string) $value;
     }
 
-    /** @deprecated use its implementation for Iterator instead */
+    /**
+     * @deprecated use its implementation for Iterator instead
+     * @param callable $callback
+     */
     public function foreachKey(callable $callback)
     {
         array_walk($this->items, function ($value, $key) use ($callback) {
@@ -50,6 +68,11 @@ final class HttpHeaders implements TextMapReader, TextMapWriter
         });
     }
 
+    /**
+     * Allows you to iterate over HttpHeaders with foreach
+     *
+     * @return ArrayIterator
+     */
     public function getIterator()
     {
         return new ArrayIterator($this->items);

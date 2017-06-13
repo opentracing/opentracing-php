@@ -46,7 +46,7 @@ final class LogRecordTest extends PHPUnit_Framework_TestCase
 
     private function whenCreatingALogRecord()
     {
-        $this->logRecord = call_user_func_array(LogRecord::class . '::fromFields', $this->fields);
+        $this->logRecord = call_user_func(LogRecord::class . '::fromFields', $this->fields);
     }
 
     private function thenTheLogRecordIsCreatedSuccessfully()

@@ -17,8 +17,13 @@ final class NoopTracer implements Tracer
         $operationName,
         SpanReference $parentReference = null,
         $startTimestamp = null,
-        Tag ...$tags
+        array $tags = []
     ) {
+        return NoopSpan::create();
+    }
+
+    public function startSpanWithOptions($operationName, array $options)
+    {
         return NoopSpan::create();
     }
 
@@ -29,5 +34,9 @@ final class NoopTracer implements Tracer
     public function extract($format, TextMapReader $carrier)
     {
         return SpanContext::createAsDefault();
+    }
+
+    public function flush()
+    {
     }
 }

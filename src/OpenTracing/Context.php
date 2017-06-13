@@ -13,11 +13,18 @@ final class Context
         $this->context = $context;
     }
 
+    /**
+     * @param TracingContext $context
+     * @return Context
+     */
     public static function create(TracingContext $context)
     {
         return new self($context);
     }
 
+    /**
+     * @return Context
+     */
     public static function createAsDefault()
     {
         return new self(TracingContext::create());

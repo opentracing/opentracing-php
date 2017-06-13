@@ -6,3 +6,6 @@ check-linting: ## Checks the linting for code
 
 fix-linting: ## Fixes the linting in code
 	./vendor/bin/phpcbf --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./
+
+analyze-code:
+	./vendor/bin/phan -z -b --color

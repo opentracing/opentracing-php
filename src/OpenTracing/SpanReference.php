@@ -4,12 +4,18 @@ namespace OpenTracing;
 
 interface SpanReference
 {
-    /** @return bool */
+    /**
+     * @return bool
+     */
     public function isTypeChildOf();
 
-    /** @return bool */
+    /**
+     * @return bool
+     */
     public function isTypeFollowsFrom();
 
-    /** @return SpanContext */
+    /**
+     * @return SpanContext
+     */
     public function referencedContext();
 }

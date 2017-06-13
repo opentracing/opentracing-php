@@ -2,9 +2,7 @@
 
 namespace OpenTracing;
 
-use Nanotime\Nanotime;
-
-class NoopSpan implements Span
+final class NoopSpan implements Span
 {
     public static function create()
     {
@@ -21,7 +19,7 @@ class NoopSpan implements Span
         return null;
     }
 
-    public function finish(Nanotime $finishTime = null, $logRecords = [])
+    public function finish($finishTime = null, $logRecords = [])
     {
     }
 
@@ -29,11 +27,15 @@ class NoopSpan implements Span
     {
     }
 
-    public function setTag(Tag $tag)
+    public function setTag($tag)
     {
     }
 
-    public function logFields(LogField ...$logs)
+    public function logFields(array $logs)
+    {
+    }
+
+    public function log(array $logs)
     {
     }
 

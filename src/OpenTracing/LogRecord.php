@@ -18,7 +18,7 @@ final class LogRecord
         $this->fields = $fields;
     }
 
-    public static function fromFields(LogField ...$fields)
+    public static function fromFields(array $fields)
     {
         if (count($fields) === 0) {
             throw new InvalidArgumentException('At least one field should be included.');

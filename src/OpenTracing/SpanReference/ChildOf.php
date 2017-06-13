@@ -14,24 +14,34 @@ final class ChildOf implements SpanReference
         $this->spanContext = $spanContext;
     }
 
+    /**
+     * @param SpanContext $spanContext
+     * @return ChildOf
+     */
     public static function withContext(SpanContext $spanContext)
     {
         return new self($spanContext);
     }
 
-    /** @return bool */
+    /**
+     * @return bool
+     */
     public function isTypeChildOf()
     {
         return true;
     }
 
-    /** @return bool */
+    /**
+     * @return bool
+     */
     public function isTypeFollowsFrom()
     {
         return false;
     }
 
-    /** @return SpanContext */
+    /**
+     * @return SpanContext
+     */
     public function referencedContext()
     {
         return $this->spanContext;
