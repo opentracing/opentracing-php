@@ -3,10 +3,10 @@
 namespace OpenTracing\Carriers;
 
 use ArrayIterator;
-use OpenTracing\Propagators\TextMapReader;
-use OpenTracing\Propagators\TextMapWriter;
+use OpenTracing\Propagators\Reader;
+use OpenTracing\Propagators\Writer;
 
-final class TextMap implements TextMapReader, TextMapWriter
+final class TextMap implements Reader, Writer
 {
     private $items = [];
 

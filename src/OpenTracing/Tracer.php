@@ -2,8 +2,8 @@
 
 namespace OpenTracing;
 
-use OpenTracing\Propagators\TextMapReader;
-use OpenTracing\Propagators\TextMapWriter;
+use OpenTracing\Propagators\Reader;
+use OpenTracing\Propagators\Writer;
 
 interface Tracer
 {
@@ -32,16 +32,16 @@ interface Tracer
     /**
      * @param SpanContext $spanContext
      * @param string $format
-     * @param TextMapWriter $carrier
+     * @param Writer $carrier
      */
-    public function inject(SpanContext $spanContext, $format, TextMapWriter $carrier);
+    public function inject(SpanContext $spanContext, $format, Writer $carrier);
 
     /**
      * @param string $format
-     * @param TextMapReader $carrier
+     * @param Reader $carrier
      * @return SpanContext
      */
-    public function extract($format, TextMapReader $carrier);
+    public function extract($format, Reader $carrier);
 
     /**
      * Allow tracer to send span data to be instrumented.
