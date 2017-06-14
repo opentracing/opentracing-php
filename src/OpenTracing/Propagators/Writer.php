@@ -2,7 +2,7 @@
 
 namespace OpenTracing\Propagators;
 
-interface TextMapWriter
+interface Writer
 {
     /**
      * @param string $key

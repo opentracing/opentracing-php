@@ -4,7 +4,7 @@ namespace OpenTracing\Propagators;
 
 use IteratorAggregate;
 
-interface TextMapReader extends IteratorAggregate
+interface Reader extends IteratorAggregate
 {
 
 }

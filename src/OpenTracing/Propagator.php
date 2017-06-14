@@ -2,8 +2,8 @@
 
 namespace OpenTracing;
 
-use OpenTracing\Propagators\TextMapReader;
-use OpenTracing\Propagators\TextMapWriter;
+use OpenTracing\Propagators\Reader;
+use OpenTracing\Propagators\Writer;
 
 interface Propagator
 {
@@ -12,13 +12,13 @@ interface Propagator
 
     /**
      * @param Span $span
-     * @param TextMapWriter $carrier
+     * @param Writer $carrier
      */
-    public function inject(Span $span, TextMapWriter $carrier);
+    public function inject(Span $span, Writer $carrier);
 
     /**
-     * @param TextMapReader $carrier
+     * @param Reader $carrier
      * @return SpanContext
      */
-    public function extract(TextMapReader $carrier);
+    public function extract(Reader $carrier);
 }
