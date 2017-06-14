@@ -10,8 +10,8 @@ interface Tracer
     /**
      * @param string $operationName
      * @param SpanReference|null $parentReference
-     * @param float|\DateTimeInterface|null $startTimestamp if passing a float it should
-     * represent the number of seconds
+     * @param float|int|\DateTimeInterface|null $startTimestamp if passing float or int
+     * it should represent the timestamp (including as many decimal places as you need)
      * @param Tag[] $tags
      * @return Span
      */
