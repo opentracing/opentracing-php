@@ -30,7 +30,9 @@ final class Context
         return new self(TracingContext::create());
     }
 
-    /** @return TracingContext */
+    /**
+     * @return TracingContext
+     */
     public function context()
     {
         return $this->context;

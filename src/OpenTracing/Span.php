@@ -20,7 +20,7 @@ interface Span
      * @param array $logRecords
      * @return mixed
      */
-    public function finish($finishTime = null, $logRecords = []);
+    public function finish($finishTime = null, array $logRecords = []);
 
     /**
      * @param string $newOperationName
@@ -31,30 +31,25 @@ interface Span
      * Sets a tag to the Span.
      * As an implementor consider supporting a single Tag object or a $tag, $tagValue.
      *
-     * @param Tag|string $tag
-     * @return mixed
+     * @param array $tags
      */
-    public function withTag($tag/** [, $tagValue] **/);
+    public function addTags(array $tags);
 
     /**
-     * @param array, LogField[]|string[string] $logs
-     */
-    public function logFields(array $logs);
-
-    /**
-     * log is a concise, readable way to record key:value logging data about a Span.
+     * Adds a log record to the span
      * As an implementor, consider to use this one LogUtils\keyValueLogFieldsConverter
      *
-     * @param array|string[string] $logs
+     * @param array|LogRecord[] $fields
+     * @param int|float|\DateTimeInterface $timestamp
      */
-    public function log(array $logs);
+    public function log(array $fields = [], $timestamp = null);
 
     /**
      * @param string $key
      * @param string $value
      * @return Span
      */
-    public function withBaggageItem($key, $value);
+    public function addBaggageItem($key, $value);
 
     /**
      * @param string $key

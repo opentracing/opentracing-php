@@ -42,7 +42,7 @@ final class HttpHeadersTest extends PHPUnit_Framework_TestCase
 
     private function whenCreatingAHttpHeadersCarrier()
     {
-        $this->httpHeaders = HttpHeaders::withHeaders($this->headers);
+        $this->httpHeaders = HttpHeaders::fromHeaders($this->headers);
     }
 
     private function whenCreatingAHttpHeadersCarrierFromRequest()

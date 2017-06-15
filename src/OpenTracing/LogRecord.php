@@ -18,13 +18,13 @@ final class LogRecord
         $this->fields = $fields;
     }
 
-    public static function fromFields(array $fields)
+    public static function create(array $fields, $timestamp = null)
     {
         if (count($fields) === 0) {
             throw new InvalidArgumentException('At least one field should be included.');
         }
 
-        return new self($fields);
+        return new self($fields, $timestamp);
     }
 
     public function timestamp()

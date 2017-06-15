@@ -9,7 +9,14 @@ use PHPUnit_Framework_TestCase;
 
 final class LogRecordTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var LogField[]
+     */
     private $fields;
+
+    /**
+     * @var LogRecord
+     */
     private $logRecord;
 
     public function testALogRecordCannotBeCreatedWithoutLogFields()
@@ -46,7 +53,7 @@ final class LogRecordTest extends PHPUnit_Framework_TestCase
 
     private function whenCreatingALogRecord()
     {
-        $this->logRecord = call_user_func(LogRecord::class . '::fromFields', $this->fields);
+        $this->logRecord = call_user_func(LogRecord::class . '::create', $this->fields);
     }
 
     private function thenTheLogRecordIsCreatedSuccessfully()

@@ -35,7 +35,7 @@ final class HttpHeaders implements Reader, Writer
      * @param array $headers
      * @return HttpHeaders
      */
-    public static function withHeaders(array $headers)
+    public static function fromHeaders(array $headers)
     {
         return new self($headers);
     }

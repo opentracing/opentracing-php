@@ -9,16 +9,25 @@ final class NoopSpan implements Span
         return new self();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function operationName()
     {
         return 'noop_span';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function context()
     {
         return null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function finish($finishTime = null, $logRecords = [])
     {
     }
@@ -30,25 +39,27 @@ final class NoopSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function withTag($tag)
-    {
-    }
-
-    public function logFields(array $logs)
-    {
-    }
-
-    public function log(array $logs)
+    public function addTags(array $tags)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withBaggageItem($key, $value)
+    public function log(array $fields = [], $timestamp = null)
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function addBaggageItem($key, $value)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function baggageItem($key)
     {
         return null;
