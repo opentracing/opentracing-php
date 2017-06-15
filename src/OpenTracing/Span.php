@@ -34,7 +34,7 @@ interface Span
      * @param Tag|string $tag
      * @return mixed
      */
-    public function setTag($tag/** [, $tagValue] **/);
+    public function withTag($tag/** [, $tagValue] **/);
 
     /**
      * @param array, LogField[]|string[string] $logs
@@ -54,7 +54,7 @@ interface Span
      * @param string $value
      * @return Span
      */
-    public function setBaggageItem($key, $value);
+    public function withBaggageItem($key, $value);
 
     /**
      * @param string $key

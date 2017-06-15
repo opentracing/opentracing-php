@@ -27,7 +27,10 @@ final class NoopSpan implements Span
     {
     }
 
-    public function setTag($tag)
+    /**
+     * {@inheritdoc}
+     */
+    public function withTag($tag)
     {
     }
 
@@ -39,7 +42,10 @@ final class NoopSpan implements Span
     {
     }
 
-    public function setBaggageItem($key, $value)
+    /**
+     * {@inheritdoc}
+     */
+    public function withBaggageItem($key, $value)
     {
     }
 
