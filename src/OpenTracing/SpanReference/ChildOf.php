@@ -18,7 +18,7 @@ final class ChildOf implements SpanReference
      * @param SpanContext $spanContext
      * @return ChildOf
      */
-    public static function withContext(SpanContext $spanContext)
+    public static function fromContext(SpanContext $spanContext)
     {
         return new self($spanContext);
     }

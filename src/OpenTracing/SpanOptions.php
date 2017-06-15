@@ -22,11 +22,6 @@ final class SpanOptions
      */
     private $startTime;
 
-    private function __construct()
-    {
-        new self();
-    }
-
     public static function create(array $options)
     {
         $spanOptions = new self();
@@ -53,6 +48,7 @@ final class SpanOptions
 
                 default:
                     throw InvalidSpanOption::create($key);
+                    break;
             }
         }
 
@@ -62,9 +58,9 @@ final class SpanOptions
     private static function buildChildOf($value)
     {
         if ($value instanceof Span) {
-            return ChildOf::withContext($value->context());
+            return ChildOf::fromContext($value->context());
         } elseif ($value instanceof SpanContext) {
-            return ChildOf::withContext($value);
+            return ChildOf::fromContext($value);
         }
 
         throw InvalidSpanOption::create('child_of');
@@ -73,7 +69,7 @@ final class SpanOptions
     /**
      * @return ChildOf
      */
-    public function getChildOf()
+    public function childOf()
     {
         return $this->childOf;
     }

@@ -10,16 +10,16 @@ final class TextMap implements Reader, Writer
 {
     private $items = [];
 
-    private function __construct(array $headers)
+    private function __construct(array $textMap)
     {
-        foreach ($headers as $key => $value) {
+        foreach ($textMap as $key => $value) {
             $this->items[(string) $key] = (string) $value;
         }
     }
 
-    public static function withItems(array $items = [])
+    public static function create(array $textMap = [])
     {
-        return new self($items);
+        return new self($textMap);
     }
 
     public function set($key, $value)

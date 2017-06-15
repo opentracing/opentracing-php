@@ -4,7 +4,9 @@ namespace OpenTracing;
 
 final class GlobalTracer
 {
-    /** @var Tracer */
+    /**
+     * @var Tracer
+     */
     private static $globalTracerInstance = null;
 
     /**
@@ -13,6 +15,8 @@ final class GlobalTracer
      * should call setGlobalTracer as early as possible in bootstrap, prior to
      * start a new span. Prior to calling `setGlobalTracer`, any Spans started
      * via the `StartSpan` (etc) globals are noops.
+     *
+     * @param Tracer $tracer
      */
     public static function setGlobalTracer(Tracer $tracer)
     {
