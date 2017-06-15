@@ -17,10 +17,12 @@ interface Span
     public function getContext();
 
     /**
+     * Finishes the span. As an implementor, make sure you call {@see Tracer::deactivate()}
+     * otherwise new spans might try to be child of this one.
+     *
      * @param float|int|\DateTimeInterface|null $finishTime if passing float or int
      * it should represent the timestamp (including as many decimal places as you need)
      * @param array $logRecords
-     * @return mixed
      */
     public function finish($finishTime = null, array $logRecords = []);
 

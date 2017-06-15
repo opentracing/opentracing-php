@@ -46,4 +46,10 @@ final class ChildOf implements SpanReference
     {
         return $this->spanContext;
     }
+
+    public function isEqual(SpanReference $spanReference)
+    {
+        return ($spanReference instanceof ChildOf)
+            && $this->spanContext->isEqual($spanReference->referencedContext());
+    }
 }

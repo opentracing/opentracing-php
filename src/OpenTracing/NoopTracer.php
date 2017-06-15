@@ -4,7 +4,6 @@ namespace OpenTracing;
 
 use OpenTracing\Propagators\Reader;
 use OpenTracing\Propagators\Writer;
-use TracingContext\TracingContext;
 
 final class NoopTracer implements Tracer
 {
@@ -13,16 +12,16 @@ final class NoopTracer implements Tracer
         return new self();
     }
 
-    public function startSpan(
-        $operationName,
-        SpanReference $parentReference = null,
-        $startTimestamp = null,
-        array $tags = []
-    ) {
+    /**
+     * {@inheritdoc}
+     */
+    public function startActiveSpan($operationName, $options = [])
+    {
+    
         return NoopSpan::create();
     }
 
-    public function startSpanWithOptions($operationName, $options)
+    public function startManualSpan($operationName, $options = [])
     {
         return NoopSpan::create();
     }
@@ -38,5 +37,15 @@ final class NoopTracer implements Tracer
 
     public function flush()
     {
+    }
+
+    public function activeSpanSource()
+    {
+        return NoopActiveSpanSource::create();
+    }
+
+    public function activeSpan()
+    {
+        return NoopSpan::create();
     }
 }
