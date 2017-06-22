@@ -2,7 +2,7 @@
 
 namespace OpenTracingTests\Unit;
 
-use OpenTracing\Exceptions\InvalidTagValue;
+use OpenTracing\Exceptions\InvalidTagArgument;
 use OpenTracing\Tag;
 use PHPUnit_Framework_TestCase;
 
@@ -52,7 +52,7 @@ final class TagTest extends PHPUnit_Framework_TestCase
 
     private function thenAnInvalidTagValueIsThrown()
     {
-        $this->expectException(InvalidTagValue::class);
+        $this->expectException(InvalidTagArgument::class);
     }
 
     private function whenCreatingATag()

@@ -2,7 +2,7 @@
 
 namespace OpenTracing;
 
-use OpenTracing\Exceptions\InvalidTagValue;
+use OpenTracing\Exceptions\InvalidTagArgument;
 
 final class Tag
 {
@@ -15,33 +15,52 @@ final class Tag
         $this->value = $value;
     }
 
+    /**
+     * @param string $key
+     * @param int|float|string|object $value only accepts objects with __toString method.
+     * @return Tag
+     */
     public static function create($key, $value)
     {
+        if ($key !== (string) $key) {
+            throw InvalidTagArgument::notStringKey($key);
+        }
+
         if (is_object($value)) {
             if (method_exists($value, '__toString')) {
                 return new self($key, $value);
             }
 
-            throw InvalidTagValue::notStringable($value);
+            throw InvalidTagArgument::notStringableValue($value);
         }
 
         if (!is_scalar($value)) {
-            throw InvalidTagValue::notScalar($value);
+            throw InvalidTagArgument::notScalarValue($value);
         }
 
         return new self($key, $value);
     }
 
-    public function key()
+    /**
+     * @return string
+     */
+    public function getKey()
     {
         return $this->key;
     }
 
-    public function value()
+    /**
+     * @return int|float|string
+     */
+    public function getValue()
     {
         return $this->value;
     }
 
+    /**
+     * @param string $key
+     * @return bool
+     */
     public function is($key)
     {
         return $this->key == $key;

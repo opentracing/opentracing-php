@@ -4,10 +4,6 @@ namespace OpenTracing\Exceptions;
 
 use InvalidArgumentException;
 
-/**
- * Thrown when the `format` passed to Tracer::Inject() or Tracer::extract() is not recognized
- * by the Tracer implementation.
- */
 final class UnsupportedFormat extends InvalidArgumentException
 {
     public static function create($format)

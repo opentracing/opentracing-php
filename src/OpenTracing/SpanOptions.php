@@ -58,7 +58,7 @@ final class SpanOptions
     private static function buildChildOf($value)
     {
         if ($value instanceof Span) {
-            return ChildOf::fromContext($value->context());
+            return ChildOf::fromContext($value->getContext());
         } elseif ($value instanceof SpanContext) {
             return ChildOf::fromContext($value);
         }

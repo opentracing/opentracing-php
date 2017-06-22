@@ -2,17 +2,19 @@
 
 namespace OpenTracing;
 
+use OpenTracing\Exceptions\SpanAlreadyFinished;
+
 interface Span
 {
     /**
      * @return string
      */
-    public function operationName();
+    public function getOperationName();
 
     /**
      * @return SpanContext
      */
-    public function context();
+    public function getContext();
 
     /**
      * @param float|int|\DateTimeInterface|null $finishTime if passing float or int
@@ -24,6 +26,7 @@ interface Span
 
     /**
      * @param string $newOperationName
+     * @throws SpanAlreadyFinished if the span is already finished
      */
     public function overwriteOperationName($newOperationName);
 
@@ -32,6 +35,7 @@ interface Span
      * As an implementor consider supporting a single Tag object or a $tag, $tagValue.
      *
      * @param array $tags
+     * @throws SpanAlreadyFinished if the span is already finished
      */
     public function addTags(array $tags);
 
@@ -41,13 +45,14 @@ interface Span
      *
      * @param array|LogRecord[] $fields
      * @param int|float|\DateTimeInterface $timestamp
+     * @throws SpanAlreadyFinished if the span is already finished
      */
-    public function log(array $fields = [], $timestamp = null);
+    public function addLog(array $fields = [], $timestamp = null);
 
     /**
      * @param string $key
      * @param string $value
-     * @return Span
+     * @throws SpanAlreadyFinished if the span is already finished
      */
     public function addBaggageItem($key, $value);
 
@@ -55,5 +60,5 @@ interface Span
      * @param string $key
      * @return string
      */
-    public function baggageItem($key);
+    public function getBaggageItem($key);
 }

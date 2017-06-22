@@ -58,6 +58,6 @@ final class LogRecordTest extends PHPUnit_Framework_TestCase
 
     private function thenTheLogRecordIsCreatedSuccessfully()
     {
-        $this->assertCount(2, $this->logRecord->fields());
+        $this->assertCount(2, $this->logRecord->getFields());
     }
 }
