@@ -50,8 +50,8 @@ final class SpanContext
     /**
      * @return TracingContext
      */
-    public function context()
+    public function getContext()
     {
-        return $this->context->context();
+        return $this->context->getContext();
     }
 }

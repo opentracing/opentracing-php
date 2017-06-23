@@ -33,7 +33,7 @@ final class Context
     /**
      * @return TracingContext
      */
-    public function context()
+    public function getContext()
     {
         return $this->context;
     }

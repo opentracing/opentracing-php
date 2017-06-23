@@ -4,6 +4,9 @@ namespace OpenTracing;
 
 use OpenTracing\Carriers\HttpHeaders;
 use OpenTracing\Carriers\TextMap;
+use OpenTracing\Exceptions\InvalidSpanOption;
+use OpenTracing\Exceptions\SpanContextNotFound;
+use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\Propagators\Reader;
 use OpenTracing\Propagators\Writer;
 
@@ -28,6 +31,7 @@ interface Tracer
      * it should represent the timestamp (including as many decimal places as you need)
      * @param Tag[] $tags
      * @return Span
+     * @throws InvalidSpanOption for invalid option
      */
     public function startSpan(
         $operationName,
@@ -40,6 +44,7 @@ interface Tracer
      * @param string $operationName
      * @param array|SpanOptions $options
      * @return Span
+     * @throws InvalidSpanOption for invalid option
      */
     public function startSpanWithOptions($operationName, $options);
 
@@ -47,6 +52,8 @@ interface Tracer
      * @param SpanContext $spanContext
      * @param int $format
      * @param Writer $carrier
+     * @throws UnsupportedFormat when the format is not recognized by the tracer
+     * implementation
      */
     public function inject(SpanContext $spanContext, $format, Writer $carrier);
 
@@ -54,6 +61,9 @@ interface Tracer
      * @param int $format
      * @param Reader $carrier
      * @return SpanContext
+     * @throws SpanContextNotFound when a context could not be extracted from Reader
+     * @throws UnsupportedFormat when the format is not recognized by the tracer
+     * implementation
      */
     public function extract($format, Reader $carrier);
 

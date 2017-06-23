@@ -27,12 +27,12 @@ final class LogRecord
         return new self($fields, $timestamp);
     }
 
-    public function timestamp()
+    public function getTimestamp()
     {
         return $this->timestamp;
     }
 
-    public function fields()
+    public function getFields()
     {
         return $this->fields;
     }

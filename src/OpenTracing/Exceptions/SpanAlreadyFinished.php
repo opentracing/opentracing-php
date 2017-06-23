@@ -9,6 +9,6 @@ final class SpanAlreadyFinished extends DomainException
 {
     public static function create(Span $span)
     {
-        return new self(sprintf('Span named %s is already finished.', $span->operationName()));
+        return new self(sprintf('Span named %s is already finished.', $span->getOperationName()));
     }
 }

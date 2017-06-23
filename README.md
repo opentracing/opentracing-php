@@ -141,3 +141,7 @@ When using http header for context propagation you can use either the `Request` 
     $spanContext = $tracer->extract(Propagator::HTTP_HEADERS, HttpHeaders::fromRequest($request));
     $tracer->startSpan('my_span', ChildOf::withContext($spanContext)); 
 ```
+
+## Coding Style
+
+Opentracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
