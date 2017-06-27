@@ -46,7 +46,7 @@ final class NoopSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function addLog(array $fields = [], $timestamp = null)
+    public function log(array $fields = [], $timestamp = null)
     {
     }
 

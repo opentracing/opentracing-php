@@ -47,7 +47,7 @@ interface Span
      * @param int|float|\DateTimeInterface $timestamp
      * @throws SpanAlreadyFinished if the span is already finished
      */
-    public function addLog(array $fields = [], $timestamp = null);
+    public function log(array $fields = [], $timestamp = null);
 
     /**
      * @param string $key
