@@ -30,7 +30,7 @@ final class GlobalTracer
      *
      * @return Tracer
      */
-    public static function globalTracer()
+    public static function getGlobalTracer()
     {
         if (self::$globalTracerInstance === null) {
             self::$globalTracerInstance = NoopTracer::create();

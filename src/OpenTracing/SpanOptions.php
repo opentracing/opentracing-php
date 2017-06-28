@@ -13,6 +13,11 @@ final class SpanOptions
     private $childOf;
 
     /**
+     * @var SpanReference[]
+     */
+    private $references = [];
+
+    /**
      * @var Tag[]
      */
     private $tags = [];
@@ -32,6 +37,10 @@ final class SpanOptions
                     $spanOptions->childOf = self::buildChildOf($value);
                     break;
 
+                case 'references':
+                    $spanOptions->childOf = self::buildReferencesArray($value);
+                    break;
+
                 case 'tags':
                     foreach ($value as $tag => $tagValue) {
                         $spanOptions->tags[] = Tag::create($tag, $tagValue);
@@ -40,16 +49,20 @@ final class SpanOptions
 
                 case 'start_time':
                     if (is_scalar($value) && !is_numeric($value)) {
-                        throw InvalidSpanOption::create($key);
+                        throw InvalidSpanOption::invalidStartTime();
                     }
 
                     $spanOptions->startTime = $value;
                     break;
 
                 default:
-                    throw InvalidSpanOption::create($key);
+                    throw InvalidSpanOption::unknownOption($key);
                     break;
             }
+        }
+
+        if (count($spanOptions->references) > 0 && $spanOptions->childOf !== null) {
+            throw InvalidSpanOption::includesBothChildOfAndReferences();
         }
 
         return $spanOptions;
@@ -63,7 +76,22 @@ final class SpanOptions
             return ChildOf::fromContext($value);
         }
 
-        throw InvalidSpanOption::create('child_of');
+        throw InvalidSpanOption::invalidChildOf($value);
+    }
+
+    private static function buildReferencesArray(array $value)
+    {
+        $references = [];
+
+        foreach ($value as $reference) {
+            if (!($reference instanceof SpanReference)) {
+                throw InvalidSpanOption::invalidReference($reference);
+            }
+
+            $references[] = $reference;
+        }
+
+        return $references;
     }
 
     /**
