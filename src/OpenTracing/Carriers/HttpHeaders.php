@@ -50,17 +50,6 @@ final class HttpHeaders implements Reader, Writer
     }
 
     /**
-     * @deprecated use its implementation for Iterator instead
-     * @param callable $callback
-     */
-    public function foreachKey(callable $callback)
-    {
-        array_walk($this->items, function ($value, $key) use ($callback) {
-            $callback($key, $value);
-        });
-    }
-
-    /**
      * Allows you to iterate over HttpHeaders with foreach
      *
      * @return ArrayIterator

@@ -36,4 +36,17 @@ final class InvalidSpanOption extends InvalidArgumentException
     {
         return new self(sprintf('Invalid option %s.', $key));
     }
+
+    public static function invalidTag($tag)
+    {
+        return new self(sprintf('Invalid tag. Expected string, got %s', $tag));
+    }
+
+    public static function invalidTagValue($tagValue)
+    {
+        return new self(sprintf(
+            'Invalid tag value. Expected scalar, got %s',
+            is_object($tagValue) ? get_class($tagValue) : gettype($tagValue)
+        ));
+    }
 }

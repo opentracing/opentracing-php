@@ -54,9 +54,9 @@ final class HttpHeadersTest extends PHPUnit_Framework_TestCase
     {
         $keys = $this->keys;
 
-        $this->httpHeaders->foreachKey(function ($key) use (&$keys) {
+        foreach ($this->httpHeaders as $key => $value) {
             $keys[] = $key;
-        });
+        }
 
         $this->assertEquals(['foo'], $keys);
     }

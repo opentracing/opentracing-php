@@ -26,13 +26,14 @@ interface Span
 
     /**
      * @param string $newOperationName
-     * @throws SpanAlreadyFinished if the span is already finished
      */
     public function overwriteOperationName($newOperationName);
 
     /**
-     * Sets a tag to the Span.
-     * As an implementor consider supporting a single Tag object or a $tag, $tagValue.
+     * Adds tags to the Span in key:value format, key must be a string and tag must be either
+     * a string, a boolean value, or a numeric type.
+     *
+     * As an implementor, consider using "standard tags" listed in {@see \OpenTracing\Ext\Tags}
      *
      * @param array $tags
      * @throws SpanAlreadyFinished if the span is already finished
@@ -41,9 +42,8 @@ interface Span
 
     /**
      * Adds a log record to the span
-     * As an implementor, consider to use this one LogUtils\keyValueLogFieldsConverter
      *
-     * @param array|LogRecord[] $fields
+     * @param array $fields
      * @param int|float|\DateTimeInterface $timestamp
      * @throws SpanAlreadyFinished if the span is already finished
      */

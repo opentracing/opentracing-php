@@ -29,7 +29,7 @@ interface Tracer
      * @param SpanReference|null $parentReference
      * @param float|int|\DateTimeInterface|null $startTimestamp if passing float or int
      * it should represent the timestamp (including as many decimal places as you need)
-     * @param Tag[] $tags
+     * @param array $tags
      * @return Span
      * @throws InvalidSpanOption for invalid option
      */
