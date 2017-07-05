@@ -47,7 +47,9 @@ final class SpanOptions
                             throw InvalidSpanOption::invalidTag($tag);
                         }
 
-                        if (!is_scalar($tagValue) && method_exists($tagValue, '__toString')) {
+                        if (!is_scalar($tagValue)
+                            && !(is_object($tagValue) && method_exists($tagValue, '__toString'))
+                        ) {
                             throw InvalidSpanOption::invalidTagValue($tagValue);
                         }
 

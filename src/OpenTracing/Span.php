@@ -50,6 +50,9 @@ interface Span
     public function log(array $fields = [], $timestamp = null);
 
     /**
+     * Adds a baggage item to the SpanContext which is immutable so it is required to use SpanContext::withBaggageItem
+     * to get a new one.
+     *
      * @param string $key
      * @param string $value
      * @throws SpanAlreadyFinished if the span is already finished

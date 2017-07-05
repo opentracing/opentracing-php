@@ -45,7 +45,7 @@ final class InvalidSpanOption extends InvalidArgumentException
     public static function invalidTagValue($tagValue)
     {
         return new self(sprintf(
-            'Invalid tag value. Expected scalar, got %s',
+            'Invalid tag value. Expected scalar or object with __toString method, got %s',
             is_object($tagValue) ? get_class($tagValue) : gettype($tagValue)
         ));
     }

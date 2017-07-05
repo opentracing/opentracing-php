@@ -15,5 +15,18 @@ use IteratorAggregate;
  */
 interface SpanContext extends IteratorAggregate
 {
+    /**
+     * @param string $key
+     * @return string
+     */
     public function getBaggageItem($key);
+
+    /**
+     * Creates a new SpanContext out of the existing one and the new key:value pair.
+     *
+     * @param string $key
+     * @param string $value
+     * @return SpanContext
+     */
+    public function withBaggageItem($key, $value);
 }
