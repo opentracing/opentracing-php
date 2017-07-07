@@ -18,12 +18,12 @@ final class SpanOptions
     private $references = [];
 
     /**
-     * @var Tag[]
+     * @var array
      */
     private $tags = [];
 
     /**
-     * @var mixed
+     * @var int|float|\DateTime
      */
     private $startTime;
 
@@ -38,12 +38,16 @@ final class SpanOptions
                     break;
 
                 case 'references':
-                    $spanOptions->childOf = self::buildReferencesArray($value);
+                    $spanOptions->references = self::buildReferencesArray($value);
                     break;
 
                 case 'tags':
                     foreach ($value as $tag => $tagValue) {
-                        $spanOptions->tags[] = Tag::create($tag, $tagValue);
+                        if ($tag !== (string) $tag) {
+                            throw InvalidSpanOption::invalidTag($tag);
+                        }
+
+                        $spanOptions->tags[$tag] = $tagValue;
                     }
                     break;
 
@@ -97,23 +101,32 @@ final class SpanOptions
     /**
      * @return ChildOf
      */
-    public function childOf()
+    public function getChildOf()
     {
         return $this->childOf;
     }
 
     /**
-     * @return Tag[]
+     * @return SpanReference[]
      */
-    public function tags()
+    public function getReferences()
+    {
+        return $this->references;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags()
     {
         return $this->tags;
     }
 
     /**
-     * @return mixed
+     * @return int|float|\DateTime if returning float or int it should represent
+     * the timestamp (including as many decimal places as you need)
      */
-    public function startTime()
+    public function getStartTime()
     {
         return $this->startTime;
     }

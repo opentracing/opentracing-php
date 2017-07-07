@@ -2,56 +2,31 @@
 
 namespace OpenTracing;
 
-use TracingContext\TracingContext;
+use IteratorAggregate;
 
-final class SpanContext
+/**
+ * SpanContext must be immutable in order to avoid complicated lifetime
+ * issues around Span finish and references.
+ *
+ * Baggage items are key:value string pairs that apply to the given Span,
+ * its SpanContext, and all Spans which directly or transitively reference
+ * the local Span. That is, baggage items propagate in-band along with the
+ * trace itself.
+ */
+interface SpanContext extends IteratorAggregate
 {
     /**
-     * @var array
+     * @param string $key
+     * @return string
      */
-    private $baggageItems;
+    public function getBaggageItem($key);
 
     /**
-     * @var Context
-     */
-    private $context;
-
-    private function __construct(Context $context)
-    {
-        $this->context = $context;
-    }
-
-    public static function create(Context $context)
-    {
-        return new self($context);
-    }
-
-    /**
-     * Creates a default SpanContext instance.
+     * Creates a new SpanContext out of the existing one and the new key:value pair.
      *
+     * @param string $key
+     * @param wstring $value
      * @return SpanContext
      */
-    public static function createAsDefault()
-    {
-        return new self(Context::createAsDefault());
-    }
-
-    /**
-     * Iterates over the baggage items.
-     *
-     * @param callable $closure
-     * @return array
-     */
-    public function foreachBaggageItem(callable $closure)
-    {
-        return array_map($closure, $this->baggageItems);
-    }
-
-    /**
-     * @return TracingContext
-     */
-    public function getContext()
-    {
-        return $this->context->getContext();
-    }
+    public function withBaggageItem($key, $value);
 }

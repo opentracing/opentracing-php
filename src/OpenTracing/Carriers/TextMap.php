@@ -27,14 +27,6 @@ final class TextMap implements Reader, Writer
         $this->items[(string) $key] = (string) $value;
     }
 
-    /** @deprecated use its implementation for Iterator instead */
-    public function foreachKey(callable $callback)
-    {
-        array_walk($this->items, function ($value, $key) use ($callback) {
-            $callback($key, $value);
-        });
-    }
-
     public function getIterator()
     {
         return new ArrayIterator($this->items);
