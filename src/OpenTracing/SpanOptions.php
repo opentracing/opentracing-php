@@ -38,19 +38,13 @@ final class SpanOptions
                     break;
 
                 case 'references':
-                    $spanOptions->childOf = self::buildReferencesArray($value);
+                    $spanOptions->references = self::buildReferencesArray($value);
                     break;
 
                 case 'tags':
                     foreach ($value as $tag => $tagValue) {
                         if ($tag !== (string) $tag) {
                             throw InvalidSpanOption::invalidTag($tag);
-                        }
-
-                        if (!is_scalar($tagValue)
-                            && !(is_object($tagValue) && method_exists($tagValue, '__toString'))
-                        ) {
-                            throw InvalidSpanOption::invalidTagValue($tagValue);
                         }
 
                         $spanOptions->tags[$tag] = $tagValue;
@@ -110,6 +104,14 @@ final class SpanOptions
     public function getChildOf()
     {
         return $this->childOf;
+    }
+
+    /**
+     * @return SpanReference[]
+     */
+    public function getReferences()
+    {
+        return $this->references;
     }
 
     /**
