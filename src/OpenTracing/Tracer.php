@@ -25,6 +25,13 @@ interface Tracer
     const FORMAT_HTTP_HEADERS = 3;
 
     /**
+     * @deprecated use either startActiveSpan or startManualSpan instead.
+     * As implementor consider this as a backward compatibility alias for
+     * startActiveSpan
+     */
+    public function startSpan($operationName, $options = []);
+
+    /**
      * Starts and returns a new `Span` representing a unit of work.
      *
      * This method differs from `startManualSpan` because it uses in-process

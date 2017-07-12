@@ -13,7 +13,7 @@ final class NoopActiveSpanSource implements ActiveSpanSource
     {
     }
 
-    public function activeSpan()
+    public function getActiveSpan()
     {
         return NoopSpan::create();
     }

@@ -21,7 +21,7 @@ interface ActiveSpanSource
      *
      * @return Span
      */
-    public function activeSpan();
+    public function getActiveSpan();
 
     /**
      * Deactivate the given `Span`, restoring the previous active one.
