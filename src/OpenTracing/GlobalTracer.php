@@ -18,7 +18,7 @@ final class GlobalTracer
      *
      * @param Tracer $tracer
      */
-    public static function setGlobalTracer(Tracer $tracer)
+    public static function set(Tracer $tracer)
     {
         self::$globalTracerInstance = $tracer;
     }
@@ -30,7 +30,7 @@ final class GlobalTracer
      *
      * @return Tracer
      */
-    public static function getGlobalTracer()
+    public static function get()
     {
         if (self::$globalTracerInstance === null) {
             self::$globalTracerInstance = NoopTracer::create();
