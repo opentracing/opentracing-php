@@ -7,35 +7,35 @@ final class GlobalTracer
     /**
      * @var Tracer
      */
-    private static $globalTracerInstance = null;
+    private static $instance = null;
 
     /**
-     * SetGlobalTracer sets the [singleton] Tracer returned by globalTracer().
+     * GlobalTracer::set sets the [singleton] Tracer returned by get().
      * Those who use GlobalTracer (rather than directly manage a Tracer instance)
-     * should call setGlobalTracer as early as possible in bootstrap, prior to
-     * start a new span. Prior to calling `setGlobalTracer`, any Spans started
-     * via the `StartSpan` (etc) globals are noops.
+     * should call GlobalTracer::set as early as possible in bootstrap, prior to
+     * start a new span. Prior to calling GlobalTracer::set, any Spans started
+     * via the `Tracer::startSpan` (etc) globals are noops.
      *
      * @param Tracer $tracer
      */
-    public static function setGlobalTracer(Tracer $tracer)
+    public static function set(Tracer $tracer)
     {
-        self::$globalTracerInstance = $tracer;
+        self::$instance = $tracer;
     }
 
     /**
-     * GlobalTracer returns the global singleton `Tracer` implementation.
-     * Before `setGlobalTracer()` is called, the `GlobalTracer()` is a noop
+     * GlobalTracer::get returns the global singleton `Tracer` implementation.
+     * Before `GlobalTracer::set` is called, the `GlobalTracer::get` is a noop
      * implementation that drops all data handed to it.
      *
      * @return Tracer
      */
-    public static function getGlobalTracer()
+    public static function get()
     {
-        if (self::$globalTracerInstance === null) {
-            self::$globalTracerInstance = NoopTracer::create();
+        if (self::$instance === null) {
+            self::$instance = NoopTracer::create();
         }
 
-        return self::$globalTracerInstance;
+        return self::$instance;
     }
 }

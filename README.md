@@ -33,7 +33,7 @@ The simplest starting point is to set the global tracer. As early as possible, d
     use OpenTracing\GlobalTracer;
     use AnOpenTracingImplementation\MyTracer;
     
-    GlobalTracer::setGlobalTracer(new MyTracer());
+    GlobalTracer::set(new MyTracer());
 ```
 
 ### Creating a Span given an existing Request
@@ -45,7 +45,7 @@ To start a new `Span`, you can use the `StartSpanFromContext` method.
 
     ...
 
-    $spanContext = GlobalTracer::getGlobalTracer()->extract(
+    $spanContext = GlobalTracer::get()->extract(
         Propagator::HTTP_HEADERS,
         HttpHeaders::withHeaders($request->getHeaders())
     );
@@ -53,7 +53,7 @@ To start a new `Span`, you can use the `StartSpanFromContext` method.
     function doSomething(SpanContext $spanContext, ...) {
         ...
         
-        $span = GlobalTracer::getGlobalTracer()->startSpan('my_span', ChildOf::withContext($spanContext));
+        $span = GlobalTracer::get()->startSpan('my_span', ChildOf::withContext($spanContext));
         
         ...
         
@@ -85,7 +85,7 @@ reference.
 
     function xyz(Span $parentSpan, ...) {
         ...
-        $span = GlobalTracer::getGlobalTracer()->startSpan(
+        $span = GlobalTracer::get()->startSpan(
             'my_span',
             ChildOf::withContext($span->context())
         );
@@ -104,7 +104,7 @@ reference.
     
     ...
     
-    $tracer = GlobalTracer::getGlobalTracer(); 
+    $tracer = GlobalTracer::get(); 
     
     $spanContext = $tracer->extract(
         Propagator::HTTP_HEADERS,
@@ -142,7 +142,7 @@ When using http header for context propagation you can use either the `Request` 
     use OpenTracing\GlobalTracer;
     
     $request = Request::createFromGlobals();
-    $tracer = GlobalTracer::getGlobalTracer();
+    $tracer = GlobalTracer::get();
     $spanContext = $tracer->extract(Propagator::HTTP_HEADERS, HttpHeaders::fromRequest($request));
     $tracer->startSpan('my_span', ChildOf::withContext($spanContext)); 
 ```
@@ -165,7 +165,7 @@ $application->run();
 
 fastcgi_finish_request();
 
-$tracer = GlobalTracer::getGlobalTracer();
+$tracer = GlobalTracer::get();
 $tracer->flush(); // release buffer to backend
 ```
 
