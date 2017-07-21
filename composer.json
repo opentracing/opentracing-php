@@ -2,7 +2,7 @@
     "name": "opentracing/opentracing",
     "description": "OpenTracing API for PHP",
     "type": "library",
-    "license": "GPLv3",
+    "license": "MIT",
     "authors": [
         {
             "name": "José Carlos Chávez",
