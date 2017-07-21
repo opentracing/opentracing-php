@@ -6,58 +6,32 @@ use GuzzleHttp\Psr7\Request;
 use OpenTracing\Carriers\HttpHeaders;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * @covers HttpHeaders
+ */
 final class HttpHeadersTest extends PHPUnit_Framework_TestCase
 {
     const TEST_HEADERS = ['foo' => 'bar'];
 
-    private $headers;
-    /** @var HttpHeaders */
-    private $httpHeaders;
-    private $keys;
-    private $request;
-
     public function testCreationWithHeadersHasTheExpectedValues()
     {
-        $this->givenAListOfHeaders();
-        $this->whenCreatingAHttpHeadersCarrier();
-        $this->thenTheCarrierHasTheExpectedKeys();
+        $headers = self::TEST_HEADERS;
+        $httpHeaders = HttpHeaders::fromHeaders($headers);
+
+        foreach ($httpHeaders as $key => $value) {
+            $this->assertEquals('foo', $key);
+            $this->assertEquals('bar', $value);
+        }
     }
 
     public function testCreationFromRequestHasTheExpectedValues()
     {
-        $this->givenARequestWithHeaders();
-        $this->whenCreatingAHttpHeadersCarrierFromRequest();
-        $this->thenTheCarrierHasTheExpectedKeys();
-    }
+        $request = new Request('GET', '', self::TEST_HEADERS);
+        $httpHeaders = HttpHeaders::fromRequest($request);
 
-    private function givenAListOfHeaders()
-    {
-        $this->headers = self::TEST_HEADERS;
-    }
-
-    private function givenARequestWithHeaders()
-    {
-        $this->request = new Request('GET', '', self::TEST_HEADERS);
-    }
-
-    private function whenCreatingAHttpHeadersCarrier()
-    {
-        $this->httpHeaders = HttpHeaders::fromHeaders($this->headers);
-    }
-
-    private function whenCreatingAHttpHeadersCarrierFromRequest()
-    {
-        $this->httpHeaders = HttpHeaders::fromRequest($this->request);
-    }
-
-    private function thenTheCarrierHasTheExpectedKeys()
-    {
-        $keys = $this->keys;
-
-        foreach ($this->httpHeaders as $key => $value) {
-            $keys[] = $key;
+        foreach ($httpHeaders as $key => $value) {
+            $this->assertEquals('foo', $key);
+            $this->assertEquals('bar', $value);
         }
-
-        $this->assertEquals(['foo'], $keys);
     }
 }

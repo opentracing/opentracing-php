@@ -6,6 +6,9 @@ use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\SpanOptions;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * @covers SpanOptions
+ */
 final class SpanOptionsTest extends PHPUnit_Framework_TestCase
 {
     public function testSpanOptionsCanNotBeCreatedDueToInvalidOption()

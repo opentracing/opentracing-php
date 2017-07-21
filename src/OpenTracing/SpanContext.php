@@ -25,7 +25,7 @@ interface SpanContext extends IteratorAggregate
      * Creates a new SpanContext out of the existing one and the new key:value pair.
      *
      * @param string $key
-     * @param wstring $value
+     * @param string $value
      * @return SpanContext
      */
     public function withBaggageItem($key, $value);
