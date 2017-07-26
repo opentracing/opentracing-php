@@ -22,7 +22,7 @@ final class NoopSpan implements Span
      */
     public function getContext()
     {
-        return null;
+        return NoopSpanContext::create();
     }
 
     /**
