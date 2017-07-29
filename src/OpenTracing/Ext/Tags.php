@@ -18,6 +18,16 @@ const SPAN_KIND_RPC_CLIENT = 'client';
 const SPAN_KIND_RPC_SERVER = 'server';
 
 /**
+ * Marks a span as representing the producer within a messaging context
+ */
+const SPAN_KIND_MESSAGE_BUS_PRODUCER = 'producer';
+
+/**
+ * Marks a span as representing the consumer within a messaging context
+ */
+const SPAN_KIND_MESSAGE_BUS_CONSUMER = 'consumer';
+
+/**
  * Component is a low-cardinality identifier of the module, library,
  * or package that is generating a span.
  */
