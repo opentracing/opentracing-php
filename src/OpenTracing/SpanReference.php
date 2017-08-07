@@ -73,6 +73,22 @@ final class SpanReference
     }
 
     /**
+     * @return bool
+     */
+    public function isTypeChildOf()
+    {
+        return $this->type === self::CHILD_OF;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypeFollowsFrom()
+    {
+        return $this->type === self::FOLLOWS_FROM;
+    }
+
+    /**
      * Checks whether a SpanReference is of one type.
      *
      * @param string $type the type for the reference
