@@ -4,6 +4,9 @@ namespace OpenTracing\Exceptions;
 
 use InvalidArgumentException;
 
+/**
+ * Thrown when passing an invalid argument for a reference
+ */
 final class InvalidReferenceArgument extends InvalidArgumentException
 {
     public static function emptyType()
