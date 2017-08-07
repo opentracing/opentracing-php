@@ -4,6 +4,9 @@ namespace OpenTracing\Exceptions;
 
 use InvalidArgumentException;
 
+/**
+ * Thrown when passing an invalid option on Span creation
+ */
 final class InvalidSpanOption extends InvalidArgumentException
 {
     public static function includesBothChildOfAndReferences()

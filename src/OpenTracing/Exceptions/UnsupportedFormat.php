@@ -2,9 +2,12 @@
 
 namespace OpenTracing\Exceptions;
 
-use InvalidArgumentException;
+use UnexpectedValueException;
 
-final class UnsupportedFormat extends InvalidArgumentException
+/**
+ * Thrown when trying to inject or extract in an invalid format
+ */
+final class UnsupportedFormat extends UnexpectedValueException
 {
     public static function create($format)
     {
