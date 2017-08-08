@@ -45,26 +45,6 @@ final class SpanReference
     }
 
     /**
-     * @param SpanContext|Span $context
-     * @throws InvalidReferenceArgument when context is invalid
-     * @return SpanReference
-     */
-    public static function createAsChildOf($context)
-    {
-        return new self(self::CHILD_OF, self::extractContext($context));
-    }
-
-    /**
-     * @param SpanContext|Span $context
-     * @throws InvalidReferenceArgument when context is invalid
-     * @return SpanReference
-     */
-    public static function createAsFollowsFrom($context)
-    {
-        return new self(self::FOLLOWS_FROM, self::extractContext($context));
-    }
-
-    /**
      * @return SpanContext
      */
     public function getContext()
