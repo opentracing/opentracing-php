@@ -20,7 +20,6 @@ interface Span
      * @param float|int|\DateTimeInterface|null $finishTime if passing float or int
      * it should represent the timestamp (including as many decimal places as you need)
      * @param array $logRecords
-     * @return mixed
      */
     public function finish($finishTime = null, array $logRecords = []);
 
