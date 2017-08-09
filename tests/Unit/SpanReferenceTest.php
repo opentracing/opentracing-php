@@ -9,6 +9,8 @@ use PHPUnit_Framework_TestCase;
 
 final class SpanReferenceTest extends PHPUnit_Framework_TestCase
 {
+    const REFERENCE_TYPE = 'ref_type';
+
     public function testCreateASpanReferenceFailsOnInvalidContext()
     {
         $context = 'invalid_context';
@@ -27,19 +29,11 @@ final class SpanReferenceTest extends PHPUnit_Framework_TestCase
         SpanReference::create('', $context);
     }
 
-    public function testASpanReferenceCanBeCreatedAsChildOf()
+    public function testASpanReferenceCanBeCreatedAsACustomType()
     {
         $context = new NoopSpanContext();
-        $reference = SpanReference::createAsChildOf($context);
+        $reference = SpanReference::create(self::REFERENCE_TYPE, $context);
         $this->assertSame($context, $reference->getContext());
-        $this->assertTrue($reference->isType('child_of'));
-    }
-
-    public function testASpanReferenceCanBeCreatedAsFollowsFrom()
-    {
-        $context = new NoopSpanContext();
-        $reference = SpanReference::createAsFollowsFrom($context);
-        $this->assertSame($context, $reference->getContext());
-        $this->assertTrue($reference->isType('follows_from'));
+        $this->assertTrue($reference->isType(self::REFERENCE_TYPE));
     }
 }
