@@ -13,16 +13,7 @@ final class NoopTracer implements Tracer
         return new self();
     }
 
-    public function startSpan(
-        $operationName,
-        SpanReference $parentReference = null,
-        $startTimestamp = null,
-        array $tags = []
-    ) {
-        return NoopSpan::create();
-    }
-
-    public function startSpanWithOptions($operationName, $options)
+    public function startSpan($operationName, $options)
     {
         return NoopSpan::create();
     }

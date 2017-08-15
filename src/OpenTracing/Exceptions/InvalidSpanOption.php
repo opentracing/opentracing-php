@@ -9,25 +9,32 @@ use InvalidArgumentException;
  */
 final class InvalidSpanOption extends InvalidArgumentException
 {
-    public static function includesBothChildOfAndReferences()
+    public static function forIncludingBothChildOfAndReferences()
     {
         return new self('Either "childOf" or "references" options are accepted but not both.');
     }
 
-    public static function invalidReference($reference)
+    /**
+     * @param mixed $reference
+     * @return InvalidSpanOption
+     */
+    public static function forInvalidReference($reference)
     {
         return new self(sprintf(
-            'Invalid reference. Expected OpenTracing\SpanReference, got %s.',
+            'Invalid reference. Expected OpenTracing\Reference, got %s.',
             is_object($reference) ? get_class($reference) : gettype($reference)
         ));
     }
 
-    public static function invalidStartTime()
+    /**
+     * @return InvalidSpanOption
+     */
+    public static function forInvalidStartTime()
     {
         return new self(sprintf('Invalid start_time option. Expected int or float got string.'));
     }
 
-    public static function invalidChildOf($childOfOption)
+    public static function forInvalidChildOf($childOfOption)
     {
         return new self(sprintf(
             'Invalid child_of option. Expected Span or SpanContext, got %s',
@@ -35,21 +42,57 @@ final class InvalidSpanOption extends InvalidArgumentException
         ));
     }
 
-    public static function unknownOption($key)
+    /**
+     * @param string $key
+     * @return InvalidSpanOption
+     */
+    public static function forUnknownOption($key)
     {
         return new self(sprintf('Invalid option %s.', $key));
     }
 
-    public static function invalidTag($tag)
+    /**
+     * @param mixed $tag
+     * @return InvalidSpanOption
+     */
+    public static function forInvalidTag($tag)
     {
-        return new self(sprintf('Invalid tag. Expected string, got %s', $tag));
+        return new self(sprintf('Invalid tag. Expected string, got %s', gettype($tag)));
     }
 
-    public static function invalidTagValue($tagValue)
+    /**
+     * @param mixed $tagValue
+     * @return InvalidSpanOption
+     */
+    public static function forInvalidTagValue($tagValue)
     {
         return new self(sprintf(
             'Invalid tag value. Expected scalar or object with __toString method, got %s',
             is_object($tagValue) ? get_class($tagValue) : gettype($tagValue)
+        ));
+    }
+
+    /**
+     * @param mixed $value
+     * @return InvalidSpanOption
+     */
+    public static function forInvalidTags($value)
+    {
+        return new self(sprintf(
+            'Invalid tags value. Expected mixed[string], got %s',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
+    }
+
+    /**
+     * @param mixed $value
+     * @return InvalidSpanOption
+     */
+    public static function forInvalidReferenceSet($value)
+    {
+        return new self(sprintf(
+            'Invalid references set. Expected Reference or Reference[], got %s',
+            is_object($value) ? get_class($value) : gettype($value)
         ));
     }
 }

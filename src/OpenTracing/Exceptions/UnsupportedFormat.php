@@ -9,8 +9,12 @@ use UnexpectedValueException;
  */
 final class UnsupportedFormat extends UnexpectedValueException
 {
-    public static function create($format)
+    /**
+     * @param int $format
+     * @return UnsupportedFormat
+     */
+    public static function forFormat($format)
     {
-        return new self(sprintf('The format %s is not supported.', $format));
+        return new self(sprintf('The format %d is not supported.', $format));
     }
 }

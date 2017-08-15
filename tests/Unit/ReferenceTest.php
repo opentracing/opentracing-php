@@ -4,35 +4,38 @@ namespace OpenTracingTests\Unit;
 
 use OpenTracing\Exceptions\InvalidReferenceArgument;
 use OpenTracing\NoopSpanContext;
-use OpenTracing\SpanReference;
+use OpenTracing\Reference;
 use PHPUnit_Framework_TestCase;
 
-final class SpanReferenceTest extends PHPUnit_Framework_TestCase
+/**
+ * @covers Reference
+ */
+final class ReferenceTest extends PHPUnit_Framework_TestCase
 {
     const REFERENCE_TYPE = 'ref_type';
 
-    public function testCreateASpanReferenceFailsOnInvalidContext()
+    public function testCreateAReferenceFailsOnInvalidContext()
     {
         $context = 'invalid_context';
         $this->expectException(InvalidReferenceArgument::class);
         $this->expectExceptionMessage(
             'Reference expects \OpenTracing\Span or \OpenTracing\SpanContext as context, got string'
         );
-        SpanReference::create('child_of', $context);
+        Reference::create('child_of', $context);
     }
 
-    public function testCreateASpanReferenceFailsOnEmptyType()
+    public function testCreateAReferenceFailsOnEmptyType()
     {
         $context = new NoopSpanContext();
         $this->expectException(InvalidReferenceArgument::class);
         $this->expectExceptionMessage('Reference type can not be an empty string');
-        SpanReference::create('', $context);
+        Reference::create('', $context);
     }
 
-    public function testASpanReferenceCanBeCreatedAsACustomType()
+    public function testAReferenceCanBeCreatedAsACustomType()
     {
         $context = new NoopSpanContext();
-        $reference = SpanReference::create(self::REFERENCE_TYPE, $context);
+        $reference = Reference::create(self::REFERENCE_TYPE, $context);
         $this->assertSame($context, $reference->getContext());
         $this->assertTrue($reference->isType(self::REFERENCE_TYPE));
     }
