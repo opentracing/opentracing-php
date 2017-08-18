@@ -4,9 +4,19 @@ namespace OpenTracing;
 
 use OpenTracing\Exceptions\InvalidReferenceArgument;
 
-final class SpanReference
+final class Reference
 {
+    /**
+     * A Span may be the ChildOf a parent Span. In a ChildOf reference,
+     * the parent Span depends on the child Span in some capacity.
+     */
     const CHILD_OF = 'child_of';
+
+    /**
+     * Some parent Spans do not depend in any way on the result of their
+     * child Spans. In these cases, we say merely that the child Span
+     * FollowsFrom the parent Span in a causal sense.
+     */
     const FOLLOWS_FROM = 'follows_from';
 
     /**
@@ -33,12 +43,12 @@ final class SpanReference
      * @param SpanContext|Span $context
      * @param string $type
      * @throws InvalidReferenceArgument on empty type
-     * @return SpanReference when context is invalid
+     * @return Reference when context is invalid
      */
     public static function create($type, $context)
     {
         if (empty($type)) {
-            throw InvalidReferenceArgument::emptyType();
+            throw InvalidReferenceArgument::forEmptyType();
         }
 
         return new self($type, self::extractContext($context));
@@ -53,7 +63,7 @@ final class SpanReference
     }
 
     /**
-     * Checks whether a SpanReference is of one type.
+     * Checks whether a Reference is of one type.
      *
      * @param string $type the type for the reference
      * @return bool
@@ -73,6 +83,6 @@ final class SpanReference
             return $context->getContext();
         }
 
-        throw InvalidReferenceArgument::invalidContext($context);
+        throw InvalidReferenceArgument::forInvalidContext($context);
     }
 }

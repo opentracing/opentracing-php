@@ -57,7 +57,9 @@ To start a new `Span`, you can use the `StartSpanFromContext` method.
     function doSomething(SpanContext $spanContext, ...) {
         ...
         
-        $span = GlobalTracer::get()->startSpan('my_span', ChildOf::withContext($spanContext));
+        $span = GlobalTracer::get()->startSpan('my_span', [
+        	'child_of' => $spanContext,
+        ]);
         
         ...
         
@@ -85,13 +87,13 @@ reference.
 ### Creating a (child) Span given an existing (parent) Span
 
 ```php
-    use OpenTracing\SpanReference\ChildOf;
-
     function xyz(Span $parentSpan, ...) {
         ...
         $span = GlobalTracer::get()->startSpan(
-            'my_span',
-            ChildOf::withContext($span->context())
+        	'my_span',
+        	[
+        		'child_of' => $spanContext,
+        	]
         );
         
         $span->finish();
@@ -116,7 +118,7 @@ reference.
     );
     
     try {
-        $span = $tracer->startSpanWithOptions('my_span', ['child_of' => $spanContext]);
+        $span = $tracer->startSpan('my_span', ['child_of' => $spanContext]);
 
         $client = new GuzzleHttp\Client;
         
@@ -142,13 +144,14 @@ When using http header for context propagation you can use either the `Request` 
 
 ```php
     use OpenTracing\Carriers\HttpHeaders;
-    use OpenTracing\SpanReference\ChildOf;
     use OpenTracing\GlobalTracer;
     
     $request = Request::createFromGlobals();
     $tracer = GlobalTracer::get();
     $spanContext = $tracer->extract(Propagator::HTTP_HEADERS, HttpHeaders::fromRequest($request));
-    $tracer->startSpan('my_span', ChildOf::withContext($spanContext)); 
+    $tracer->startSpan('my_span', [
+        'child_of' => $spanContext,
+    ]); 
 ```
 
 ### Flushing Spans
@@ -184,19 +187,19 @@ SpanOptions wrapper object. The following keys are valid:
 
 - `start_time` is a float, int or `\DateTime` representing a timestamp with arbitrary precision.
 - `child_of` is an object of type `OpenTracing\SpanContext` or `OpenTracing\Span`.
-- `references` is an array of `OpenTracing\SpanReference`. 
+- `references` is an array of `OpenTracing\Reference`. 
 - `tags` is an array with string keys and scalar values that represent OpenTracing tags.
 
 ```php
 <?php
 
-use OpenTracing\SpanOptions;
+use OpenTracing\Reference;
 
-$span = $tracer->createSpan('my_span', SpanOptions::create([
-    'child_of' => $parentContext,
+$span = $tracer->createSpan('my_span', [
+    'child_of' => $spanContext,
     'tags' => ['foo' => 'bar'],
     'start_time' => time(),
-]));
+]);
 ```
 
 ### Propagation Formats

@@ -26,27 +26,11 @@ interface Tracer
 
     /**
      * @param string $operationName
-     * @param SpanReference|null $parentReference
-     * @param float|int|\DateTimeInterface|null $startTimestamp if passing float or int
-     * it should represent the timestamp (including as many decimal places as you need)
-     * @param array $tags
-     * @return Span
-     * @throws InvalidSpanOption for invalid option
-     */
-    public function startSpan(
-        $operationName,
-        SpanReference $parentReference = null,
-        $startTimestamp = null,
-        array $tags = []
-    );
-
-    /**
-     * @param string $operationName
      * @param array|SpanOptions $options
      * @return Span
      * @throws InvalidSpanOption for invalid option
      */
-    public function startSpanWithOptions($operationName, $options);
+    public function startSpan($operationName, $options);
 
     /**
      * @param SpanContext $spanContext

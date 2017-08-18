@@ -3,7 +3,9 @@
 namespace OpenTracingTests\Unit;
 
 use OpenTracing\Exceptions\InvalidSpanOption;
+use OpenTracing\NoopSpanContext;
 use OpenTracing\SpanOptions;
+use OpenTracing\Reference;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -11,6 +13,8 @@ use PHPUnit_Framework_TestCase;
  */
 final class SpanOptionsTest extends PHPUnit_Framework_TestCase
 {
+    const REFERENCE_TYPE = 'a_reference_type';
+
     public function testSpanOptionsCanNotBeCreatedDueToInvalidOption()
     {
         $this->expectException(InvalidSpanOption::class);
@@ -47,5 +51,20 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
             [1499355363],
             [1499355363.123456]
         ];
+    }
+
+    public function testSpanOptionsCanBeCreatedWithValidReference()
+    {
+        $context = NoopSpanContext::create();
+
+        $options = [
+            'references' => Reference::create(self::REFERENCE_TYPE, $context),
+        ];
+
+        $spanOptions = SpanOptions::create($options);
+        $references = $spanOptions->getReferences()[0];
+
+        $this->assertTrue($references->isType(self::REFERENCE_TYPE));
+        $this->assertSame($context, $references->getContext());
     }
 }

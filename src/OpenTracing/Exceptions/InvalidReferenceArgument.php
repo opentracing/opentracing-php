@@ -9,12 +9,12 @@ use InvalidArgumentException;
  */
 final class InvalidReferenceArgument extends InvalidArgumentException
 {
-    public static function emptyType()
+    public static function forEmptyType()
     {
         return new self('Reference type can not be an empty string');
     }
 
-    public static function invalidContext($context)
+    public static function forInvalidContext($context)
     {
         return new self(sprintf(
             'Reference expects \OpenTracing\Span or \OpenTracing\SpanContext as context, got %s',
