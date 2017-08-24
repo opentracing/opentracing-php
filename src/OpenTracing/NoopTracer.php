@@ -4,7 +4,6 @@ namespace OpenTracing;
 
 use OpenTracing\Propagators\Reader;
 use OpenTracing\Propagators\Writer;
-use TracingContext\TracingContext;
 
 final class NoopTracer implements Tracer
 {
@@ -24,7 +23,7 @@ final class NoopTracer implements Tracer
 
     public function extract($format, Reader $carrier)
     {
-        return SpanContext::createAsDefault();
+        return NoopSpanContext::create();
     }
 
     public function flush()
