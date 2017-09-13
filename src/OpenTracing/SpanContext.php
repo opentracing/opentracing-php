@@ -16,8 +16,11 @@ use IteratorAggregate;
 interface SpanContext extends IteratorAggregate
 {
     /**
+     * Returns the value of a baggage item based on its key. If there is no
+     * value with such key it will return null.
+     *
      * @param string $key
-     * @return string
+     * @return string|null
      */
     public function getBaggageItem($key);
 

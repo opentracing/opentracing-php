@@ -4,6 +4,7 @@ namespace OpenTracing;
 
 use OpenTracing\Carriers\HttpHeaders;
 use OpenTracing\Carriers\TextMap;
+use OpenTracing\Exceptions\InvalidReferencesSet;
 use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\Exceptions\SpanContextNotFound;
 use OpenTracing\Exceptions\UnsupportedFormat;
@@ -29,6 +30,7 @@ interface Tracer
      * @param array|SpanOptions $options
      * @return Span
      * @throws InvalidSpanOption for invalid option
+     * @throws InvalidReferencesSet for invalid references set
      */
     public function startSpan($operationName, $options);
 
