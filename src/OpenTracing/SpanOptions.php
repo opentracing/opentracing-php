@@ -23,7 +23,7 @@ final class SpanOptions
     private $startTime;
 
     /**
-     * @param array|mixed[] $options
+     * @param array $options
      * @throws InvalidSpanOption when one of the options is invalid
      * @throws InvalidReferencesSet when there are inconsistencies about the references
      * @return SpanOptions
@@ -88,6 +88,31 @@ final class SpanOptions
         return $spanOptions;
     }
 
+    /**
+     * @return Reference[]
+     */
+    public function getReferences()
+    {
+        return $this->references;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @return int|float|\DateTime if returning float or int it should represent
+     * the timestamp (including as many decimal places as you need)
+     */
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
+
     private static function buildChildOf($value)
     {
         if ($value instanceof Span) {
@@ -114,30 +139,5 @@ final class SpanOptions
         }
 
         return $references;
-    }
-
-    /**
-     * @return Reference[]
-     */
-    public function getReferences()
-    {
-        return $this->references;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
-
-    /**
-     * @return int|float|\DateTime if returning float or int it should represent
-     * the timestamp (including as many decimal places as you need)
-     */
-    public function getStartTime()
-    {
-        return $this->startTime;
     }
 }

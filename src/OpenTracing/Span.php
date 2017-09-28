@@ -53,7 +53,8 @@ interface Span
     public function setTags(array $tags);
 
     /**
-     * Adds a log record to the span
+     * Adds a log record to the span in key:value format, key must be a string and tag must be either
+     * a string, a boolean value, or a numeric type.
      *
      * If the span is already finished, a warning should be logged.
      *
