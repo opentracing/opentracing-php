@@ -13,17 +13,17 @@ use OpenTracing\Propagators\Writer;
 
 interface Tracer
 {
-    const FORMAT_BINARY = 1;
+    const FORMAT_BINARY = 'binary';
 
     /**
      * @see HttpHeaders
      */
-    const FORMAT_TEXT_MAP = 2;
+    const FORMAT_TEXT_MAP = 'text_map';
 
     /**
      * @see TextMap
      */
-    const FORMAT_HTTP_HEADERS = 3;
+    const FORMAT_HTTP_HEADERS = 'http_headers';
 
     /**
      * @param string $operationName
@@ -36,7 +36,7 @@ interface Tracer
 
     /**
      * @param SpanContext $spanContext
-     * @param int $format
+     * @param string $format
      * @param Writer $carrier
      * @throws UnsupportedFormat when the format is not recognized by the tracer
      * implementation
@@ -44,7 +44,7 @@ interface Tracer
     public function inject(SpanContext $spanContext, $format, Writer $carrier);
 
     /**
-     * @param int $format
+     * @param string $format
      * @param Reader $carrier
      * @return SpanContext
      * @throws SpanContextNotFound when a context could not be extracted from Reader

@@ -10,11 +10,11 @@ use UnexpectedValueException;
 final class UnsupportedFormat extends UnexpectedValueException
 {
     /**
-     * @param int $format
+     * @param string $format
      * @return UnsupportedFormat
      */
     public static function forFormat($format)
     {
-        return new self(sprintf('The format %d is not supported.', $format));
+        return new self(sprintf('The format \'%s\' is not supported.', $format));
     }
 }
