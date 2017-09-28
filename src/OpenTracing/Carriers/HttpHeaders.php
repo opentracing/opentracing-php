@@ -32,7 +32,7 @@ final class HttpHeaders implements Reader, Writer
     }
 
     /**
-     * @param array $headers
+     * @param array|string[] $headers
      * @return HttpHeaders
      */
     public static function fromHeaders(array $headers)
@@ -41,8 +41,7 @@ final class HttpHeaders implements Reader, Writer
     }
 
     /**
-     * @param string $key
-     * @param string $value
+     * {@inheritdoc}
      */
     public function set($key, $value)
     {
@@ -50,9 +49,7 @@ final class HttpHeaders implements Reader, Writer
     }
 
     /**
-     * Allows you to iterate over HttpHeaders with foreach
-     *
-     * @return ArrayIterator
+     * {@inheritdoc}
      */
     public function getIterator()
     {

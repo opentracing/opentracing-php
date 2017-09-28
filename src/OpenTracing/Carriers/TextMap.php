@@ -22,11 +22,17 @@ final class TextMap implements Reader, Writer
         return new self($textMap);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function set($key, $value)
     {
         $this->items[(string) $key] = (string) $value;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getIterator()
     {
         return new ArrayIterator($this->items);

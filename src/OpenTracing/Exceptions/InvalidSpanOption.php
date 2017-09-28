@@ -79,7 +79,7 @@ final class InvalidSpanOption extends InvalidArgumentException
     public static function forInvalidTags($value)
     {
         return new self(sprintf(
-            'Invalid tags value. Expected mixed[string], got %s',
+            'Invalid tags value. Expected a associative array of tags, got %s',
             is_object($value) ? get_class($value) : gettype($value)
         ));
     }
