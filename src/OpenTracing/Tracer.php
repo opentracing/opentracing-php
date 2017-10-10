@@ -27,7 +27,12 @@ interface Tracer
 
     /**
      * @param string $operationName
-     * @param array|SpanOptions $options
+     * @param array|SpanOptions $options A set of optional parameters:
+     *   - Zero or more references to related SpanContexts, including a shorthand for ChildOf and
+     *     FollowsFrom reference types if possible.
+     *   - An optional explicit start timestamp; if omitted, the current walltime is used by default
+     *     The default value should be set by the vendor.
+     *   - Zero or more tags
      * @return Span
      * @throws InvalidSpanOption for invalid option
      * @throws InvalidReferencesSet for invalid references set
