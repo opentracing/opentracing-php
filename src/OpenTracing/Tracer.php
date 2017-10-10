@@ -32,7 +32,7 @@ interface Tracer
      * @throws InvalidSpanOption for invalid option
      * @throws InvalidReferencesSet for invalid references set
      */
-    public function startSpan($operationName, $options);
+    public function startSpan($operationName, $options = []);
 
     /**
      * @param SpanContext $spanContext
