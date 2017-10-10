@@ -2,8 +2,8 @@
 
 namespace OpenTracing;
 
-use OpenTracing\Propagators\Reader;
-use OpenTracing\Propagators\Writer;
+use OpenTracing\Propagation\Reader;
+use OpenTracing\Propagation\Writer;
 
 final class NoopTracer implements Tracer
 {
@@ -15,7 +15,7 @@ final class NoopTracer implements Tracer
     /**
      * {@inheritdoc}
      */
-    public function startSpan($operationName, $options)
+    public function startSpan($operationName, $options = [])
     {
         return NoopSpan::create();
     }

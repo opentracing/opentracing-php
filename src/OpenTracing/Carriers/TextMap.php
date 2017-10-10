@@ -3,8 +3,8 @@
 namespace OpenTracing\Carriers;
 
 use ArrayIterator;
-use OpenTracing\Propagators\Reader;
-use OpenTracing\Propagators\Writer;
+use OpenTracing\Propagation\Reader;
+use OpenTracing\Propagation\Writer;
 
 final class TextMap implements Reader, Writer
 {
@@ -17,7 +17,11 @@ final class TextMap implements Reader, Writer
         }
     }
 
-    public static function create(array $textMap = [])
+    /**
+     * @param array|string[] $textMap
+     * @return TextMap
+     */
+    public static function fromArray(array $textMap)
     {
         return new self($textMap);
     }
