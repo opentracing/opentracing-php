@@ -31,7 +31,7 @@ final class SpanOptions
     public static function create(array $options)
     {
         $spanOptions = new self();
-        
+
         foreach ($options as $key => $value) {
             switch ($key) {
                 case 'child_of':
