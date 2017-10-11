@@ -105,7 +105,7 @@ final class SpanOptions
     }
 
     /**
-     * @return int|float|\DateTime if returning float or int it should represent
+     * @return int|float|\DateTime|null if returning float or int it should represent
      * the timestamp (including as many decimal places as you need)
      */
     public function getStartTime()

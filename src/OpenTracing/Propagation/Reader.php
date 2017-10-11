@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTracing\Propagators;
+namespace OpenTracing\Propagation;
 
 use IteratorAggregate;
 

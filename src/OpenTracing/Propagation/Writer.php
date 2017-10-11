@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTracing\Propagators;
+namespace OpenTracing\Propagation;
 
 /**
  * Writer is the inject() carrier. With it, the caller can encode a SpanContext

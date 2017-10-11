@@ -13,7 +13,7 @@ final class TextMapTest extends PHPUnit_Framework_TestCase
     public function testCreateATextMapWithItemsSuccess()
     {
         $items = ['foo' => 'bar'];
-        $textMap = TextMap::create($items);
+        $textMap = TextMap::fromArray($items);
 
         foreach ($textMap as $key => $value) {
             $this->assertEquals('foo', $key);
@@ -23,7 +23,7 @@ final class TextMapTest extends PHPUnit_Framework_TestCase
 
     public function testSettingAKeyValuePairSuccess()
     {
-        $textMap = TextMap::create();
+        $textMap = TextMap::fromArray([]);
         $textMap->set('foo', 'bar');
 
         foreach ($textMap as $key => $value) {

@@ -8,23 +8,11 @@ use OpenTracing\Exceptions\InvalidReferencesSet;
 use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\Exceptions\SpanContextNotFound;
 use OpenTracing\Exceptions\UnsupportedFormat;
-use OpenTracing\Propagators\Reader;
-use OpenTracing\Propagators\Writer;
+use OpenTracing\Propagation\Reader;
+use OpenTracing\Propagation\Writer;
 
 interface Tracer
 {
-    const FORMAT_BINARY = 'binary';
-
-    /**
-     * @see HttpHeaders
-     */
-    const FORMAT_TEXT_MAP = 'text_map';
-
-    /**
-     * @see TextMap
-     */
-    const FORMAT_HTTP_HEADERS = 'http_headers';
-
     /**
      * @param string $operationName
      * @param array|SpanOptions $options A set of optional parameters:
@@ -43,6 +31,9 @@ interface Tracer
      * @param SpanContext $spanContext
      * @param string $format
      * @param Writer $carrier
+     *
+     * @see Propagation\Formats
+     *
      * @throws UnsupportedFormat when the format is not recognized by the tracer
      * implementation
      */

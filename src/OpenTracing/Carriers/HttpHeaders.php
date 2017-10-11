@@ -3,8 +3,8 @@
 namespace OpenTracing\Carriers;
 
 use ArrayIterator;
-use OpenTracing\Propagators\Reader;
-use OpenTracing\Propagators\Writer;
+use OpenTracing\Propagation\Reader;
+use OpenTracing\Propagation\Writer;
 use Psr\Http\Message\RequestInterface;
 
 final class HttpHeaders implements Reader, Writer
