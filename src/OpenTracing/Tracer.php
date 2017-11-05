@@ -58,8 +58,8 @@ interface Tracer
      * or use the call to fastcgi_finish_request in order to not to delay the end
      * of the request to the client.
      *
+     * @see register_shutdown_function()
      * @see fastcgi_finish_request()
-     * @see https://www.google.com/search?q=message+bus+php
      */
     public function flush();
 }
