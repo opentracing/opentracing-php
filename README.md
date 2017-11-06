@@ -1,5 +1,7 @@
 # OpenTracing API for PHP
 
+[![Join the chat at https://gitter.im/opentracing/opentracing-php](https://badges.gitter.im/opentracing/opentracing-php.svg)](https://gitter.im/opentracing/opentracing-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/opentracing/opentracing-php.svg?branch=master)](https://travis-ci.org/opentracing/opentracing-php)
 [![OpenTracing Badge](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
 [![Total Downloads](https://poser.pugx.org/opentracing/opentracing/downloads)](https://packagist.org/packages/opentracing/opentracing)
