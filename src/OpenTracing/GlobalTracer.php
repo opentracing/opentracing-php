@@ -14,7 +14,7 @@ final class GlobalTracer
      * Those who use GlobalTracer (rather than directly manage a Tracer instance)
      * should call GlobalTracer::set as early as possible in bootstrap, prior to
      * start a new span. Prior to calling GlobalTracer::set, any Spans started
-     * via the `Tracer::startSpan` (etc) globals are noops.
+     * via the `Tracer::startActiveSpan` (etc) globals are noops.
      *
      * @param Tracer $tracer
      */

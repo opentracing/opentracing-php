@@ -17,6 +17,22 @@ final class NoopTracer implements Tracer
      */
     public function startSpan($operationName, $options = [])
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function startActiveSpan($operationName, $options = [])
+    {
+
+        return NoopSpan::create();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function startManualSpan($operationName, $options = [])
+    {
         return NoopSpan::create();
     }
 
@@ -40,5 +56,21 @@ final class NoopTracer implements Tracer
      */
     public function flush()
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActiveSpanSource()
+    {
+        return NoopActiveSpanSource::create();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActiveSpan()
+    {
+        return NoopSpan::create();
     }
 }

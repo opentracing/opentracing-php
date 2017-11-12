@@ -18,7 +18,7 @@ final class SpanOptions
     private $tags = [];
 
     /**
-     * @var int|float|\DateTime
+     * @var int|float|\DateTimeInterface
      */
     private $startTime;
 

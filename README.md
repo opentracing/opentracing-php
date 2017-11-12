@@ -42,7 +42,7 @@ The simplest starting point is to set the global tracer. As early as possible, d
 
 ### Creating a Span given an existing Request
 
-To start a new `Span`, you can use the `StartSpanFromContext` method.
+To start a new `Span`, you can use the `startActiveSpan` method.
 
 ```php
     use Psr\Http\Message\RequestInterface;
@@ -57,9 +57,7 @@ To start a new `Span`, you can use the `StartSpanFromContext` method.
     function doSomething(SpanContext $spanContext, ...) {
         ...
         
-        $span = GlobalTracer::get()->startSpan('my_span', [
-        	'child_of' => $spanContext,
-        ]);
+        $span = GlobalTracer::get()->startManualSpan('my_span', ['child_of' => $spanContext]);
         
         ...
         
@@ -75,35 +73,52 @@ To start a new `Span`, you can use the `StartSpanFromContext` method.
 
 ### Starting an empty trace by creating a "root span"
 
-It's always possible to create a "root" `Span` with no parent or other causal
-reference.
+It's always possible to create a "root" `Span` with no parent or other causal reference.
 
 ```php
-    $span = $tracer->startSpan('my_span');
+    $span = $tracer->startActiveSpan('my_first_span');
     ...
     $span->finish();
 ```
 
-### Creating a (child) Span given an existing (parent) Span
+#### Creating a child span assigning parent manually
 
 ```php
-    function xyz(Span $parentSpan, ...) {
-        ...
-        $span = GlobalTracer::get()->startSpan(
-        	'my_span',
-        	[
-        		'child_of' => $spanContext,
-        	]
-        );
-        
-        $span->finish();
-        ...
-    }
+	use OpenTracing\SpanReference\ChildOf;
+	
+	$parent = GlobalTracer::get()->startManualSpan('parent');
+	
+	$child = GlobalTracer::get()->startManualSpan('child', [
+		'child_of' => $parent
+	]);
+	...
+	$child->finish();
+	...
+	$parent->finish();
+```
+
+#### Creating a child span using automatic active span management
+
+Every new span will take the active span as parent and it will take its spot.
+
+```php
+	$parent = GlobalTracer::get()->startActiveSpan('parent');        
+	...
+
+    // Since the parent span has been created by using startActiveSpan we don't need
+    // to pass a reference for this child span
+    $child = GlobalTracer::get()->startActiveSpan('my_second_span');
+    ... 
+    $child->finish();
+    ...
+    $parent->finish();
 ```
 
 ### Serializing to the wire
 
 ```php
+    use GuzzleHttp\Client;
+    use GuzzleHttp\Psr7\Request;
     use OpenTracing\Carriers\HttpHeaders as HttpHeadersCarrier;
     use OpenTracing\Context;
     use OpenTracing\GlobalTracer;
@@ -118,11 +133,11 @@ reference.
     );
     
     try {
-        $span = $tracer->startSpan('my_span', ['child_of' => $spanContext]);
+        $span = $tracer->startManualSpan('my_span', ['child_of' => $spanContext]);
 
-        $client = new GuzzleHttp\Client;
+        $client = new Client;
         
-        $request = new \GuzzleHttp\Psr7\Request('GET', 'http://myservice');
+        $request = new Request('GET', 'http://myservice');
         
         $tracer->inject(
             $span->context(),
@@ -163,11 +178,8 @@ cause problems for Tracer implementations. This is why the PHP API contains a
 `flush` method that allows to trigger a span sending out of process.
 
 ```php
-<?php
-
 use OpenTracing\GlobalTracer;
 
-// Do application work, buffer spans in memory
 $application->run();
 
 fastcgi_finish_request();
@@ -178,7 +190,6 @@ $tracer->flush(); // release buffer to backend
 
 This is optional, tracers can decide to immediately send finished spans to a
 backend. The flush call can be implemented as a NO-OP for these tracers.
-
 
 ### Using Span Options
 
@@ -191,8 +202,6 @@ SpanOptions wrapper object. The following keys are valid:
 - `tags` is an array with string keys and scalar values that represent OpenTracing tags.
 
 ```php
-<?php
-
 use OpenTracing\Reference;
 
 $span = $tracer->createSpan('my_span', [
@@ -221,5 +230,5 @@ Tracers will throw an exception if the requested format is not handled by them.
 
 ## Coding Style
 
-Opentracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+OpenTracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
