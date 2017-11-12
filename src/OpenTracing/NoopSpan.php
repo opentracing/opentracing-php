@@ -32,6 +32,9 @@ final class NoopSpan implements Span
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function overwriteOperationName($newOperationName)
     {
     }
