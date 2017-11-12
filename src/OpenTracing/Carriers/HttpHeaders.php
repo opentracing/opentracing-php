@@ -9,13 +9,11 @@ use Psr\Http\Message\RequestInterface;
 
 final class HttpHeaders implements Reader, Writer
 {
-    private $items = [];
+    private $items;
 
-    private function __construct(array $headers)
+    private function __construct(array $items)
     {
-        foreach ($headers as $key => $value) {
-            $this->items[(string) $key] = (string) $value;
-        }
+        $this->items = $items;
     }
 
     /**
@@ -26,18 +24,14 @@ final class HttpHeaders implements Reader, Writer
     {
         return new self(
             array_map(function ($values) {
-                return $values[0];
+                return implode(', ', $values);
             }, $request->getHeaders())
         );
     }
 
-    /**
-     * @param array|string[] $headers
-     * @return HttpHeaders
-     */
-    public static function fromHeaders(array $headers)
+    public static function fromGlobals()
     {
-        return new self($headers);
+        return new self(getallheaders());
     }
 
     /**

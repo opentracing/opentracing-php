@@ -13,17 +13,6 @@ final class HttpHeadersTest extends PHPUnit_Framework_TestCase
 {
     const TEST_HEADERS = ['foo' => 'bar'];
 
-    public function testCreationWithHeadersHasTheExpectedValues()
-    {
-        $headers = self::TEST_HEADERS;
-        $httpHeaders = HttpHeaders::fromHeaders($headers);
-
-        foreach ($httpHeaders as $key => $value) {
-            $this->assertEquals('foo', $key);
-            $this->assertEquals('bar', $value);
-        }
-    }
-
     public function testCreationFromRequestHasTheExpectedValues()
     {
         $request = new Request('GET', '', self::TEST_HEADERS);
