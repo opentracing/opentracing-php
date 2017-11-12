@@ -2,14 +2,10 @@
 
 namespace OpenTracing;
 
-use OpenTracing\Carriers\HttpHeaders;
-use OpenTracing\Carriers\TextMap;
 use OpenTracing\Exceptions\InvalidReferencesSet;
 use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\Exceptions\SpanContextNotFound;
 use OpenTracing\Exceptions\UnsupportedFormat;
-use OpenTracing\Propagation\Reader;
-use OpenTracing\Propagation\Writer;
 
 interface Tracer
 {
@@ -30,24 +26,27 @@ interface Tracer
     /**
      * @param SpanContext $spanContext
      * @param string $format
-     * @param Writer $carrier
+     * @param $carrier
      *
-     * @see Propagation\Formats
+     * @see Formats
      *
      * @throws UnsupportedFormat when the format is not recognized by the tracer
      * implementation
      */
-    public function inject(SpanContext $spanContext, $format, Writer $carrier);
+    public function inject(SpanContext $spanContext, $format, &$carrier);
 
     /**
      * @param string $format
-     * @param Reader $carrier
+     * @param $carrier
      * @return SpanContext
-     * @throws SpanContextNotFound when a context could not be extracted from Reader
+     *
+     * @see Formats
+     *
+     * @throws SpanContextNotFound when a context could not be extracted from carrier
      * @throws UnsupportedFormat when the format is not recognized by the tracer
      * implementation
      */
-    public function extract($format, Reader $carrier);
+    public function extract($format, $carrier);
 
     /**
      * Allow tracer to send span data to be instrumented.
