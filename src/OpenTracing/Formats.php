@@ -4,6 +4,8 @@ namespace OpenTracing\Formats;
 
 /**
  * Used a (single) arbitrary binary blob representing a SpanContext
+ *
+ * For both Tracer::inject() and Tracer::extract() the carrier must be a `string`.
  */
 const BINARY = 'binary';
 
