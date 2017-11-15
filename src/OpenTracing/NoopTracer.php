@@ -2,9 +2,6 @@
 
 namespace OpenTracing;
 
-use OpenTracing\Propagation\Reader;
-use OpenTracing\Propagation\Writer;
-
 final class NoopTracer implements Tracer
 {
     public static function create()
@@ -23,14 +20,14 @@ final class NoopTracer implements Tracer
     /**
      * {@inheritdoc}
      */
-    public function inject(SpanContext $spanContext, $format, Writer $carrier)
+    public function inject(SpanContext $spanContext, $format, &$carrier)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function extract($format, Reader $carrier)
+    public function extract($format, $carrier)
     {
         return NoopSpanContext::create();
     }

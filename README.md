@@ -46,13 +46,14 @@ The simplest starting point is to set the global tracer. As early as possible, d
 To start a new `Span`, you can use the `StartSpanFromContext` method.
 
 ```php
-    use Psr\Http\Message\RequestInterface;
+    use OpenTracing\Formats;
+    use OpenTracing\GlobalTracer;
 
     ...
 
     $spanContext = GlobalTracer::get()->extract(
-        Propagator::HTTP_HEADERS,
-        HttpHeaders::withHeaders($request->getHeaders())
+        Formats\HTTP_HEADERS,
+        $request->getHeaders()
     );
     
     function doSomething(SpanContext $spanContext, ...) {
@@ -93,7 +94,7 @@ reference.
         $span = GlobalTracer::get()->startSpan(
         	'my_span',
         	[
-        		'child_of' => $spanContext,
+        		'child_of' => $parentSpan,
         	]
         );
         
@@ -105,17 +106,16 @@ reference.
 ### Serializing to the wire
 
 ```php
-    use OpenTracing\Carriers\HttpHeaders as HttpHeadersCarrier;
-    use OpenTracing\Context;
     use OpenTracing\GlobalTracer;
+    use OpenTracing\Formats;
     
     ...
     
     $tracer = GlobalTracer::get(); 
     
     $spanContext = $tracer->extract(
-        Propagator::HTTP_HEADERS,
-        HttpHeaders::withHeaders($request->getHeaders())
+        Formats\HTTP_HEADERS,
+        $request->getHeaders()
     );
     
     try {
@@ -123,14 +123,15 @@ reference.
 
         $client = new GuzzleHttp\Client;
         
-        $request = new \GuzzleHttp\Psr7\Request('GET', 'http://myservice');
+        $headers = [];
         
         $tracer->inject(
-            $span->context(),
-            Propagator::HTTP_HEADERS,
-            HttpHeadersCarrier::withHeaders($request->getHeaders())
-        )
-
+            $span->getContext(),
+            Formats\HTTP_HEADERS,
+            $headers
+        );
+        
+        $request = new \GuzzleHttp\Psr7\Request('GET', 'http://myservice', $headers);
         $client->send($request);
         ...
     } catch (\Exception $e) {
@@ -144,12 +145,12 @@ reference.
 When using http header for context propagation you can use either the `Request` or the `$_SERVER` variable:
 
 ```php
-    use OpenTracing\Carriers\HttpHeaders;
     use OpenTracing\GlobalTracer;
+    use OpenTracing\Formats;
     
     $request = Request::createFromGlobals();
     $tracer = GlobalTracer::get();
-    $spanContext = $tracer->extract(Propagator::HTTP_HEADERS, HttpHeaders::fromRequest($request));
+    $spanContext = $tracer->extract(Formats\HTTP_HEADERS, $request->getHeaders());
     $tracer->startSpan('my_span', [
         'child_of' => $spanContext,
     ]); 
@@ -164,8 +165,6 @@ cause problems for Tracer implementations. This is why the PHP API contains a
 `flush` method that allows to trigger a span sending out of process.
 
 ```php
-<?php
-
 use OpenTracing\GlobalTracer;
 
 // Do application work, buffer spans in memory
@@ -192,10 +191,6 @@ SpanOptions wrapper object. The following keys are valid:
 - `tags` is an array with string keys and scalar values that represent OpenTracing tags.
 
 ```php
-<?php
-
-use OpenTracing\Reference;
-
 $span = $tracer->createSpan('my_span', [
     'child_of' => $spanContext,
     'tags' => ['foo' => 'bar'],
@@ -215,7 +210,7 @@ Tracers will throw an exception if the requested format is not handled by them.
 - `Tracer::FORMAT_HTTP_HEADERS` should represent the span context as HTTP header lines
   in an array list. For two context details "Span-Id" and "Trace-Id", the
   result would be `['Span-Id: abc123', 'Trace-Id: def456']`. This definition can be
-  passed directly to curl and file_get_contents.
+  passed directly to `curl` and `file_get_contents`.
 
 - `Tracer::FORMAT_BINARY` makes no assumptions about the data format other than it is
   proprietary and each Tracer can handle it as it wants.
