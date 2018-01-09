@@ -7,14 +7,14 @@ final class GlobalTracer
     /**
      * @var Tracer
      */
-    private static $instance = null;
+    private static $instance;
 
     /**
      * GlobalTracer::set sets the [singleton] Tracer returned by get().
      * Those who use GlobalTracer (rather than directly manage a Tracer instance)
      * should call GlobalTracer::set as early as possible in bootstrap, prior to
      * start a new span. Prior to calling GlobalTracer::set, any Spans started
-     * via the `Tracer::startSpan` (etc) globals are noops.
+     * via the `Tracer::startActiveSpan` (etc) globals are noops.
      *
      * @param Tracer $tracer
      */
