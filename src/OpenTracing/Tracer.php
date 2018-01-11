@@ -7,12 +7,23 @@ use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\Exceptions\SpanContextNotFound;
 use OpenTracing\Exceptions\UnsupportedFormat;
 
-interface Tracer extends ActiveSpanSource
+interface Tracer
 {
+    /**
+     * @return ScopeManager the current {@link ScopeManager}, which may be a noop but may not be null.
+     */
+    public function getScopeManager();
+
+    /**
+     * @return Span the active {@link Span}. This is a shorthand for Tracer::getScopeManager()->getActive()->getSpan(),
+     * and null will be returned if {@link Scope#active()} is null.
+     */
+    public function getActiveSpan();
+
     /**
      * Starts and returns a new `Span` representing a unit of work.
      *
-     * This method differs from `startManualSpan` because it uses in-process
+     * This method differs from `startSpan` because it uses in-process
      * context propagation to keep track of the current active `Span` (if
      * available).
      *
@@ -39,20 +50,21 @@ interface Tracer extends ActiveSpanSource
      *   - An optional explicit start timestamp; if omitted, the current walltime is used by default
      *     The default value should be set by the vendor.
      *   - Zero or more tags
-     * @return Span
-     * @throws InvalidSpanOption for invalid option
-     * @throws InvalidReferencesSet for invalid references set
+     * @param bool $finishSpanOnClose whether span should automatically be finished when {@link Scope#close()} is called
+     * @return Scope
      */
-    public function startActiveSpan($operationName, $options = []);
+    public function startActiveSpan($operationName, $finishSpanOnClose = true, $options = []);
 
     /**
+     * Starts and returns a new `Span` representing a unit of work.
+     *
      * @param string $operationName
      * @param array|SpanOptions $options
      * @return Span
      * @throws InvalidSpanOption for invalid option
      * @throws InvalidReferencesSet for invalid references set
      */
-    public function startManualSpan($operationName, $options = []);
+    public function startSpan($operationName, $options = []);
 
     /**
      * @param SpanContext $spanContext

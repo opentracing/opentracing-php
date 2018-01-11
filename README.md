@@ -26,7 +26,7 @@ composer require opentracing/opentracing
 ## Usage
 
 When consuming this library one really only need to worry about a couple of key
-abstractions: the `Tracer::startActiveSpan` and `Tracer::startManualSpan` method,
+abstractions: the `Tracer::startActiveSpan` and `Tracer::startSpan` method,
 the `Span` interface, and binding a `Tracer` at bootstrap time. Here are code snippets
 demonstrating some important use cases:
 
@@ -55,10 +55,10 @@ $spanContext = GlobalTracer::get()->extract(
     getallheaders()
 );
 
-function doSomething(SpanContext $spanContext, ...) {
+function doSomething() {
     ...
     
-    $span = GlobalTracer::get()->startManualSpan('my_span', ['child_of' => $spanContext]);
+    $span = GlobalTracer::get()->startActiveSpan('my_span', ['child_of' => $spanContext]);
     
     ...
     
@@ -85,9 +85,9 @@ $span->finish();
 #### Creating a child span assigning parent manually
 
 ```php
-$parent = GlobalTracer::get()->startManualSpan('parent');
+$parent = GlobalTracer::get()->startSpan('parent');
 
-$child = GlobalTracer::get()->startManualSpan('child', [
+$child = GlobalTracer::get()->startSpan('child', [
     'child_of' => $parent
 ]);
 
@@ -105,21 +105,23 @@ $parent->finish();
 Every new span will take the active span as parent and it will take its spot.
 
 ```php
-	$parent = GlobalTracer::get()->startActiveSpan('parent');        
-	
-	...
+$parent = GlobalTracer::get()->startActiveSpan('parent');        
 
-    // Since the parent span has been created by using startActiveSpan we don't need
-    // to pass a reference for this child span
-    $child = GlobalTracer::get()->startActiveSpan('my_second_span');
+...
 
-    ... 
+/*
+ * Since the parent span has been created by using startActiveSpan we don't need
+ * to pass a reference for this child span
+ */
+$child = GlobalTracer::get()->startActiveSpan('my_second_span');
 
-    $child->finish();
+... 
 
-    ...
+$child->finish();
 
-    $parent->finish();
+...
+
+$parent->finish();
 ```
 
 ### Serializing to the wire
@@ -138,7 +140,7 @@ $spanContext = $tracer->extract(
 );
 
 try {
-    $span = $tracer->startManualSpan('my_span', ['child_of' => $spanContext]);
+    $span = $tracer->startSpan('my_span', ['child_of' => $spanContext]);
 
     $client = new Client;
     
@@ -171,7 +173,7 @@ use OpenTracing\Formats;
 
 $tracer = GlobalTracer::get();
 $spanContext = $tracer->extract(Formats\HTTP_HEADERS, getallheaders());
-$tracer->startManualSpan('my_span', [
+$tracer->startSpan('my_span', [
     'child_of' => $spanContext,
 ]); 
 ```
