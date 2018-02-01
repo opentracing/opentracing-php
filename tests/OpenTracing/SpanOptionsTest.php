@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTracingTests\Unit;
+namespace OpenTracing\Tests;
 
 use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\NoopSpanContext;
