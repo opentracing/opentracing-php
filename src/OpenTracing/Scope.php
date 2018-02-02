@@ -28,4 +28,3 @@ interface Scope
      */
     public function getSpan();
 }
-
