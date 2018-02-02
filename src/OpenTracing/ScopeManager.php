@@ -33,5 +33,14 @@ interface ScopeManager
      *
      * @return \OpenTracing\Scope
      */
-    public function getActiveSpan();
+    public function getActiveScope();
+
+    /**
+     * Access the scope of a given Span if available.
+     *
+     * @param Span $span
+     *
+     * @return \OpenTracing\Scope
+     */
+    public function getScope(Span $span);
 }
