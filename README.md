@@ -57,17 +57,17 @@ $spanContext = GlobalTracer::get()->extract(
 
 function doSomething() {
     ...
-    
+
     $span = GlobalTracer::get()->startActiveSpan('my_span', ['child_of' => $spanContext]);
-    
+
     ...
-    
+
     $span->log([
         'event' => 'soft error',
         'type' => 'cache timeout',
         'waiter.millis' => 1500,
     ])
-    
+
     $span->finish();
 }
 ```
@@ -80,6 +80,42 @@ It's always possible to create a "root" `Span` with no parent or other causal re
 $span = $tracer->startActiveSpan('my_first_span');
 ...
 $span->finish();
+```
+
+### Active Spans and Scope Manager
+
+When using the `Tracer::startActiveSpan` function the underlying tracer uses an
+abstraction called scope manager to keep track of the currently active span.
+
+Starting an active span will always use the currently active span as a parent.
+If no parent is available, then the newly created span is considered to be the
+root span of the trace.
+
+Unless you are using asynchronuous code that tracks multiple spans at the same
+time, such as when using cURL Multi Exec or MySQLi Polling you are better
+of just using `Tracer::startActiveSpan` everywhere in your application.
+
+The currently active span gets automatically closed and deactivated from the scope
+when you call `$span->finish()` as you can see in the previous example.
+
+If you don't want a span to automatically close when `Span::finish()` is called
+then you must pass the option `'close_span_on_finish'=> false,` to the `$options`
+argument of `startActiveSpan`.
+
+An example of a linear, two level deep span tree using active spans looks like
+this in PHP code:
+
+```php
+$root = $tracer->startActiveSpan('php');
+
+    $controller = $tracer->startActiveSpan('controller');
+
+        $http = $tracer->startActiveSpan('http');
+        file_get_contents('http://php.net');
+        $http->finish();
+
+    $controller->finish();
+$root->finish();
 ```
 
 #### Creating a child span assigning parent manually
@@ -105,7 +141,7 @@ $parent->finish();
 Every new span will take the active span as parent and it will take its spot.
 
 ```php
-$parent = GlobalTracer::get()->startActiveSpan('parent');        
+$parent = GlobalTracer::get()->startActiveSpan('parent');
 
 ...
 
@@ -115,7 +151,7 @@ $parent = GlobalTracer::get()->startActiveSpan('parent');
  */
 $child = GlobalTracer::get()->startActiveSpan('my_second_span');
 
-... 
+...
 
 $child->finish();
 
@@ -132,7 +168,7 @@ use OpenTracing\Formats;
 
 ...
 
-$tracer = GlobalTracer::get(); 
+$tracer = GlobalTracer::get();
 
 $spanContext = $tracer->extract(
     Formats\HTTP_HEADERS,
@@ -143,23 +179,23 @@ try {
     $span = $tracer->startSpan('my_span', ['child_of' => $spanContext]);
 
     $client = new Client;
-    
+
     $headers = [];
-    
+
     $tracer->inject(
         $span->getContext(),
         Formats\HTTP_HEADERS,
         $headers
     );
-    
+
     $request = new \GuzzleHttp\Psr7\Request('GET', 'http://myservice', $headers);
     $client->send($request);
     ...
-    
+
 } catch (\Exception $e) {
     ...
 }
-...    
+...
 ```
 
 ### Deserializing from the wire
@@ -175,7 +211,7 @@ $tracer = GlobalTracer::get();
 $spanContext = $tracer->extract(Formats\HTTP_HEADERS, getallheaders());
 $tracer->startSpan('my_span', [
     'child_of' => $spanContext,
-]); 
+]);
 ```
 
 ### Flushing Spans
@@ -208,7 +244,7 @@ SpanOptions wrapper object. The following keys are valid:
 
 - `start_time` is a float, int or `\DateTime` representing a timestamp with arbitrary precision.
 - `child_of` is an object of type `OpenTracing\SpanContext` or `OpenTracing\Span`.
-- `references` is an array of `OpenTracing\Reference`. 
+- `references` is an array of `OpenTracing\Reference`.
 - `tags` is an array with string keys and scalar values that represent OpenTracing tags.
 
 ```php

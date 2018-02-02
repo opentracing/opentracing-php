@@ -50,10 +50,10 @@ interface Tracer
      *   - An optional explicit start timestamp; if omitted, the current walltime is used by default
      *     The default value should be set by the vendor.
      *   - Zero or more tags
-     * @param bool $finishSpanOnClose whether span should automatically be finished when {@link Scope#close()} is called
-     * @return Scope
+     *   - CloseSpanOnFinish option which defaults to true.
+     * @return Span
      */
-    public function startActiveSpan($operationName, $finishSpanOnClose = true, $options = []);
+    public function startActiveSpan($operationName, $options = []);
 
     /**
      * Starts and returns a new `Span` representing a unit of work.

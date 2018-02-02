@@ -23,6 +23,13 @@ final class SpanOptions
     private $startTime;
 
     /**
+     * Only used for spans that are actively managed by scope manager.
+     *
+     * @var bool
+     */
+    private $closeSpanOnFinish = true;
+
+    /**
      * @param array $options
      * @throws InvalidSpanOption when one of the options is invalid
      * @throws InvalidReferencesSet when there are inconsistencies about the references
@@ -79,6 +86,14 @@ final class SpanOptions
                     $spanOptions->startTime = $value;
                     break;
 
+                case 'close_span_on_finish':
+                    if (!is_bool($value)) {
+                        throw InvalidSpanOption::forCloseSpanOnFinish($value);
+                    }
+
+                    $spanOptions->closeSpanOnFinish = $value;
+                    break;
+
                 default:
                     throw InvalidSpanOption::forUnknownOption($key);
                     break;
@@ -111,6 +126,14 @@ final class SpanOptions
     public function getStartTime()
     {
         return $this->startTime;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCloseSpanOnFinish()
+    {
+        return $this->closeSpanOnFinish;
     }
 
     private static function buildChildOf($value)
