@@ -26,134 +26,192 @@ composer require opentracing/opentracing
 ## Usage
 
 When consuming this library one really only need to worry about a couple of key
-abstractions: the `Tracer::startSpan` method, the `Span` interface, and binding
-a `Tracer` at bootstrap time. Here are code snippets demonstrating some important
-use cases:
+abstractions: the `Tracer::startActiveSpan` and `Tracer::startSpan` method,
+the `Span` interface, and binding a `Tracer` at bootstrap time. Here are code snippets
+demonstrating some important use cases:
 
 ### Singleton initialization
 
 The simplest starting point is to set the global tracer. As early as possible, do:
 
 ```php
-    use OpenTracing\GlobalTracer;
-    use AnOpenTracingImplementation\MyTracer;
-    
-    GlobalTracer::set(new MyTracer());
+use OpenTracing\GlobalTracer;
+
+GlobalTracer::set(new MyTracerImplementation());
 ```
 
 ### Creating a Span given an existing Request
 
-To start a new `Span`, you can use the `StartSpanFromContext` method.
+To start a new `Span`, you can use the `startActiveSpan` method.
 
 ```php
-    use OpenTracing\Formats;
-    use OpenTracing\GlobalTracer;
+use OpenTracing\Formats;
+use OpenTracing\GlobalTracer;
+
+...
+
+$spanContext = GlobalTracer::get()->extract(
+    Formats\HTTP_HEADERS,
+    getallheaders()
+);
+
+function doSomething() {
+    ...
+
+    $span = GlobalTracer::get()->startActiveSpan('my_span', ['child_of' => $spanContext]);
 
     ...
 
-    $spanContext = GlobalTracer::get()->extract(
-        Formats\HTTP_HEADERS,
-        $request->getHeaders()
-    );
-    
-    function doSomething(SpanContext $spanContext, ...) {
-        ...
-        
-        $span = GlobalTracer::get()->startSpan('my_span', [
-        	'child_of' => $spanContext,
-        ]);
-        
-        ...
-        
-        $span->log([
-            'event' => 'soft error',
-            'type' => 'cache timeout',
-            'waiter.millis' => 1500,
-        ])
-        
-        $span->finish();
-    }
+    $span->log([
+        'event' => 'soft error',
+        'type' => 'cache timeout',
+        'waiter.millis' => 1500,
+    ])
+
+    $span->finish();
+}
 ```
 
 ### Starting an empty trace by creating a "root span"
 
-It's always possible to create a "root" `Span` with no parent or other causal
-reference.
+It's always possible to create a "root" `Span` with no parent or other causal reference.
 
 ```php
-    $span = $tracer->startSpan('my_span');
-    ...
-    $span->finish();
+$span = $tracer->startActiveSpan('my_first_span');
+...
+$span->finish();
 ```
 
-### Creating a (child) Span given an existing (parent) Span
+### Active Spans and Scope Manager
+
+When using the `Tracer::startActiveSpan` function the underlying tracer uses an
+abstraction called scope manager to keep track of the currently active span.
+
+Starting an active span will always use the currently active span as a parent.
+If no parent is available, then the newly created span is considered to be the
+root span of the trace.
+
+Unless you are using asynchronuous code that tracks multiple spans at the same
+time, such as when using cURL Multi Exec or MySQLi Polling you are better
+of just using `Tracer::startActiveSpan` everywhere in your application.
+
+The currently active span gets automatically closed and deactivated from the scope
+when you call `$span->finish()` as you can see in the previous example.
+
+If you don't want a span to automatically close when `Span::finish()` is called
+then you must pass the option `'close_span_on_finish'=> false,` to the `$options`
+argument of `startActiveSpan`.
+
+An example of a linear, two level deep span tree using active spans looks like
+this in PHP code:
 
 ```php
-    function xyz(Span $parentSpan, ...) {
-        ...
-        $span = GlobalTracer::get()->startSpan(
-        	'my_span',
-        	[
-        		'child_of' => $parentSpan,
-        	]
-        );
-        
-        $span->finish();
-        ...
-    }
+$root = $tracer->startActiveSpan('php');
+
+    $controller = $tracer->startActiveSpan('controller');
+
+        $http = $tracer->startActiveSpan('http');
+        file_get_contents('http://php.net');
+        $http->finish();
+
+    $controller->finish();
+$root->finish();
+```
+
+#### Creating a child span assigning parent manually
+
+```php
+$parent = GlobalTracer::get()->startSpan('parent');
+
+$child = GlobalTracer::get()->startSpan('child', [
+    'child_of' => $parent
+]);
+
+...
+
+$child->finish();
+
+...
+
+$parent->finish();
+```
+
+#### Creating a child span using automatic active span management
+
+Every new span will take the active span as parent and it will take its spot.
+
+```php
+$parent = GlobalTracer::get()->startActiveSpan('parent');
+
+...
+
+/*
+ * Since the parent span has been created by using startActiveSpan we don't need
+ * to pass a reference for this child span
+ */
+$child = GlobalTracer::get()->startActiveSpan('my_second_span');
+
+...
+
+$child->finish();
+
+...
+
+$parent->finish();
 ```
 
 ### Serializing to the wire
 
 ```php
-    use OpenTracing\GlobalTracer;
-    use OpenTracing\Formats;
-    
-    ...
-    
-    $tracer = GlobalTracer::get(); 
-    
-    $spanContext = $tracer->extract(
-        Formats\HTTP_HEADERS,
-        $request->getHeaders()
-    );
-    
-    try {
-        $span = $tracer->startSpan('my_span', ['child_of' => $spanContext]);
+use GuzzleHttp\Client;
+use OpenTracing\Formats;
 
-        $client = new GuzzleHttp\Client;
-        
-        $headers = [];
-        
-        $tracer->inject(
-            $span->getContext(),
-            Formats\HTTP_HEADERS,
-            $headers
-        );
-        
-        $request = new \GuzzleHttp\Psr7\Request('GET', 'http://myservice', $headers);
-        $client->send($request);
-        ...
-    } catch (\Exception $e) {
-        ...
-    }
-    ...        
+...
+
+$tracer = GlobalTracer::get();
+
+$spanContext = $tracer->extract(
+    Formats\HTTP_HEADERS,
+    getallheaders()
+);
+
+try {
+    $span = $tracer->startSpan('my_span', ['child_of' => $spanContext]);
+
+    $client = new Client;
+
+    $headers = [];
+
+    $tracer->inject(
+        $span->getContext(),
+        Formats\HTTP_HEADERS,
+        $headers
+    );
+
+    $request = new \GuzzleHttp\Psr7\Request('GET', 'http://myservice', $headers);
+    $client->send($request);
+    ...
+
+} catch (\Exception $e) {
+    ...
+}
+...
 ```
 
 ### Deserializing from the wire
 
-When using http header for context propagation you can use either the `Request` or the `$_SERVER` variable:
+When using http header for context propagation you can use either the `Request` or the `$_SERVER`
+variable:
 
 ```php
-    use OpenTracing\GlobalTracer;
-    use OpenTracing\Formats;
-    
-    $request = Request::createFromGlobals();
-    $tracer = GlobalTracer::get();
-    $spanContext = $tracer->extract(Formats\HTTP_HEADERS, $request->getHeaders());
-    $tracer->startSpan('my_span', [
-        'child_of' => $spanContext,
-    ]); 
+use OpenTracing\GlobalTracer;
+use OpenTracing\Formats;
+
+$tracer = GlobalTracer::get();
+$spanContext = $tracer->extract(Formats\HTTP_HEADERS, getallheaders());
+$tracer->startSpan('my_span', [
+    'child_of' => $spanContext,
+]);
 ```
 
 ### Flushing Spans
@@ -167,18 +225,17 @@ cause problems for Tracer implementations. This is why the PHP API contains a
 ```php
 use OpenTracing\GlobalTracer;
 
-// Do application work, buffer spans in memory
 $application->run();
 
-fastcgi_finish_request();
-
-$tracer = GlobalTracer::get();
-$tracer->flush(); // release buffer to backend
+register_shutdown_function(function() use ($tracer) {
+    /* Flush the tracer to the backend */
+    $tracer = GlobalTracer::get();
+    $tracer->flush();
+});
 ```
 
 This is optional, tracers can decide to immediately send finished spans to a
 backend. The flush call can be implemented as a NO-OP for these tracers.
-
 
 ### Using Span Options
 
@@ -187,11 +244,11 @@ SpanOptions wrapper object. The following keys are valid:
 
 - `start_time` is a float, int or `\DateTime` representing a timestamp with arbitrary precision.
 - `child_of` is an object of type `OpenTracing\SpanContext` or `OpenTracing\Span`.
-- `references` is an array of `OpenTracing\Reference`. 
+- `references` is an array of `OpenTracing\Reference`.
 - `tags` is an array with string keys and scalar values that represent OpenTracing tags.
 
 ```php
-$span = $tracer->createSpan('my_span', [
+$span = $tracer->startActiveSpan('my_span', [
     'child_of' => $spanContext,
     'tags' => ['foo' => 'bar'],
     'start_time' => time(),
@@ -217,5 +274,5 @@ Tracers will throw an exception if the requested format is not handled by them.
 
 ## Coding Style
 
-Opentracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+OpenTracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.

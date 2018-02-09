@@ -24,6 +24,15 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
         ]);
     }
 
+    public function testSpanOptionsWithInvalidCloseOnFinishOption()
+    {
+        $this->expectException(InvalidSpanOption::class);
+
+        SpanOptions::create([
+            'close_span_on_finish' => 'value'
+        ]);
+    }
+
     public function testSpanOptionsCanNotBeCreatedBecauseInvalidStartTime()
     {
         $this->expectException(InvalidSpanOption::class);
@@ -66,5 +75,21 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($references->isType(self::REFERENCE_TYPE));
         $this->assertSame($context, $references->getContext());
+    }
+
+    public function testSpanOptionsDefaultCloseOnFinishValue()
+    {
+        $options = SpanOptions::create([]);
+
+        $this->assertTrue($options->getCloseSpanOnFinish());
+    }
+
+    public function testSpanOptionsWithValidCloseOnFinishValue()
+    {
+        $options = SpanOptions::create([
+            'close_span_on_finish' => false,
+        ]);
+
+        $this->assertFalse($options->getCloseSpanOnFinish());
     }
 }

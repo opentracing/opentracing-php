@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTracing\Ext\Tags;
+namespace OpenTracing\Tags;
 
 /**
  * SpanKind hints at relationship between spans, e.g. client/server
