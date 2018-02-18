@@ -10,6 +10,9 @@ use DomainException;
  */
 final class SpanContextNotFound extends DomainException
 {
+    /**
+     * @return SpanContextNotFound
+     */
     public static function create()
     {
         return new self('SpanContext not found in extract carrier');

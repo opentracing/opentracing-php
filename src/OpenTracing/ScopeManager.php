@@ -25,7 +25,6 @@ interface ScopeManager
      * Return the currently active {@link Scope} which can be used to access the currently active
      * {@link Scope#getSpan()}.
      *
-     * <p>
      * If there is an {@link Scope non-null scope}, its wrapped {@link Span} becomes an implicit parent
      * (as {@link References#CHILD_OF} reference) of any
      * newly-created {@link Span} at {@link Tracer.SpanBuilder#startActive(boolean)} or {@link SpanBuilder#start()}

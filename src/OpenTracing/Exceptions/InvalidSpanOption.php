@@ -9,6 +9,9 @@ use InvalidArgumentException;
  */
 final class InvalidSpanOption extends InvalidArgumentException
 {
+    /**
+     * @return InvalidSpanOption
+     */
     public static function forIncludingBothChildOfAndReferences()
     {
         return new self('Either "childOf" or "references" options are accepted but not both.');
