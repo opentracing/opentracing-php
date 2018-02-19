@@ -33,7 +33,7 @@ final class GlobalTracer
     public static function get()
     {
         if (self::$instance === null) {
-            self::$instance = Tracer::create();
+            self::$instance = NoopTracer::create();
         }
 
         return self::$instance;

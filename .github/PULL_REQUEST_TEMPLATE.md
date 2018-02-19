@@ -8,7 +8,10 @@ e.g.
 Fixes #1
 Closes #2
 -->
-# Fixes # 
+
+### Short description of what this PR does:
+- 
+- 
 
 ### Checklist
 - [ ] I have made a material change to the repo (functionality, testing, spelling, grammar)
@@ -18,6 +21,4 @@ Closes #2
 - [ ] I have added necessary documentation about the functionality in the appropriate .md file
 - [ ] I have added in line documentation to the code I modified
 
-### Short description of what this PR does:
-- 
-- 
+Closes #

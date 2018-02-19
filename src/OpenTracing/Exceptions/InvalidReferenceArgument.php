@@ -9,11 +9,18 @@ use InvalidArgumentException;
  */
 final class InvalidReferenceArgument extends InvalidArgumentException
 {
+    /**
+     * @return InvalidReferenceArgument
+     */
     public static function forEmptyType()
     {
         return new self('Reference type can not be an empty string');
     }
 
+    /**
+     * @param mixed $context
+     * @return InvalidReferenceArgument
+     */
     public static function forInvalidContext($context)
     {
         return new self(sprintf(

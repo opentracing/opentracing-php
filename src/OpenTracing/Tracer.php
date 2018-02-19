@@ -95,12 +95,12 @@ interface Tracer
      * Allow tracer to send span data to be instrumented.
      *
      * This method might not be needed depending on the tracing implementation
-     * but one should make sure this method is called after the request is finished.
-     * As an implementor, a good idea would be to use register_shutdown_function
-     * or fastcgi_finish_request in order to not to delay the end of the request to the client.
+     * but one should make sure this method is called after the request is delivered
+     * to the client.
      *
-     * @see register_shutdown_function()
-     * @see fastcgi_finish_request()
+     * As an implementor, a good idea would be to use {@see register_shutdown_function}
+     * or {@see fastcgi_finish_request} in order to not to delay the end of the request
+     * to the client.
      */
     public function flush();
 }
