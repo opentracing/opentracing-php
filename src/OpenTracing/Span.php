@@ -45,17 +45,19 @@ interface Span
     public function overwriteOperationName($newOperationName);
 
     /**
-     * Sets tags to the Span in key => value format, key must be a string and tag must be either
-     * a string, a boolean value, or a numeric type.
+     * Adds a tag to the span.
+     *
+     * If there is a pre-existing tag set for key, it is overwritten.
      *
      * As an implementor, consider using "standard tags" listed in {@see \OpenTracing\Tags}
      *
      * If the span is already finished, a warning should be logged.
      *
-     * @param array $tags
+     * @param string $key
+     * @param string|bool|int|float $value
      * @return void
      */
-    public function setTags(array $tags);
+    public function setTag($key, $value);
 
     /**
      * Adds a log record to the span in key => value format, key must be a string and tag must be either

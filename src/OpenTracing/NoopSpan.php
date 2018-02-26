@@ -42,7 +42,7 @@ final class NoopSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function setTags(array $tags)
+    public function setTag($key, $value)
     {
     }
 
