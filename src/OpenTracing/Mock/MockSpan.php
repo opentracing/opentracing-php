@@ -95,6 +95,8 @@ final class MockSpan implements Span
     public function overwriteOperationName($newOperationName)
     {
         $this->operationName = (string) $newOperationName;
+
+        return $this;
     }
 
     /**
@@ -103,6 +105,8 @@ final class MockSpan implements Span
     public function setTag($key, $value)
     {
         $this->tags[$key] = $value;
+
+        return $this;
     }
 
     public function getTags()
@@ -119,6 +123,8 @@ final class MockSpan implements Span
             'timestamp' => $timestamp ?: time(),
             'fields' => $fields,
         ];
+
+        return $this;
     }
 
     public function getLogs()
@@ -132,6 +138,8 @@ final class MockSpan implements Span
     public function addBaggageItem($key, $value)
     {
         $this->context = $this->context->withBaggageItem($key, $value);
+
+        return $this;
     }
 
     /**

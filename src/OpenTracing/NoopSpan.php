@@ -37,6 +37,7 @@ final class NoopSpan implements Span
      */
     public function overwriteOperationName($newOperationName)
     {
+        return $this;
     }
 
     /**
@@ -44,6 +45,7 @@ final class NoopSpan implements Span
      */
     public function setTag($key, $value)
     {
+        return $this;
     }
 
     /**
@@ -51,6 +53,7 @@ final class NoopSpan implements Span
      */
     public function log(array $fields = [], $timestamp = null)
     {
+        return $this;
     }
 
     /**
@@ -58,6 +61,7 @@ final class NoopSpan implements Span
      */
     public function addBaggageItem($key, $value)
     {
+        return $this;
     }
 
     /**

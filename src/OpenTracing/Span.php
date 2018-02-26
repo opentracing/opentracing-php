@@ -40,6 +40,7 @@ interface Span
      * If the span is already finished, a warning should be logged.
      *
      * @param string $newOperationName
+     * @return $this
      */
     public function overwriteOperationName($newOperationName);
 
@@ -54,7 +55,7 @@ interface Span
      *
      * @param string $key
      * @param string|bool|int|float $value
-     * @return void
+     * @return $this
      */
     public function setTag($key, $value);
 
@@ -66,7 +67,7 @@ interface Span
      *
      * @param array $fields
      * @param int|float|\DateTimeInterface $timestamp
-     * @return void
+     * @return $this
      */
     public function log(array $fields = [], $timestamp = null);
 
@@ -78,7 +79,7 @@ interface Span
      *
      * @param string $key
      * @param string $value
-     * @return void
+     * @return $this
      */
     public function addBaggageItem($key, $value);
 
