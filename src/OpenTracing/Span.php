@@ -32,10 +32,9 @@ interface Span
      *
      * @param float|int|\DateTimeInterface|null $finishTime if passing float or int
      * it should represent the timestamp (including as many decimal places as you need)
-     * @param array $logRecords
      * @return void
      */
-    public function finish($finishTime = null, array $logRecords = []);
+    public function finish($finishTime = null);
 
     /**
      * If the span is already finished, a warning should be logged.

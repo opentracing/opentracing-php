@@ -28,7 +28,7 @@ final class NoopSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function finish($finishTime = null, array $logRecords = [])
+    public function finish($finishTime = null)
     {
     }
 
