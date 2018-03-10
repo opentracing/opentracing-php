@@ -25,9 +25,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "OpenTracing\\Tests\\": "./tests/OpenTracing",
-            "OpenTracingMock\\": "./src/OpenTracingMock",
-            "OpenTracingMock\\Tests\\": "./tests/OpenTracingMock"
+            "OpenTracing\\Tests\\": "./tests/OpenTracing"
         }
     },
     "scripts": {

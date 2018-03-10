@@ -1,10 +1,12 @@
 <?php
 
-namespace OpenTracingMock;
+namespace OpenTracing\Mock;
 
+use OpenTracing\ScopeManager;
 use OpenTracing\Span as OTSpan;
+use OpenTracing\SpanContext;
 
-final class Span implements OTSpan
+final class MockSpan implements OTSpan
 {
     /**
      * @var string
@@ -12,7 +14,7 @@ final class Span implements OTSpan
     private $operationName;
 
     /**
-     * @var SpanContext
+     * @var MockSpanContext
      */
     private $context;
 
@@ -36,16 +38,28 @@ final class Span implements OTSpan
      */
     private $duration;
 
-    private function __construct($operationName, SpanContext $context, $startTime)
-    {
+    /**
+     * @var bool
+     */
+    private $closeOnFinish;
+
+    /**
+     * @var ScopeManager
+     */
+    private $scopeManager;
+
+    public function __construct(
+        ScopeManager $scopeManager,
+        $operationName,
+        MockSpanContext $context,
+        $startTime = null,
+        $closeOnFinish = false
+    ) {
+        $this->scopeManager = $scopeManager;
         $this->operationName = $operationName;
         $this->context = $context;
-        $this->startTime = $startTime;
-    }
-
-    public static function create($operationName, SpanContext $context, $startTime = null)
-    {
-        return new self($operationName, $context, $startTime ?: time());
+        $this->startTime = $startTime ?: time();
+        $this->closeOnFinish = $closeOnFinish;
     }
 
     /**
@@ -58,6 +72,7 @@ final class Span implements OTSpan
 
     /**
      * {@inheritdoc}
+     * @return SpanContext|MockSpanContext
      */
     public function getContext()
     {
@@ -77,6 +92,14 @@ final class Span implements OTSpan
         $finishTime = ($finishTime ?: time());
         $this->log($logRecords, $finishTime);
         $this->duration = $finishTime - $this->startTime;
+
+        if (!$this->closeOnFinish) {
+            return;
+        }
+
+        if (($scope = $this->scopeManager->getScope($this)) !== null) {
+            $scope->close();
+        }
     }
 
     public function isFinished()
@@ -100,9 +123,9 @@ final class Span implements OTSpan
     /**
      * {@inheritdoc}
      */
-    public function setTags(array $tags)
+    public function setTag($key, $value)
     {
-        $this->tags = array_merge($this->tags, $tags);
+        $this->tags[$key] = $value;
     }
 
     public function getTags()

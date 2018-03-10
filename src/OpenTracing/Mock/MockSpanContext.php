@@ -1,11 +1,11 @@
 <?php
 
-namespace OpenTracingMock;
+namespace OpenTracing\Mock;
 
 use ArrayIterator;
 use OpenTracing\SpanContext as OTSpanContext;
 
-final class SpanContext implements OTSpanContext
+final class MockSpanContext implements OTSpanContext
 {
     /**
      * @var int
@@ -46,7 +46,7 @@ final class SpanContext implements OTSpanContext
         return new self($traceId, $spanId, $sampled, $items);
     }
 
-    public static function createAsChildOf(SpanContext $spanContext)
+    public static function createAsChildOf(MockSpanContext $spanContext)
     {
         $spanId = self::nextId();
         return new self($spanContext->traceId, $spanId, $spanContext->isSampled, $spanContext->items);

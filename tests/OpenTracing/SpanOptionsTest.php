@@ -92,4 +92,18 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($options->getCloseSpanOnFinish());
     }
+
+    public function testSpanOptionsAddsANewReference()
+    {
+        $context1 = NoopSpanContext::create();
+        $spanOptions = SpanOptions::create([
+            'child_of' => $context1,
+        ]);
+        $this->assertCount(1, $spanOptions->getReferences());
+
+        $context2 = NoopSpanContext::create();
+        $spanOptions = $spanOptions->withParent($context2);
+        $this->assertCount(1, $spanOptions->getReferences());
+        $this->assertSame($context2, $spanOptions->getReferences()[0]->getContext());
+    }
 }

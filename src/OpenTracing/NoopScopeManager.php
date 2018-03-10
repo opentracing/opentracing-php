@@ -12,15 +12,23 @@ final class NoopScopeManager implements ScopeManager
     /**
      * {@inheritdoc}
      */
-    public function activate(Span $span, $finishSpanOnClose)
+    public function activate(Span $span)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getActiveSpan()
+    public function getActive()
     {
-        return NoopSpan::create();
+        return NoopScope::create();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getScope(Span $span)
+    {
+        return NoopScope::create();
     }
 }

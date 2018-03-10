@@ -15,31 +15,32 @@ interface ScopeManager
      * @param Span $span the {@link Span} that should become the {@link #active()}
      *
      * Weather the span automatically closes when finish is called depends on
-     * the span options set during the creation of the span. See {@link SpanOptions#closeSpanOnFinish}
+     * the span options set during the creation of the span. See
+     * {@link SpanOptions#closeSpanOnFinish}
      *
      * @return Scope
      */
     public function activate(Span $span);
 
     /**
-     * Return the currently active {@link Scope} which can be used to access the currently active
-     * {@link Scope#getSpan()}.
+     * Return the currently active {@link Scope} which can be used to access the
+     * currently active {@link Scope#getSpan()}.
      *
      * If there is an {@link Scope non-null scope}, its wrapped {@link Span} becomes an implicit parent
      * (as {@link References#CHILD_OF} reference) of any
      * newly-created {@link Span} at {@link Tracer.SpanBuilder#startActive(boolean)} or {@link SpanBuilder#start()}
      * time rather than at {@link Tracer#buildSpan(String)} time.
      *
-     * @return \OpenTracing\Scope
+     * @return \OpenTracing\Scope|null
      */
-    public function getActiveScope();
+    public function getActive();
 
     /**
      * Access the scope of a given Span if available.
      *
      * @param Span $span
      *
-     * @return \OpenTracing\Scope
+     * @return \OpenTracing\Scope|null
      */
     public function getScope(Span $span);
 }

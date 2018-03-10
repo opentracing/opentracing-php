@@ -104,6 +104,21 @@ final class SpanOptions
     }
 
     /**
+     * @param Span|SpanContext $parent
+     * @return SpanOptions
+     */
+    public function withParent($parent)
+    {
+        $newSpanOptions = new SpanOptions();
+        $newSpanOptions->references[] = self::buildChildOf($parent);
+        $newSpanOptions->tags = $this->tags;
+        $newSpanOptions->startTime = $this->startTime;
+        $newSpanOptions->closeSpanOnFinish = $this->closeSpanOnFinish;
+
+        return $newSpanOptions;
+    }
+
+    /**
      * @return Reference[]
      */
     public function getReferences()
