@@ -5,10 +5,10 @@ namespace OpenTracing\Mock;
 use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\ScopeManager;
 use OpenTracing\SpanOptions;
-use OpenTracing\Tracer as OTTracer;
-use OpenTracing\SpanContext as OTSpanContext;
+use OpenTracing\Tracer;
+use OpenTracing\SpanContext;
 
-final class MockTracer implements OTTracer
+final class MockTracer implements Tracer
 {
     /**
      * @var array|MockSpan[]
@@ -91,7 +91,7 @@ final class MockTracer implements OTTracer
     /**
      * {@inheritdoc}
      */
-    public function inject(OTSpanContext $spanContext, $format, &$carrier)
+    public function inject(SpanContext $spanContext, $format, &$carrier)
     {
         if (!array_key_exists($format, $this->injectors)) {
             throw UnsupportedFormat::forFormat($format);

@@ -14,6 +14,9 @@ final class MockSpanTest extends PHPUnit_Framework_TestCase
 {
     const OPERATION_NAME = 'test';
     const DURATION = 10;
+    const TAG_KEY = 'test_key';
+    const TAG_VALUE = 'test_value';
+    const LOG_FIELD = 'test_log';
 
     public function testCreateSpanSuccess()
     {
@@ -25,6 +28,23 @@ final class MockSpanTest extends PHPUnit_Framework_TestCase
             $startTime
         );
         $this->assertEquals($startTime, $span->getStartTime());
+        $this->assertEmpty($span->getTags());
+        $this->assertEmpty($span->getLogs());
+    }
+
+    public function testAddTagsAndLogsToSpanSuccess()
+    {
+        $span = new MockSpan(
+            NoopScopeManager::create(),
+            self::OPERATION_NAME,
+            MockSpanContext::createAsRoot()
+        );
+
+        $span->setTag(self::TAG_KEY, self::TAG_VALUE);
+        $span->log([self::LOG_FIELD]);
+
+        $this->assertEquals([self::TAG_KEY => self::TAG_VALUE], $span->getTags());
+        $this->assertEquals(self::LOG_FIELD, $span->getLogs()[0]['fields'][0]);
     }
 
     public function testSpanIsFinished()

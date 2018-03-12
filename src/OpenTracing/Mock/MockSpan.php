@@ -3,10 +3,10 @@
 namespace OpenTracing\Mock;
 
 use OpenTracing\ScopeManager;
-use OpenTracing\Span as OTSpan;
+use OpenTracing\Span;
 use OpenTracing\SpanContext;
 
-final class MockSpan implements OTSpan
+final class MockSpan implements Span
 {
     /**
      * @var string
@@ -21,12 +21,12 @@ final class MockSpan implements OTSpan
     /**
      * @var array
      */
-    private $tags;
+    private $tags = [];
 
     /**
      * @var array
      */
-    private $logs;
+    private $logs = [];
 
     /**
      * @var int
@@ -87,10 +87,9 @@ final class MockSpan implements OTSpan
     /**
      * {@inheritdoc}
      */
-    public function finish($finishTime = null, array $logRecords = [])
+    public function finish($finishTime = null)
     {
         $finishTime = ($finishTime ?: time());
-        $this->log($logRecords, $finishTime);
         $this->duration = $finishTime - $this->startTime;
 
         if (!$this->closeOnFinish) {
