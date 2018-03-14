@@ -4,7 +4,6 @@ namespace OpenTracing;
 
 use OpenTracing\Exceptions\InvalidReferencesSet;
 use OpenTracing\Exceptions\InvalidSpanOption;
-use OpenTracing\Exceptions\SpanContextNotFound;
 use OpenTracing\Exceptions\UnsupportedFormat;
 
 interface Tracer
@@ -69,7 +68,7 @@ interface Tracer
     /**
      * @param SpanContext $spanContext
      * @param string $format
-     * @param $carrier
+     * @param mixed $carrier
      *
      * @see Formats
      *
@@ -80,12 +79,11 @@ interface Tracer
 
     /**
      * @param string $format
-     * @param $carrier
-     * @return SpanContext
+     * @param mixed $carrier
+     * @return SpanContext|null
      *
      * @see Formats
      *
-     * @throws SpanContextNotFound when a context could not be extracted from carrier
      * @throws UnsupportedFormat when the format is not recognized by the tracer
      * implementation
      */
