@@ -9,13 +9,18 @@ use OpenTracing\Exceptions\UnsupportedFormat;
 interface Tracer
 {
     /**
-     * @return ScopeManager the current {@link ScopeManager}, which may be a noop but may not be null.
+     * Returns the current {@link ScopeManager}, which may be a noop but may not be null.
+     *
+     * @return ScopeManager
      */
     public function getScopeManager();
 
     /**
-     * @return Span the active {@link Span}. This is a shorthand for Tracer::getScopeManager()->getActive()->getSpan(),
+     * Returns the active {@link Span}. This is a shorthand for
+     * Tracer::getScopeManager()->getActive()->getSpan(),
      * and null will be returned if {@link Scope#active()} is null.
+     *
+     * @return Span|null
      */
     public function getActiveSpan();
 

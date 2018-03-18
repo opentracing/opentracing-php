@@ -272,6 +272,15 @@ Tracers will throw an exception if the requested format is not handled by them.
 - `Tracer::FORMAT_BINARY` makes no assumptions about the data format other than it is
   proprietary and each Tracer can handle it as it wants.
 
+## Mock implementation
+
+OpenTracing PHP comes with a mock implementation, it has three purposes:
+
+1. Helps to iron the API.
+2. Works as a reference implementation.
+3. Enhances vendor agnostic unit testing as it allows developers to inspect the tracing objects
+in order to do assertions about them.
+
 ## Coding Style
 
 OpenTracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
