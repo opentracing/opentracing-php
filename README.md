@@ -279,4 +279,4 @@ coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/ma
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+All the open source contributions are under the terms of the [MIT License](http://opensource.org/licenses/MIT).
