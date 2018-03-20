@@ -285,3 +285,7 @@ in order to do assertions about them.
 
 OpenTracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
+
+## License
+
+All the open source contributions are under the terms of the [MIT License](http://opensource.org/licenses/MIT).
