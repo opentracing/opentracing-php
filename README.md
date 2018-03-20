@@ -276,3 +276,7 @@ Tracers will throw an exception if the requested format is not handled by them.
 
 OpenTracing PHP follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
