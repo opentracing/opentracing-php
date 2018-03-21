@@ -91,7 +91,7 @@ Starting an active span will always use the currently active span as a parent.
 If no parent is available, then the newly created span is considered to be the
 root span of the trace.
 
-Unless you are using asynchronuous code that tracks multiple spans at the same
+Unless you are using asynchronous code that tracks multiple spans at the same
 time, such as when using cURL Multi Exec or MySQLi Polling you are better
 of just using `Tracer::startActiveSpan` everywhere in your application.
 
@@ -227,7 +227,7 @@ use OpenTracing\GlobalTracer;
 
 $application->run();
 
-register_shutdown_function(function() use ($tracer) {
+register_shutdown_function(function() {
     /* Flush the tracer to the backend */
     $tracer = GlobalTracer::get();
     $tracer->flush();
