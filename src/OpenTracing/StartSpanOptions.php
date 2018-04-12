@@ -5,7 +5,7 @@ namespace OpenTracing;
 use OpenTracing\Exceptions\InvalidReferencesSet;
 use OpenTracing\Exceptions\InvalidSpanOption;
 
-final class SpanOptions
+final class StartSpanOptions
 {
     /**
      * @var Reference[]
@@ -27,13 +27,13 @@ final class SpanOptions
      *
      * @var bool
      */
-    private $closeSpanOnFinish = true;
+    private $finishSpanOnClose = true;
 
     /**
      * @param array $options
      * @throws InvalidSpanOption when one of the options is invalid
      * @throws InvalidReferencesSet when there are inconsistencies about the references
-     * @return SpanOptions
+     * @return StartSpanOptions
      */
     public static function create(array $options)
     {
@@ -86,12 +86,12 @@ final class SpanOptions
                     $spanOptions->startTime = $value;
                     break;
 
-                case 'close_span_on_finish':
+                case 'finish_span_on_close':
                     if (!is_bool($value)) {
-                        throw InvalidSpanOption::forCloseSpanOnFinish($value);
+                        throw InvalidSpanOption::forFinishSpanOnClose($value);
                     }
 
-                    $spanOptions->closeSpanOnFinish = $value;
+                    $spanOptions->finishSpanOnClose = $value;
                     break;
 
                 default:
@@ -105,15 +105,15 @@ final class SpanOptions
 
     /**
      * @param Span|SpanContext $parent
-     * @return SpanOptions
+     * @return StartSpanOptions
      */
     public function withParent($parent)
     {
-        $newSpanOptions = new SpanOptions();
+        $newSpanOptions = new StartSpanOptions();
         $newSpanOptions->references[] = self::buildChildOf($parent);
         $newSpanOptions->tags = $this->tags;
         $newSpanOptions->startTime = $this->startTime;
-        $newSpanOptions->closeSpanOnFinish = $this->closeSpanOnFinish;
+        $newSpanOptions->finishSpanOnClose = $this->finishSpanOnClose;
 
         return $newSpanOptions;
     }
@@ -146,9 +146,9 @@ final class SpanOptions
     /**
      * @return bool
      */
-    public function getCloseSpanOnFinish()
+    public function shouldFinishSpanOnClose()
     {
-        return $this->closeSpanOnFinish;
+        return $this->finishSpanOnClose;
     }
 
     private static function buildChildOf($value)

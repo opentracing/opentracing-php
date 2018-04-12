@@ -4,7 +4,7 @@ namespace OpenTracing\Mock;
 
 use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\ScopeManager;
-use OpenTracing\SpanOptions;
+use OpenTracing\StartSpanOptions;
 use OpenTracing\Tracer;
 use OpenTracing\SpanContext;
 
@@ -42,8 +42,8 @@ final class MockTracer implements Tracer
      */
     public function startActiveSpan($operationName, $options = [])
     {
-        if (!($options instanceof SpanOptions)) {
-            $options = SpanOptions::create($options);
+        if (!($options instanceof StartSpanOptions)) {
+            $options = StartSpanOptions::create($options);
         }
 
         if (($activeSpan = $this->getActiveSpan()) !== null) {
@@ -52,9 +52,7 @@ final class MockTracer implements Tracer
 
         $span = $this->startSpan($operationName, $options);
 
-        $this->scopeManager->activate($span);
-
-        return $span;
+        return $this->scopeManager->activate($span, $options->shouldFinishSpanOnClose());
     }
 
     /**
@@ -62,8 +60,8 @@ final class MockTracer implements Tracer
      */
     public function startSpan($operationName, $options = [])
     {
-        if (!($options instanceof SpanOptions)) {
-            $options = SpanOptions::create($options);
+        if (!($options instanceof StartSpanOptions)) {
+            $options = StartSpanOptions::create($options);
         }
 
         if (empty($options->getReferences())) {
@@ -73,7 +71,6 @@ final class MockTracer implements Tracer
         }
 
         $span = new MockSpan(
-            $this->scopeManager,
             $operationName,
             $spanContext,
             $options->getStartTime()

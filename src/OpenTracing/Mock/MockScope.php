@@ -17,10 +17,24 @@ final class MockScope implements Scope
      */
     private $scopeManager;
 
-    public function __construct(MockScopeManager $scopeManager, Span $span)
-    {
+    /**
+     * @var bool
+     */
+    private $finishSpanOnClose;
+
+    /**
+     * @param MockScopeManager $scopeManager
+     * @param Span $span
+     * @param bool $finishSpanOnClose
+     */
+    public function __construct(
+        MockScopeManager $scopeManager,
+        Span $span,
+        $finishSpanOnClose
+    ) {
         $this->scopeManager = $scopeManager;
         $this->span = $span;
+        $this->finishSpanOnClose = $finishSpanOnClose;
     }
 
     /**
@@ -28,6 +42,10 @@ final class MockScope implements Scope
      */
     public function close()
     {
+        if ($this->finishSpanOnClose) {
+            $this->span->finish();
+        }
+        
         $this->scopeManager->deactivate($this);
     }
 

@@ -103,10 +103,10 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $value
      * @return InvalidSpanOption
      */
-    public static function forCloseSpanOnFinish($value)
+    public static function forFinishSpanOnClose($value)
     {
         return new self(sprintf(
-            'Invalid type for close_span_on_finish. Expected bool, got %s',
+            'Invalid type for finish_span_on_close. Expected bool, got %s',
             is_object($value) ? get_class($value) : gettype($value)
         ));
     }

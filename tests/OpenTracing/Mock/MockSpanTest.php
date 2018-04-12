@@ -22,7 +22,6 @@ final class MockSpanTest extends PHPUnit_Framework_TestCase
     {
         $startTime = time();
         $span = new MockSpan(
-            NoopScopeManager::create(),
             self::OPERATION_NAME,
             MockSpanContext::createAsRoot(),
             $startTime
@@ -35,7 +34,6 @@ final class MockSpanTest extends PHPUnit_Framework_TestCase
     public function testAddTagsAndLogsToSpanSuccess()
     {
         $span = new MockSpan(
-            NoopScopeManager::create(),
             self::OPERATION_NAME,
             MockSpanContext::createAsRoot()
         );
@@ -51,7 +49,6 @@ final class MockSpanTest extends PHPUnit_Framework_TestCase
     {
         $startTime = time();
         $span = new MockSpan(
-            NoopScopeManager::create(),
             self::OPERATION_NAME,
             MockSpanContext::createAsRoot(),
             $startTime

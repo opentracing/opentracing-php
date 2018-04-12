@@ -16,9 +16,11 @@ final class MockScopeManager implements ScopeManager
     /**
      * {@inheritdoc}
      */
-    public function activate(Span $span)
+    public function activate(Span $span, $finishSpanOnClose = true)
     {
-        $this->scopes[] = new MockScope($this, $span);
+        $scope = new MockScope($this, $span, $finishSpanOnClose);
+        $this->scopes[] = $scope;
+        return $scope;
     }
 
     /**
@@ -31,23 +33,6 @@ final class MockScopeManager implements ScopeManager
         }
 
         return $this->scopes[count($this->scopes) - 1];
-    }
-
-    /**
-     * {@inheritdoc}
-     * @param Span|MockSpan $span
-     */
-    public function getScope(Span $span)
-    {
-        $scopeLength = count($this->scopes);
-
-        for ($i = 0; $i < $scopeLength; $i++) {
-            if ($span === $this->scopes[$i]->getSpan()) {
-                return $this->scopes[$i];
-            }
-        }
-
-        return null;
     }
 
     public function deactivate(MockScope $scope)

@@ -27,7 +27,7 @@ composer require opentracing/opentracing
 
 When consuming this library one really only need to worry about a couple of key
 abstractions: the `Tracer::startActiveSpan` and `Tracer::startSpan` method,
-the `Span` interface, and binding a `Tracer` at bootstrap time. Here are code snippets
+the `Span` interface, the `Scope` interface and binding a `Tracer` at bootstrap time. Here are code snippets
 demonstrating some important use cases:
 
 ### Singleton initialization
@@ -58,7 +58,7 @@ $spanContext = GlobalTracer::get()->extract(
 function doSomething() {
     ...
 
-    $span = GlobalTracer::get()->startActiveSpan('my_span', ['child_of' => $spanContext]);
+    $span = GlobalTracer::get()->startSpan('my_span', ['child_of' => $spanContext]);
 
     ...
 
@@ -77,7 +77,7 @@ function doSomething() {
 It's always possible to create a "root" `Span` with no parent or other causal reference.
 
 ```php
-$span = $tracer->startActiveSpan('my_first_span');
+$span = $tracer->startSpan('my_first_span');
 ...
 $span->finish();
 ```
@@ -95,11 +95,11 @@ Unless you are using asynchronous code that tracks multiple spans at the same
 time, such as when using cURL Multi Exec or MySQLi Polling you are better
 of just using `Tracer::startActiveSpan` everywhere in your application.
 
-The currently active span gets automatically closed and deactivated from the scope
-when you call `$span->finish()` as you can see in the previous example.
+The currently active span gets automatically finished when you call `$scope->close()`
+as you can see in the previous example.
 
 If you don't want a span to automatically close when `Span::finish()` is called
-then you must pass the option `'close_span_on_finish'=> false,` to the `$options`
+then you must pass the option `'finish_span_on_close'=> false,` to the `$options`
 argument of `startActiveSpan`.
 
 An example of a linear, two level deep span tree using active spans looks like
@@ -112,10 +112,11 @@ $root = $tracer->startActiveSpan('php');
 
         $http = $tracer->startActiveSpan('http');
         file_get_contents('http://php.net');
-        $http->finish();
+        $http->close();
 
-    $controller->finish();
-$root->finish();
+    $controller->close();
+
+$root->close();
 ```
 
 #### Creating a child span assigning parent manually
@@ -153,11 +154,11 @@ $child = GlobalTracer::get()->startActiveSpan('my_second_span');
 
 ...
 
-$child->finish();
+$child->close();
 
 ...
 
-$parent->finish();
+$parent->close();
 ```
 
 ### Serializing to the wire
@@ -237,7 +238,7 @@ register_shutdown_function(function() {
 This is optional, tracers can decide to immediately send finished spans to a
 backend. The flush call can be implemented as a NO-OP for these tracers.
 
-### Using Span Options
+### Using `StartSpanOptions`
 
 Passing options to the pass can be done using either an array or the
 SpanOptions wrapper object. The following keys are valid:
@@ -246,6 +247,8 @@ SpanOptions wrapper object. The following keys are valid:
 - `child_of` is an object of type `OpenTracing\SpanContext` or `OpenTracing\Span`.
 - `references` is an array of `OpenTracing\Reference`.
 - `tags` is an array with string keys and scalar values that represent OpenTracing tags.
+- `finish_span_on_close` is a boolean that determines whether a span should be finished when the
+scope is closed or not.
 
 ```php
 $span = $tracer->startActiveSpan('my_span', [

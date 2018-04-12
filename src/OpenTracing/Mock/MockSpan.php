@@ -38,28 +38,14 @@ final class MockSpan implements Span
      */
     private $duration;
 
-    /**
-     * @var bool
-     */
-    private $closeOnFinish;
-
-    /**
-     * @var ScopeManager
-     */
-    private $scopeManager;
-
     public function __construct(
-        ScopeManager $scopeManager,
         $operationName,
         MockSpanContext $context,
-        $startTime = null,
-        $closeOnFinish = false
+        $startTime = null
     ) {
-        $this->scopeManager = $scopeManager;
         $this->operationName = $operationName;
         $this->context = $context;
         $this->startTime = $startTime ?: time();
-        $this->closeOnFinish = $closeOnFinish;
     }
 
     /**
@@ -91,14 +77,6 @@ final class MockSpan implements Span
     {
         $finishTime = ($finishTime ?: time());
         $this->duration = $finishTime - $this->startTime;
-
-        if (!$this->closeOnFinish) {
-            return;
-        }
-
-        if (($scope = $this->scopeManager->getScope($this)) !== null) {
-            $scope->close();
-        }
     }
 
     public function isFinished()

@@ -20,7 +20,7 @@ interface Tracer
      * Tracer::getScopeManager()->getActive()->getSpan(),
      * and null will be returned if {@link Scope#active()} is null.
      *
-     * @return Span|null
+     * @return ScopedSpan|null
      */
     public function getActiveSpan();
 
@@ -48,14 +48,15 @@ interface Tracer
      *  }
      *
      * @param string $operationName
-     * @param array|SpanOptions $options A set of optional parameters:
+     * @param array|StartSpanOptions $options A set of optional parameters:
      *   - Zero or more references to related SpanContexts, including a shorthand for ChildOf and
      *     FollowsFrom reference types if possible.
      *   - An optional explicit start timestamp; if omitted, the current walltime is used by default
      *     The default value should be set by the vendor.
      *   - Zero or more tags
-     *   - CloseSpanOnFinish option which defaults to true.
-     * @return Span
+     *   - FinishSpanOnClose option which defaults to true.
+     *
+     * @return Scope
      */
     public function startActiveSpan($operationName, $options = []);
 
@@ -63,7 +64,7 @@ interface Tracer
      * Starts and returns a new `Span` representing a unit of work.
      *
      * @param string $operationName
-     * @param array|SpanOptions $options
+     * @param array|StartSpanOptions $options
      * @return Span
      * @throws InvalidSpanOption for invalid option
      * @throws InvalidReferencesSet for invalid references set
