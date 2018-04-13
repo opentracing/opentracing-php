@@ -28,9 +28,9 @@ final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
     public function testGetScopeReturnsNull()
     {
         $tracer = new MockTracer();
-        $span = $tracer->startSpan(self::OPERATION_NAME);
+        $tracer->startSpan(self::OPERATION_NAME);
         $scopeManager = new MockScopeManager();
-        $this->assertNull($scopeManager->getScope($span));
+        $this->assertNull($scopeManager->getActive());
     }
 
     public function testGetScopeSuccess()
@@ -39,7 +39,7 @@ final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
         $span = $tracer->startSpan(self::OPERATION_NAME);
         $scopeManager = new MockScopeManager();
         $scopeManager->activate($span);
-        $scope = $scopeManager->getScope($span);
+        $scope = $scopeManager->getActive();
         $this->assertSame($span, $scope->getSpan());
     }
 
@@ -49,7 +49,7 @@ final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
         $span = $tracer->startSpan(self::OPERATION_NAME);
         $scopeManager = new MockScopeManager();
         $scopeManager->activate($span);
-        $scope = $scopeManager->getScope($span);
+        $scope = $scopeManager->getActive();
         $scopeManager->deactivate($scope);
         $this->assertNull($scopeManager->getActive());
     }

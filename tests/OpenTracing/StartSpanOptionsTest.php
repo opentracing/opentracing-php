@@ -4,14 +4,14 @@ namespace OpenTracing\Tests;
 
 use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\NoopSpanContext;
-use OpenTracing\SpanOptions;
+use OpenTracing\StartSpanOptions;
 use OpenTracing\Reference;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @covers SpanOptions
+ * @covers StartSpanOptions
  */
-final class SpanOptionsTest extends PHPUnit_Framework_TestCase
+final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
 {
     const REFERENCE_TYPE = 'a_reference_type';
 
@@ -19,7 +19,7 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
     {
         $this->expectException(InvalidSpanOption::class);
 
-        SpanOptions::create([
+        StartSpanOptions::create([
             'unknown_option' => 'value'
         ]);
     }
@@ -28,8 +28,8 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
     {
         $this->expectException(InvalidSpanOption::class);
 
-        SpanOptions::create([
-            'close_span_on_finish' => 'value'
+        StartSpanOptions::create([
+            'finish_span_on_close' => 'value'
         ]);
     }
 
@@ -37,7 +37,7 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
     {
         $this->expectException(InvalidSpanOption::class);
 
-        SpanOptions::create([
+        StartSpanOptions::create([
             'start_time' => 'abc'
         ]);
     }
@@ -45,7 +45,7 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
     /** @dataProvider validStartTime */
     public function testSpanOptionsCanBeCreatedBecauseWithValidStartTime($startTime)
     {
-        $spanOptions = SpanOptions::create([
+        $spanOptions = StartSpanOptions::create([
             'start_time' => $startTime
         ]);
 
@@ -70,7 +70,7 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
             'references' => Reference::create(self::REFERENCE_TYPE, $context),
         ];
 
-        $spanOptions = SpanOptions::create($options);
+        $spanOptions = StartSpanOptions::create($options);
         $references = $spanOptions->getReferences()[0];
 
         $this->assertTrue($references->isType(self::REFERENCE_TYPE));
@@ -79,24 +79,24 @@ final class SpanOptionsTest extends PHPUnit_Framework_TestCase
 
     public function testSpanOptionsDefaultCloseOnFinishValue()
     {
-        $options = SpanOptions::create([]);
+        $options = StartSpanOptions::create([]);
 
-        $this->assertTrue($options->getCloseSpanOnFinish());
+        $this->assertTrue($options->shouldFinishSpanOnClose());
     }
 
-    public function testSpanOptionsWithValidCloseOnFinishValue()
+    public function testSpanOptionsWithValidFinishSpanOnClose()
     {
-        $options = SpanOptions::create([
-            'close_span_on_finish' => false,
+        $options = StartSpanOptions::create([
+            'finish_span_on_close' => false,
         ]);
 
-        $this->assertFalse($options->getCloseSpanOnFinish());
+        $this->assertFalse($options->shouldFinishSpanOnClose());
     }
 
     public function testSpanOptionsAddsANewReference()
     {
         $context1 = NoopSpanContext::create();
-        $spanOptions = SpanOptions::create([
+        $spanOptions = StartSpanOptions::create([
             'child_of' => $context1,
         ]);
         $this->assertCount(1, $spanOptions->getReferences());

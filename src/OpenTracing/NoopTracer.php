@@ -38,7 +38,7 @@ final class NoopTracer implements Tracer
     public function startActiveSpan($operationName, $finishSpanOnClose = true, $options = [])
     {
 
-        return NoopSpan::create();
+        return NoopScope::create();
     }
 
     /**

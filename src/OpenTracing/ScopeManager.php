@@ -13,14 +13,12 @@ interface ScopeManager
      * that previous spans can be resumed after a deactivation.
      *
      * @param Span $span the {@link Span} that should become the {@link #active()}
+     * @param bool $finishSpanOnClose whether span should automatically be finished when {@link Scope#close()} is called
      *
-     * Weather the span automatically closes when finish is called depends on
-     * the span options set during the creation of the span. See
-     * {@link SpanOptions#closeSpanOnFinish}
-     *
-     * @return Scope
+     * @return Scope instance to control the end of the active period for the {@link Span}. It is a
+     * programming error to neglect to call {@link Scope#close()} on the returned instance.
      */
-    public function activate(Span $span);
+    public function activate(Span $span, $finishSpanOnClose);
 
     /**
      * Return the currently active {@link Scope} which can be used to access the
@@ -31,16 +29,7 @@ interface ScopeManager
      * newly-created {@link Span} at {@link Tracer.SpanBuilder#startActive(boolean)} or {@link SpanBuilder#start()}
      * time rather than at {@link Tracer#buildSpan(String)} time.
      *
-     * @return \OpenTracing\Scope|null
+     * @return Scope|null
      */
     public function getActive();
-
-    /**
-     * Access the scope of a given Span if available.
-     *
-     * @param Span $span
-     *
-     * @return \OpenTracing\Scope|null
-     */
-    public function getScope(Span $span);
 }

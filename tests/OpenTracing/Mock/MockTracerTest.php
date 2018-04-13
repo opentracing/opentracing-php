@@ -18,9 +18,9 @@ final class MockTracerTest extends PHPUnit_Framework_TestCase
     public function testStartActiveSpanSuccess()
     {
         $tracer = new MockTracer();
-        $span = $tracer->startActiveSpan(self::OPERATION_NAME);
+        $scope = $tracer->startActiveSpan(self::OPERATION_NAME);
         $activeSpan = $tracer->getActiveSpan();
-        $this->assertEquals($span, $activeSpan);
+        $this->assertEquals($scope->getSpan(), $activeSpan);
     }
 
     public function testStartSpanSuccess()
