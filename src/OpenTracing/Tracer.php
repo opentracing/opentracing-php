@@ -20,7 +20,7 @@ interface Tracer
      * Tracer::getScopeManager()->getActive()->getSpan(),
      * and null will be returned if {@link Scope#active()} is null.
      *
-     * @return ScopedSpan|null
+     * @return Span|null
      */
     public function getActiveSpan();
 

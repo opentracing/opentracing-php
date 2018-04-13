@@ -106,17 +106,23 @@ An example of a linear, two level deep span tree using active spans looks like
 this in PHP code:
 
 ```php
-$root = $tracer->startActiveSpan('php');
+// At dispatcher level
+$scope = $tracer->startActiveSpan('request');
+...
+$scope->close();
+```
+```php
+// At controller level
+$scope = $tracer->startActiveSpan('controller');
+...
+$scope->close();
+```
 
-    $controller = $tracer->startActiveSpan('controller');
-
-        $http = $tracer->startActiveSpan('http');
-        file_get_contents('http://php.net');
-        $http->close();
-
-    $controller->close();
-
-$root->close();
+```php
+// At RPC calls level
+$scope = $tracer->startActiveSpan('http');
+file_get_contents('http://php.net');
+$scope->close();
 ```
 
 #### Creating a child span assigning parent manually
@@ -247,8 +253,8 @@ SpanOptions wrapper object. The following keys are valid:
 - `child_of` is an object of type `OpenTracing\SpanContext` or `OpenTracing\Span`.
 - `references` is an array of `OpenTracing\Reference`.
 - `tags` is an array with string keys and scalar values that represent OpenTracing tags.
-- `finish_span_on_close` is a boolean that determines whether a span should be finished when the
-scope is closed or not.
+- `finish_span_on_close` is a boolean that determines whether a span should be finished or not when the
+scope is closed.
 
 ```php
 $span = $tracer->startActiveSpan('my_span', [
