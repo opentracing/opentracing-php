@@ -19,18 +19,18 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenTracing\\": "./src/OpenTracing/"
+            "OpenTracing\\": "src/"
         },
-        "files": ["./src/OpenTracing/Tags.php", "./src/OpenTracing/Formats.php"]
+        "files": ["src/Tags.php", "src/Formats.php"]
     },
     "autoload-dev": {
         "psr-4": {
-            "OpenTracing\\Tests\\": "./tests/OpenTracing"
+            "OpenTracing\\Tests\\": "tests/"
         }
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit tests",
-        "lint": "./vendor/bin/phpcs --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./",
-        "fix-lint": "./vendor/bin/phpcbf --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./"
+        "test": "phpunit tests",
+        "lint": "phpcs --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./",
+        "fix-lint": "phpcbf --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./"
     }
 }
