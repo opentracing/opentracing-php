@@ -27,7 +27,7 @@ final class StartSpanOptions
      *
      * @var bool
      */
-    private $finishSpanOnClose = true;
+    private $finishSpanOnClose = ScopeManager::DEFAULT_FINISH_SPAN_ON_CLOSE;
 
     /**
      * @param array $options

@@ -16,7 +16,7 @@ final class MockScopeManager implements ScopeManager
     /**
      * {@inheritdoc}
      */
-    public function activate(Span $span, $finishSpanOnClose = true)
+    public function activate(Span $span, $finishSpanOnClose = ScopeManager::DEFAULT_FINISH_SPAN_ON_CLOSE)
     {
         $scope = new MockScope($this, $span, $finishSpanOnClose);
         $this->scopes[] = $scope;
