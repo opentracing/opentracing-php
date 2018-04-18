@@ -106,4 +106,20 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $spanOptions->getReferences());
         $this->assertSame($context2, $spanOptions->getReferences()[0]->getContext());
     }
+
+    public function testDefaultIgnoreActiveSpan()
+    {
+        $options = StartSpanOptions::create([]);
+
+        $this->assertFalse($options->shouldIgnoreActiveSpan());
+    }
+
+    public function testSpanOptionsWithValidIgnoreActiveSpan()
+    {
+        $options = StartSpanOptions::create([
+            'ignore_active_span' => true,
+        ]);
+
+        $this->assertTrue($options->shouldIgnoreActiveSpan());
+    }
 }
