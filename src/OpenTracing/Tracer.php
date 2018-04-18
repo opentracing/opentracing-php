@@ -55,6 +55,7 @@ interface Tracer
      *     The default value should be set by the vendor.
      *   - Zero or more tags
      *   - FinishSpanOnClose option which defaults to true.
+     *   - IgnoreActiveSpan option which defaults to false.
      *
      * @return Scope
      */
