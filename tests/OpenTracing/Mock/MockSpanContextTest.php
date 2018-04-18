@@ -22,7 +22,7 @@ final class MockSpanContextTest extends PHPUnit_Framework_TestCase
 
     public function testCreateMockSpanContextSuccess()
     {
-        $spanContext = MockSpanContext::create(
+        $spanContext = new MockSpanContext(
             self::TRACE_ID,
             self::SPAN_ID,
             self::IS_SAMPLED,
@@ -38,7 +38,7 @@ final class MockSpanContextTest extends PHPUnit_Framework_TestCase
 
     public function testAddBaggageItemSuccess()
     {
-        $spanContext = MockSpanContext::create(
+        $spanContext = new MockSpanContext(
             self::TRACE_ID,
             self::SPAN_ID,
             self::IS_SAMPLED

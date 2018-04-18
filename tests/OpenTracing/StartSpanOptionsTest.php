@@ -19,7 +19,7 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
     {
         $this->expectException(InvalidSpanOption::class);
 
-        StartSpanOptions::create([
+        new StartSpanOptions([
             'unknown_option' => 'value'
         ]);
     }
@@ -28,7 +28,7 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
     {
         $this->expectException(InvalidSpanOption::class);
 
-        StartSpanOptions::create([
+        new StartSpanOptions([
             'finish_span_on_close' => 'value'
         ]);
     }
@@ -37,7 +37,7 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
     {
         $this->expectException(InvalidSpanOption::class);
 
-        StartSpanOptions::create([
+        new StartSpanOptions([
             'start_time' => 'abc'
         ]);
     }
@@ -45,7 +45,7 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
     /** @dataProvider validStartTime */
     public function testSpanOptionsCanBeCreatedBecauseWithValidStartTime($startTime)
     {
-        $spanOptions = StartSpanOptions::create([
+        $spanOptions = new StartSpanOptions([
             'start_time' => $startTime
         ]);
 
@@ -64,13 +64,13 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
 
     public function testSpanOptionsCanBeCreatedWithValidReference()
     {
-        $context = NoopSpanContext::create();
+        $context = new NoopSpanContext();
 
         $options = [
-            'references' => Reference::create(self::REFERENCE_TYPE, $context),
+            'references' => new Reference(self::REFERENCE_TYPE, $context),
         ];
 
-        $spanOptions = StartSpanOptions::create($options);
+        $spanOptions = new StartSpanOptions($options);
         $references = $spanOptions->getReferences()[0];
 
         $this->assertTrue($references->isType(self::REFERENCE_TYPE));
@@ -79,14 +79,14 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
 
     public function testSpanOptionsDefaultCloseOnFinishValue()
     {
-        $options = StartSpanOptions::create([]);
+        $options = new StartSpanOptions([]);
 
         $this->assertTrue($options->shouldFinishSpanOnClose());
     }
 
     public function testSpanOptionsWithValidFinishSpanOnClose()
     {
-        $options = StartSpanOptions::create([
+        $options = new StartSpanOptions([
             'finish_span_on_close' => false,
         ]);
 
@@ -95,13 +95,13 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
 
     public function testSpanOptionsAddsANewReference()
     {
-        $context1 = NoopSpanContext::create();
-        $spanOptions = StartSpanOptions::create([
+        $context1 = new NoopSpanContext();
+        $spanOptions = new StartSpanOptions([
             'child_of' => $context1,
         ]);
         $this->assertCount(1, $spanOptions->getReferences());
 
-        $context2 = NoopSpanContext::create();
+        $context2 = new NoopSpanContext();
         $spanOptions = $spanOptions->withParent($context2);
         $this->assertCount(1, $spanOptions->getReferences());
         $this->assertSame($context2, $spanOptions->getReferences()[0]->getContext());
@@ -109,14 +109,14 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
 
     public function testDefaultIgnoreActiveSpan()
     {
-        $options = StartSpanOptions::create([]);
+        $options = new StartSpanOptions([]);
 
         $this->assertFalse($options->shouldIgnoreActiveSpan());
     }
 
     public function testSpanOptionsWithValidIgnoreActiveSpan()
     {
-        $options = StartSpanOptions::create([
+        $options = new StartSpanOptions([
             'ignore_active_span' => true,
         ]);
 

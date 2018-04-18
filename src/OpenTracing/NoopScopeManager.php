@@ -4,11 +4,6 @@ namespace OpenTracing;
 
 final class NoopScopeManager implements ScopeManager
 {
-    public static function create()
-    {
-        return new self();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -21,6 +16,6 @@ final class NoopScopeManager implements ScopeManager
      */
     public function getActive()
     {
-        return NoopScope::create();
+        return new NoopScope();
     }
 }

@@ -27,17 +27,12 @@ final class MockSpanContext implements SpanContext
      */
     private $items;
 
-    private function __construct($traceId, $spanId, $isSampled, array $items)
+    public function __construct($traceId, $spanId, $isSampled = true, array $items = [])
     {
         $this->traceId = $traceId;
         $this->spanId = $spanId;
         $this->isSampled = $isSampled;
         $this->items = $items;
-    }
-
-    public static function create($traceId, $spanId, $sampled = true, array $items = [])
-    {
-        return new self($traceId, $spanId, $sampled, $items);
     }
 
     public static function createAsRoot($sampled = true, array $items = [])

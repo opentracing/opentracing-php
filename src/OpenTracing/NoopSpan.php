@@ -4,11 +4,6 @@ namespace OpenTracing;
 
 final class NoopSpan implements Span
 {
-    public static function create()
-    {
-        return new self();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -22,7 +17,7 @@ final class NoopSpan implements Span
      */
     public function getContext()
     {
-        return NoopSpanContext::create();
+        return new NoopSpanContext();
     }
 
     /**

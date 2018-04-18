@@ -43,7 +43,7 @@ final class MockTracer implements Tracer
     public function startActiveSpan($operationName, $options = [])
     {
         if (!($options instanceof StartSpanOptions)) {
-            $options = StartSpanOptions::create($options);
+            $options = new StartSpanOptions($options);
         }
 
         if (($activeSpan = $this->getActiveSpan()) !== null) {
@@ -61,7 +61,7 @@ final class MockTracer implements Tracer
     public function startSpan($operationName, $options = [])
     {
         if (!($options instanceof StartSpanOptions)) {
-            $options = StartSpanOptions::create($options);
+            $options = new StartSpanOptions($options);
         }
 
         if (empty($options->getReferences())) {

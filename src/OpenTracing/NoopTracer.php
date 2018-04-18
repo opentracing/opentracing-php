@@ -9,7 +9,7 @@ final class NoopTracer implements Tracer
      */
     public function getActiveSpan()
     {
-        return NoopSpan::create();
+        return new NoopSpan();
     }
 
     /**
@@ -38,7 +38,7 @@ final class NoopTracer implements Tracer
     public function startActiveSpan($operationName, $finishSpanOnClose = true, $options = [])
     {
 
-        return NoopScope::create();
+        return new NoopScope();
     }
 
     /**
@@ -53,7 +53,7 @@ final class NoopTracer implements Tracer
      */
     public function extract($format, $carrier)
     {
-        return NoopSpanContext::create();
+        return new NoopSpanContext();
     }
 
     /**

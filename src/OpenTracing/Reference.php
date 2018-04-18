@@ -31,27 +31,16 @@ final class Reference
 
     /**
      * @param string $type
-     * @param SpanContext $context
-     */
-    private function __construct($type, SpanContext $context)
-    {
-        $this->type = $type;
-        $this->context = $context;
-    }
-
-    /**
      * @param SpanContext|Span $context
-     * @param string $type
-     * @throws InvalidReferenceArgument on empty type
-     * @return Reference when context is invalid
      */
-    public static function create($type, $context)
+    public function __construct($type, $context)
     {
         if (empty($type)) {
             throw InvalidReferenceArgument::forEmptyType();
         }
 
-        return new self($type, self::extractContext($context));
+        $this->type = $type;
+        $this->context = self::extractContext($context);
     }
 
     /**

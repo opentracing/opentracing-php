@@ -74,7 +74,7 @@ final class MockTracerTest extends PHPUnit_Framework_TestCase
 
         $extractor = function ($carrier) use (&$actualCarrier) {
             $actualCarrier = $carrier;
-            return NoopSpan::create();
+            return new NoopSpan();
         };
 
         $tracer = new MockTracer([], [self::FORMAT => $extractor]);

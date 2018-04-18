@@ -40,29 +40,27 @@ final class StartSpanOptions
      * @throws InvalidReferencesSet when there are inconsistencies about the references
      * @return StartSpanOptions
      */
-    public static function create(array $options)
+    public function __construct(array $options)
     {
-        $spanOptions = new self();
-
         foreach ($options as $key => $value) {
             switch ($key) {
                 case 'child_of':
-                    if (!empty($spanOptions->references)) {
+                    if (!empty($this->references)) {
                         throw InvalidSpanOption::forIncludingBothChildOfAndReferences();
                     }
 
-                    $spanOptions->references[] = self::buildChildOf($value);
+                    $this->references[] = self::buildChildOf($value);
                     break;
 
                 case 'references':
-                    if (!empty($spanOptions->references)) {
+                    if (!empty($this->references)) {
                         throw InvalidSpanOption::forIncludingBothChildOfAndReferences();
                     }
 
                     if ($value instanceof Reference) {
-                        $spanOptions->references = [$value];
+                        $this->references = [$value];
                     } elseif (is_array($value)) {
-                        $spanOptions->references = self::buildReferences($value);
+                        $this->references = self::buildReferences($value);
                     } else {
                         throw InvalidSpanOption::forInvalidReferenceSet($value);
                     }
@@ -79,7 +77,7 @@ final class StartSpanOptions
                             throw InvalidSpanOption::forInvalidTag($tag);
                         }
 
-                        $spanOptions->tags[$tag] = $tagValue;
+                        $this->tags[$tag] = $tagValue;
                     }
                     break;
 
@@ -88,7 +86,7 @@ final class StartSpanOptions
                         throw InvalidSpanOption::forInvalidStartTime();
                     }
 
-                    $spanOptions->startTime = $value;
+                    $this->startTime = $value;
                     break;
 
                 case 'finish_span_on_close':
@@ -96,7 +94,7 @@ final class StartSpanOptions
                         throw InvalidSpanOption::forFinishSpanOnClose($value);
                     }
 
-                    $spanOptions->finishSpanOnClose = $value;
+                    $this->finishSpanOnClose = $value;
                     break;
 
                 case 'ignore_active_span':
@@ -104,7 +102,7 @@ final class StartSpanOptions
                         throw InvalidSpanOption::forIgnoreActiveSpan($value);
                     }
 
-                    $spanOptions->ignoreActiveSpan = $value;
+                    $this->ignoreActiveSpan = $value;
                     break;
 
                 default:
@@ -112,8 +110,6 @@ final class StartSpanOptions
                     break;
             }
         }
-
-        return $spanOptions;
     }
 
     /**
@@ -122,14 +118,13 @@ final class StartSpanOptions
      */
     public function withParent($parent)
     {
-        $newSpanOptions = new StartSpanOptions();
-        $newSpanOptions->references[] = self::buildChildOf($parent);
-        $newSpanOptions->tags = $this->tags;
-        $newSpanOptions->startTime = $this->startTime;
-        $newSpanOptions->finishSpanOnClose = $this->finishSpanOnClose;
-        $newSpanOptions->ignoreActiveSpan = $this->ignoreActiveSpan;
-
-        return $newSpanOptions;
+        return new StartSpanOptions([
+            'child_of' => $parent,
+            'tags' => $this->tags,
+            'start_time' => $this->startTime,
+            'finish_span_on_close' => $this->finishSpanOnClose,
+            'ignore_active_span' => $this->ignoreActiveSpan,
+        ]);
     }
 
     /**
@@ -176,11 +171,11 @@ final class StartSpanOptions
     private static function buildChildOf($value)
     {
         if ($value instanceof Span) {
-            return Reference::create(Reference::CHILD_OF, $value->getContext());
+            return new Reference(Reference::CHILD_OF, $value->getContext());
         }
 
         if ($value instanceof SpanContext) {
-            return Reference::create(Reference::CHILD_OF, $value);
+            return new Reference(Reference::CHILD_OF, $value);
         }
 
         throw InvalidSpanOption::forInvalidChildOf($value);
