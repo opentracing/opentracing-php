@@ -45,7 +45,7 @@ interface Tracer
      *
      * @param string $operationName
      * @param array|StartSpanOptions $options Same as for startSpan() with
-     *     aditional option of `close_span_on_finish` that enables finishing
+     *     aditional option of `finish_span_on_close` that enables finishing
      *     of span whenever a scope is closed. It is true by default.
      *
      * @return Scope A Scope that holds newly created Span and is activated on
