@@ -38,7 +38,7 @@ final class MockScopeManager implements ScopeManager
     public function deactivate(MockScope $scope)
     {
         foreach ($this->scopes as $scopeIndex => $scopeItem) {
-            if($scope === $scopeItem){
+            if ($scope === $scopeItem) {
                 unset($this->scopes[$scopeIndex]);
             }
         }
