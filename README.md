@@ -270,7 +270,7 @@ The propagation formats should be implemented consistently across all tracers.
 If you want to implement your own format, then don't reuse the existing constants.
 Tracers will throw an exception if the requested format is not handled by them.
 
-- `Tracer::FORMAT_TEXT_MAP` should represents the span context as a key value map. There is no
+- `Tracer::FORMAT_TEXT_MAP` should represent the span context as a key value map. There is no
   assumption about the semantics where the context is coming from and sent to.
 
 - `Tracer::FORMAT_HTTP_HEADERS` should represent the span context as HTTP header lines
