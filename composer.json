@@ -17,6 +17,9 @@
         "phpunit/phpunit": "~5.7.19",
         "squizlabs/php_codesniffer": "3.*"
     },
+    "config": {
+        "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
             "OpenTracing\\": "./src/OpenTracing/"
