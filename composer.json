@@ -29,8 +29,8 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit tests",
-        "lint": "./vendor/bin/phpcs --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./",
-        "fix-lint": "./vendor/bin/phpcbf --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./"
+        "test": "phpunit tests",
+        "lint": "phpcs --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./",
+        "fix-lint": "phpcbf --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./"
     }
 }
