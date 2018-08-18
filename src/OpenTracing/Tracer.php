@@ -4,7 +4,6 @@ namespace OpenTracing;
 
 use OpenTracing\Exceptions\InvalidReferencesSet;
 use OpenTracing\Exceptions\InvalidSpanOption;
-use OpenTracing\Exceptions\UnsupportedFormat;
 
 interface Tracer
 {
@@ -45,7 +44,7 @@ interface Tracer
      *
      * @param string $operationName
      * @param array|StartSpanOptions $options Same as for startSpan() with
-     *     aditional option of `finish_span_on_close` that enables finishing
+     *     additional option of `finish_span_on_close` that enables finishing
      *     of span whenever a scope is closed. It is true by default.
      *
      * @return Scope A Scope that holds newly created Span and is activated on
@@ -81,26 +80,28 @@ interface Tracer
     public function startSpan($operationName, $options = []);
 
     /**
+     * All exceptions thrown from this method should be caught and logged on WARN level so
+     * that business code execution isn't affected. If possible, catch implementation specific
+     * exceptions and log more meaningful information.
+     *
      * @param SpanContext $spanContext
      * @param string $format
      * @param mixed $carrier
      *
      * @see Formats
-     *
-     * @throws UnsupportedFormat when the format is not recognized by the tracer
-     * implementation
      */
     public function inject(SpanContext $spanContext, $format, &$carrier);
 
     /**
+     * All exceptions thrown from this method should be caught and logged on WARN level so
+     * that business code execution isn't affected. If possible, catch implementation specific
+     * exceptions and log more meaningful information.
+     *
      * @param string $format
      * @param mixed $carrier
      * @return SpanContext|null
      *
      * @see Formats
-     *
-     * @throws UnsupportedFormat when the format is not recognized by the tracer
-     * implementation
      */
     public function extract($format, $carrier);
 
