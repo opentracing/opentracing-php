@@ -30,6 +30,7 @@ final class NoopTracer implements Tracer
      */
     public function startSpan($operationName, $options = [])
     {
+        return NoopSpan::create();
     }
 
     /**
