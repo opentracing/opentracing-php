@@ -42,7 +42,7 @@ GlobalTracer::set(new MyTracerImplementation());
 
 ### Creating a Span given an existing Request
 
-To start a new `Span`, you can use the `startActiveSpan` method.
+To start a new `Span`, you can use the `startSpan` method.
 
 ```php
 use OpenTracing\Formats;
@@ -50,6 +50,7 @@ use OpenTracing\GlobalTracer;
 
 ...
 
+// extract the span context
 $spanContext = GlobalTracer::get()->extract(
     Formats\HTTP_HEADERS,
     getallheaders()
@@ -58,21 +59,24 @@ $spanContext = GlobalTracer::get()->extract(
 function doSomething() {
     ...
 
+    // start a new span called 'my_span' and make it a child of the $spanContext
     $span = GlobalTracer::get()->startSpan('my_span', ['child_of' => $spanContext]);
 
     ...
-
+    
+    // add some logs to the span
     $span->log([
         'event' => 'soft error',
         'type' => 'cache timeout',
         'waiter.millis' => 1500,
     ])
 
+    // finish the the span
     $span->finish();
 }
 ```
 
-### Starting an empty trace by creating a "root span"
+### Starting a new trace by creating a "root span"
 
 It's always possible to create a "root" `Span` with no parent or other causal reference.
 
@@ -84,27 +88,11 @@ $span->finish();
 
 ### Active Spans and Scope Manager
 
-When using the `Tracer::startActiveSpan` function the underlying tracer uses an
-abstraction called scope manager to keep track of the currently active span.
-
-Starting an active span will always use the currently active span as a parent.
-If no parent is available, then the newly created span is considered to be the
-root span of the trace.
-
-Unless you are using asynchronous code that tracks multiple spans at the same
-time, such as when using cURL Multi Exec or MySQLi Polling you are better
-of just using `Tracer::startActiveSpan` everywhere in your application.
-
-The currently active span gets automatically finished when you call `$scope->close()`
-as you can see in the previous example.
-
-If you don't want a span to automatically close when `Span::finish()` is called
-then you must pass the option `'finish_span_on_close'=> false,` to the `$options`
-argument of `startActiveSpan`.
+For most use cases, it is recommended that you use the `Tracer::startActiveSpan` function for
+creating new spans.
 
 An example of a linear, two level deep span tree using active spans looks like
 this in PHP code:
-
 ```php
 // At dispatcher level
 $scope = $tracer->startActiveSpan('request');
@@ -124,6 +112,24 @@ $scope = $tracer->startActiveSpan('http');
 file_get_contents('http://php.net');
 $scope->close();
 ```
+ 
+When using the `Tracer::startActiveSpan` function the underlying tracer uses an
+abstraction called scope manager to keep track of the currently active span.
+
+Starting an active span will always use the currently active span as a parent.
+If no parent is available, then the newly created span is considered to be the
+root span of the trace.
+
+Unless you are using asynchronous code that tracks multiple spans at the same
+time, such as when using cURL Multi Exec or MySQLi Polling it is recommended that you 
+use `Tracer::startActiveSpan` everywhere in your application.
+
+The currently active span gets automatically finished when you call `$scope->close()`
+as you can see in the previous examples.
+
+If you don't want a span to automatically close when `$scope->close()` is called
+then you must specify `'finish_span_on_close'=> false,` in the `$options`
+argument of `startActiveSpan`.
 
 #### Creating a child span assigning parent manually
 
