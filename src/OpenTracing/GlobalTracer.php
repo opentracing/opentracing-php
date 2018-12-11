@@ -10,6 +10,11 @@ final class GlobalTracer
     private static $instance;
 
     /**
+     * @var bool
+     */
+    private static $isRegistered = false;
+
+    /**
      * GlobalTracer::set sets the [singleton] Tracer returned by get().
      * Those who use GlobalTracer (rather than directly manage a Tracer instance)
      * should call GlobalTracer::set as early as possible in bootstrap, prior to
@@ -21,6 +26,7 @@ final class GlobalTracer
     public static function set(Tracer $tracer)
     {
         self::$instance = $tracer;
+        self::$isRegistered = true;
     }
 
     /**
@@ -37,5 +43,13 @@ final class GlobalTracer
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Returns true if a global tracer has been registered, otherwise returns false.
+     */
+    public static function isRegistered()
+    {
+        return self::$isRegistered;
     }
 }
