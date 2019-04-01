@@ -4,7 +4,7 @@
 [![OpenTracing Badge](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
 [![Total Downloads](https://poser.pugx.org/opentracing/opentracing/downloads)](https://packagist.org/packages/opentracing/opentracing)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg)](https://php.net/)
-[![License](https://img.shields.io/packagist/l/opentracing/opentracing.svg)](https://github.com/opentracing/opentracing-php/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/opentracing/opentracing-php.svg)](https://github.com/opentracing/opentracing-php/blob/master/LICENSE)
 [![Join the chat at https://gitter.im/opentracing/opentracing-php](https://badges.gitter.im/opentracing/opentracing-php.svg)](https://gitter.im/opentracing/opentracing-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 PHP library for the OpenTracing's API.
@@ -303,4 +303,4 @@ coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/ma
 
 ## License
 
-All the open source contributions are under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+All the open source contributions are under the terms of the [Apache-2.0 License](https://opensource.org/licenses/Apache-2.0).
