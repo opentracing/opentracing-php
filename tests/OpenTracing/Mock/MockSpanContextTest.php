@@ -3,20 +3,21 @@
 namespace OpenTracing\Mock\Tests;
 
 use OpenTracing\Mock\MockSpanContext;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-final class MockSpanContextTest extends PHPUnit_Framework_TestCase
+final class MockSpanContextTest extends TestCase
 {
-    const TRACE_ID = 'test_trace_id';
-    const SPAN_ID = 'test_span_id';
-    const IS_SAMPLED = true;
-    const BAGGAGE_ITEM_KEY = 'test_key';
-    const BAGGAGE_ITEM_VALUE = 'test_value';
+    private const TRACE_ID = 'test_trace_id';
+    private const SPAN_ID = 'test_span_id';
+    private const IS_SAMPLED = true;
+    private const BAGGAGE_ITEM_KEY = 'test_key';
+    private const BAGGAGE_ITEM_VALUE = 'test_value';
 
     public function testCreateAsRootSuccess()
     {
         $parentContext = MockSpanContext::createAsRoot();
         $childContext = MockSpanContext::createAsChildOf($parentContext);
+
         $this->assertEquals($parentContext->getTraceId(), $childContext->getTraceId());
     }
 
