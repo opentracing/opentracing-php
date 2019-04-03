@@ -78,7 +78,6 @@ final class MockTracerTest extends TestCase
         $actualCarrier = null;
 
         $extractor = function ($carrier) use (&$actualCarrier) {
-            var_dump($actualCarrier);
             $actualCarrier = $carrier;
             return NoopSpan::create();
         };
