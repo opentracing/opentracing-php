@@ -2,16 +2,17 @@
 
 namespace OpenTracing\Tests;
 
+use DateTime;
 use OpenTracing\Exceptions\InvalidSpanOption;
 use OpenTracing\NoopSpanContext;
-use OpenTracing\StartSpanOptions;
 use OpenTracing\Reference;
-use PHPUnit_Framework_TestCase;
+use OpenTracing\StartSpanOptions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers StartSpanOptions
  */
-final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
+final class StartSpanOptionsTest extends TestCase
 {
     const REFERENCE_TYPE = 'a_reference_type';
 
@@ -55,7 +56,7 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
     public function validStartTime()
     {
         return [
-            [new \DateTime()],
+            [new DateTime()],
             ['1499355363'],
             [1499355363],
             [1499355363.123456]
@@ -103,6 +104,7 @@ final class StartSpanOptionsTest extends PHPUnit_Framework_TestCase
 
         $context2 = NoopSpanContext::create();
         $spanOptions = $spanOptions->withParent($context2);
+
         $this->assertCount(1, $spanOptions->getReferences());
         $this->assertSame($context2, $spanOptions->getReferences()[0]->getContext());
     }

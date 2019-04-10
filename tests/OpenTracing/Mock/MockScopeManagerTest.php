@@ -4,15 +4,16 @@ namespace OpenTracing\Mock\Tests;
 
 use OpenTracing\Mock\MockScopeManager;
 use OpenTracing\Mock\MockTracer;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
+final class MockScopeManagerTest extends TestCase
 {
-    const OPERATION_NAME = 'test_name';
+    private const OPERATION_NAME = 'test_name';
 
     public function testGetActiveFailsWithNoActiveSpans()
     {
         $scopeManager = new MockScopeManager();
+
         $this->assertNull($scopeManager->getActive());
     }
 
@@ -22,6 +23,7 @@ final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
         $span = $tracer->startSpan(self::OPERATION_NAME);
         $scopeManager = new MockScopeManager();
         $scopeManager->activate($span);
+
         $this->assertSame($span, $scopeManager->getActive()->getSpan());
     }
 
@@ -30,6 +32,7 @@ final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
         $tracer = new MockTracer();
         $tracer->startSpan(self::OPERATION_NAME);
         $scopeManager = new MockScopeManager();
+
         $this->assertNull($scopeManager->getActive());
     }
 
@@ -40,6 +43,7 @@ final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
         $scopeManager = new MockScopeManager();
         $scopeManager->activate($span);
         $scope = $scopeManager->getActive();
+
         $this->assertSame($span, $scope->getSpan());
     }
 
@@ -51,6 +55,7 @@ final class MockScopeManagerTest extends PHPUnit_Framework_TestCase
         $scopeManager->activate($span);
         $scope = $scopeManager->getActive();
         $scopeManager->deactivate($scope);
+
         $this->assertNull($scopeManager->getActive());
     }
 }
