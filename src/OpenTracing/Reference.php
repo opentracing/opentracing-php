@@ -33,19 +33,19 @@ final class Reference
      * @param string $type
      * @param SpanContext $context
      */
-    private function __construct($type, SpanContext $context)
+    private function __construct(string $type, SpanContext $context)
     {
         $this->type = $type;
         $this->context = $context;
     }
 
     /**
-     * @param SpanContext|Span $context
      * @param string $type
-     * @throws InvalidReferenceArgument on empty type
+     * @param SpanContext|Span $context
      * @return Reference when context is invalid
+     * @throws InvalidReferenceArgument on empty type
      */
-    public static function create($type, $context)
+    public static function create(string $type, $context)
     {
         if (empty($type)) {
             throw InvalidReferenceArgument::forEmptyType();
@@ -57,7 +57,7 @@ final class Reference
     /**
      * @return SpanContext
      */
-    public function getContext()
+    public function getContext(): SpanContext
     {
         return $this->context;
     }
@@ -68,12 +68,17 @@ final class Reference
      * @param string $type the type for the reference
      * @return bool
      */
-    public function isType($type)
+    public function isType(string $type): bool
     {
         return $this->type === $type;
     }
 
-    private static function extractContext($context)
+    /**
+     * @param SpanContext|Span $context
+     * @return SpanContext
+     * @throws InvalidReferenceArgument
+     */
+    private static function extractContext($context): SpanContext
     {
         if ($context instanceof SpanContext) {
             return $context;

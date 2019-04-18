@@ -4,8 +4,8 @@ namespace OpenTracing\Mock\Tests;
 
 use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\Mock\MockTracer;
-use OpenTracing\NoopSpan;
-use OpenTracing\Span;
+use OpenTracing\NoopSpanContext;
+use OpenTracing\SpanContext;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -79,7 +79,7 @@ final class MockTracerTest extends TestCase
 
         $extractor = function ($carrier) use (&$actualCarrier) {
             $actualCarrier = $carrier;
-            return NoopSpan::create();
+            return NoopSpanContext::create();
         };
 
         $tracer = new MockTracer([], [self::FORMAT => $extractor]);
@@ -89,7 +89,7 @@ final class MockTracerTest extends TestCase
 
         $spanContext = $tracer->extract(self::FORMAT, $carrier);
 
-        $this->assertInstanceOf(Span::class, $spanContext);
+        $this->assertInstanceOf(SpanContext::class, $spanContext);
     }
 
     public function testFlushSuccess()

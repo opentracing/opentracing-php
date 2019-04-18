@@ -12,7 +12,7 @@ final class InvalidSpanOption extends InvalidArgumentException
     /**
      * @return InvalidSpanOption
      */
-    public static function forIncludingBothChildOfAndReferences()
+    public static function forIncludingBothChildOfAndReferences(): InvalidSpanOption
     {
         return new self('Either "childOf" or "references" options are accepted but not both.');
     }
@@ -21,7 +21,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $reference
      * @return InvalidSpanOption
      */
-    public static function forInvalidReference($reference)
+    public static function forInvalidReference($reference): InvalidSpanOption
     {
         return new self(sprintf(
             'Invalid reference. Expected OpenTracing\Reference, got %s.',
@@ -32,12 +32,16 @@ final class InvalidSpanOption extends InvalidArgumentException
     /**
      * @return InvalidSpanOption
      */
-    public static function forInvalidStartTime()
+    public static function forInvalidStartTime(): InvalidSpanOption
     {
-        return new self(sprintf('Invalid start_time option. Expected int or float got string.'));
+        return new self('Invalid start_time option. Expected int or float got string.');
     }
 
-    public static function forInvalidChildOf($childOfOption)
+    /**
+     * @param mixed $childOfOption
+     * @return InvalidSpanOption
+     */
+    public static function forInvalidChildOf($childOfOption): InvalidSpanOption
     {
         return new self(sprintf(
             'Invalid child_of option. Expected Span or SpanContext, got %s',
@@ -49,7 +53,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param string $key
      * @return InvalidSpanOption
      */
-    public static function forUnknownOption($key)
+    public static function forUnknownOption(string $key): InvalidSpanOption
     {
         return new self(sprintf('Invalid option %s.', $key));
     }
@@ -58,7 +62,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $tag
      * @return InvalidSpanOption
      */
-    public static function forInvalidTag($tag)
+    public static function forInvalidTag($tag): InvalidSpanOption
     {
         return new self(sprintf('Invalid tag. Expected string, got %s', gettype($tag)));
     }
@@ -67,7 +71,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $tagValue
      * @return InvalidSpanOption
      */
-    public static function forInvalidTagValue($tagValue)
+    public static function forInvalidTagValue($tagValue): InvalidSpanOption
     {
         return new self(sprintf(
             'Invalid tag value. Expected scalar or object with __toString method, got %s',
@@ -79,7 +83,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $value
      * @return InvalidSpanOption
      */
-    public static function forInvalidTags($value)
+    public static function forInvalidTags($value): InvalidSpanOption
     {
         return new self(sprintf(
             'Invalid tags value. Expected a associative array of tags, got %s',
@@ -91,7 +95,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $value
      * @return InvalidSpanOption
      */
-    public static function forInvalidReferenceSet($value)
+    public static function forInvalidReferenceSet($value): InvalidSpanOption
     {
         return new self(sprintf(
             'Invalid references set. Expected Reference or Reference[], got %s',
@@ -103,7 +107,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $value
      * @return InvalidSpanOption
      */
-    public static function forFinishSpanOnClose($value)
+    public static function forFinishSpanOnClose($value): InvalidSpanOption
     {
         return new self(sprintf(
             'Invalid type for finish_span_on_close. Expected bool, got %s',
@@ -115,7 +119,7 @@ final class InvalidSpanOption extends InvalidArgumentException
      * @param mixed $value
      * @return InvalidSpanOption
      */
-    public static function forIgnoreActiveSpan($value)
+    public static function forIgnoreActiveSpan($value): InvalidSpanOption
     {
         return new self(sprintf(
             'Invalid type for ignore_active_span. Expected bool, got %s',

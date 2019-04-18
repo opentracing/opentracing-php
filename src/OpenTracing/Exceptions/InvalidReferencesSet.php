@@ -13,7 +13,7 @@ final class InvalidReferencesSet extends DomainException
      * @param string $message
      * @return InvalidReferencesSet
      */
-    public static function create($message)
+    public static function create(string $message): InvalidReferencesSet
     {
         return new self($message);
     }
@@ -21,7 +21,7 @@ final class InvalidReferencesSet extends DomainException
     /**
      * @return InvalidReferencesSet
      */
-    public static function forMoreThanOneParent()
+    public static function forMoreThanOneParent(): InvalidReferencesSet
     {
         return new self('Span can not have more than one parent, either one as child_of or either one as follows_from');
     }

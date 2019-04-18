@@ -2,12 +2,14 @@
 
 namespace OpenTracing;
 
+use DateTimeInterface;
+
 interface Span
 {
     /**
      * @return string
      */
-    public function getOperationName();
+    public function getOperationName(): string;
 
     /**
      * Yields the SpanContext for this Span. Note that the return value of
@@ -16,7 +18,7 @@ interface Span
      *
      * @return SpanContext
      */
-    public function getContext();
+    public function getContext(): SpanContext;
 
     /**
      * Sets the end timestamp and finalizes Span state.
@@ -30,18 +32,19 @@ interface Span
      *
      * If the span is already finished, a warning should be logged.
      *
-     * @param float|int|\DateTimeInterface|null $finishTime if passing float or int
+     * @param float|int|DateTimeInterface|null $finishTime if passing float or int
      * it should represent the timestamp (including as many decimal places as you need)
      * @return void
      */
-    public function finish($finishTime = null);
+    public function finish($finishTime = null): void;
 
     /**
      * If the span is already finished, a warning should be logged.
      *
      * @param string $newOperationName
+     * @return void
      */
-    public function overwriteOperationName($newOperationName);
+    public function overwriteOperationName(string $newOperationName): void;
 
     /**
      * Adds a tag to the span.
@@ -56,7 +59,7 @@ interface Span
      * @param string|bool|int|float $value
      * @return void
      */
-    public function setTag($key, $value);
+    public function setTag(string $key, $value): void;
 
     /**
      * Adds a log record to the span in key => value format, key must be a string and tag must be either
@@ -65,10 +68,10 @@ interface Span
      * If the span is already finished, a warning should be logged.
      *
      * @param array $fields
-     * @param int|float|\DateTimeInterface $timestamp
+     * @param int|float|DateTimeInterface $timestamp
      * @return void
      */
-    public function log(array $fields = [], $timestamp = null);
+    public function log(array $fields = [], $timestamp = null): void;
 
     /**
      * Adds a baggage item to the SpanContext which is immutable so it is required to use
@@ -80,11 +83,11 @@ interface Span
      * @param string $value
      * @return void
      */
-    public function addBaggageItem($key, $value);
+    public function addBaggageItem(string $key, string $value): void;
 
     /**
      * @param string $key
      * @return string|null returns null when there is not a item under the provided key
      */
-    public function getBaggageItem($key);
+    public function getBaggageItem(string $key): ?string;
 }

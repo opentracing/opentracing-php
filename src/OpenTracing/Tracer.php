@@ -13,7 +13,7 @@ interface Tracer
      *
      * @return ScopeManager
      */
-    public function getScopeManager();
+    public function getScopeManager(): ScopeManager;
 
     /**
      * Returns the active {@link Span}. This is a shorthand for
@@ -22,7 +22,7 @@ interface Tracer
      *
      * @return Span|null
      */
-    public function getActiveSpan();
+    public function getActiveSpan(): ?Span;
 
     /**
      * Starts a new span that is activated on a scope manager.
@@ -45,13 +45,13 @@ interface Tracer
      *
      * @param string $operationName
      * @param array|StartSpanOptions $options Same as for startSpan() with
-     *     aditional option of `finish_span_on_close` that enables finishing
+     *     additional option of `finish_span_on_close` that enables finishing
      *     of span whenever a scope is closed. It is true by default.
      *
      * @return Scope A Scope that holds newly created Span and is activated on
      *               a ScopeManager.
      */
-    public function startActiveSpan($operationName, $options = []);
+    public function startActiveSpan(string $operationName, $options = []): Scope;
 
     /**
      * Starts and returns a new span representing a unit of work.
@@ -67,8 +67,6 @@ interface Tracer
      *         'child_of' => $parentSpan,
      *     ]);
      *
-     * @see \OpenTracing\StartSpanOptions
-     *
      * @param string $operationName
      * @param array|StartSpanOptions $options See StartSpanOptions for
      *                                        available options.
@@ -77,32 +75,32 @@ interface Tracer
      *
      * @throws InvalidSpanOption for invalid option
      * @throws InvalidReferencesSet for invalid references set
+     * @see \OpenTracing\StartSpanOptions
      */
-    public function startSpan($operationName, $options = []);
+    public function startSpan(string $operationName, $options = []): Span;
 
     /**
      * @param SpanContext $spanContext
      * @param string $format
      * @param mixed $carrier
-     *
-     * @see Formats
+     * @return void
      *
      * @throws UnsupportedFormat when the format is not recognized by the tracer
      * implementation
+     * @see Formats
      */
-    public function inject(SpanContext $spanContext, $format, &$carrier);
+    public function inject(SpanContext $spanContext, string $format, &$carrier): void;
 
     /**
      * @param string $format
      * @param mixed $carrier
      * @return SpanContext|null
      *
-     * @see Formats
-     *
      * @throws UnsupportedFormat when the format is not recognized by the tracer
      * implementation
+     * @see Formats
      */
-    public function extract($format, $carrier);
+    public function extract(string $format, $carrier): ?SpanContext;
 
     /**
      * Allow tracer to send span data to be instrumented.
@@ -115,5 +113,5 @@ interface Tracer
      * or {@see fastcgi_finish_request} in order to not to delay the end of the request
      * to the client.
      */
-    public function flush();
+    public function flush(): void;
 }

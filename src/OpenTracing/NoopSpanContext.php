@@ -6,7 +6,10 @@ use EmptyIterator;
 
 final class NoopSpanContext implements SpanContext
 {
-    public static function create()
+    /**
+     * @return SpanContext
+     */
+    public static function create(): SpanContext
     {
         return new self();
     }
@@ -22,7 +25,7 @@ final class NoopSpanContext implements SpanContext
     /**
      * {@inheritdoc}
      */
-    public function getBaggageItem($key)
+    public function getBaggageItem(string $key): ?string
     {
         return null;
     }
@@ -30,7 +33,7 @@ final class NoopSpanContext implements SpanContext
     /**
      * {@inheritdoc}
      */
-    public function withBaggageItem($key, $value)
+    public function withBaggageItem(string $key, string $value): ?SpanContext
     {
         return new self();
     }

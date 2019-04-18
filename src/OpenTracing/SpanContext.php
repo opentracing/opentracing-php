@@ -22,7 +22,7 @@ interface SpanContext extends IteratorAggregate
      * @param string $key
      * @return string|null
      */
-    public function getBaggageItem($key);
+    public function getBaggageItem(string $key): ?string;
 
     /**
      * Creates a new SpanContext out of the existing one and the new key => value pair.
@@ -31,5 +31,5 @@ interface SpanContext extends IteratorAggregate
      * @param string $value
      * @return SpanContext
      */
-    public function withBaggageItem($key, $value);
+    public function withBaggageItem(string $key, string $value): ?SpanContext;
 }

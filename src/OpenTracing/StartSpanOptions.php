@@ -2,6 +2,8 @@
 
 namespace OpenTracing;
 
+use DateTime;
+use DateTimeInterface;
 use OpenTracing\Exceptions\InvalidReferencesSet;
 use OpenTracing\Exceptions\InvalidSpanOption;
 
@@ -18,7 +20,7 @@ final class StartSpanOptions
     private $tags = [];
 
     /**
-     * @var int|float|\DateTimeInterface
+     * @var int|float|DateTimeInterface
      */
     private $startTime;
 
@@ -36,11 +38,11 @@ final class StartSpanOptions
 
     /**
      * @param array $options
-     * @throws InvalidSpanOption when one of the options is invalid
-     * @throws InvalidReferencesSet when there are inconsistencies about the references
      * @return StartSpanOptions
+     * @throws InvalidReferencesSet when there are inconsistencies about the references
+     * @throws InvalidSpanOption when one of the options is invalid
      */
-    public static function create(array $options)
+    public static function create(array $options): StartSpanOptions
     {
         $spanOptions = new self();
 
@@ -75,7 +77,7 @@ final class StartSpanOptions
                     }
 
                     foreach ($value as $tag => $tagValue) {
-                        if ($tag !== (string) $tag) {
+                        if ($tag !== (string)$tag) {
                             throw InvalidSpanOption::forInvalidTag($tag);
                         }
 
@@ -120,7 +122,7 @@ final class StartSpanOptions
      * @param Span|SpanContext $parent
      * @return StartSpanOptions
      */
-    public function withParent($parent)
+    public function withParent($parent): StartSpanOptions
     {
         $newSpanOptions = new StartSpanOptions();
         $newSpanOptions->references[] = self::buildChildOf($parent);
@@ -135,7 +137,7 @@ final class StartSpanOptions
     /**
      * @return Reference[]
      */
-    public function getReferences()
+    public function getReferences(): array
     {
         return $this->references;
     }
@@ -143,13 +145,13 @@ final class StartSpanOptions
     /**
      * @return array
      */
-    public function getTags()
+    public function getTags(): array
     {
         return $this->tags;
     }
 
     /**
-     * @return int|float|\DateTime|null if returning float or int it should represent
+     * @return int|float|DateTime|null if returning float or int it should represent
      * the timestamp (including as many decimal places as you need)
      */
     public function getStartTime()
@@ -160,7 +162,7 @@ final class StartSpanOptions
     /**
      * @return bool
      */
-    public function shouldFinishSpanOnClose()
+    public function shouldFinishSpanOnClose(): bool
     {
         return $this->finishSpanOnClose;
     }
@@ -168,12 +170,12 @@ final class StartSpanOptions
     /**
      * @return bool
      */
-    public function shouldIgnoreActiveSpan()
+    public function shouldIgnoreActiveSpan(): bool
     {
         return $this->ignoreActiveSpan;
     }
 
-    private static function buildChildOf($value)
+    private static function buildChildOf($value): Reference
     {
         if ($value instanceof Span) {
             return Reference::create(Reference::CHILD_OF, $value->getContext());
@@ -186,7 +188,7 @@ final class StartSpanOptions
         throw InvalidSpanOption::forInvalidChildOf($value);
     }
 
-    private static function buildReferences(array $referencesArray)
+    private static function buildReferences(array $referencesArray): array
     {
         $references = [];
 
