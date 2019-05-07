@@ -2,7 +2,6 @@
 
 namespace OpenTracing\Mock;
 
-use OpenTracing\ScopeManager;
 use OpenTracing\Span;
 use OpenTracing\SpanContext;
 
@@ -39,9 +38,9 @@ final class MockSpan implements Span
     private $duration;
 
     public function __construct(
-        $operationName,
+        string $operationName,
         MockSpanContext $context,
-        $startTime = null
+        ?int $startTime = null
     ) {
         $this->operationName = $operationName;
         $this->context = $context;
@@ -51,7 +50,7 @@ final class MockSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function getOperationName()
+    public function getOperationName(): string
     {
         return $this->operationName;
     }
@@ -60,12 +59,12 @@ final class MockSpan implements Span
      * {@inheritdoc}
      * @return SpanContext|MockSpanContext
      */
-    public function getContext()
+    public function getContext(): SpanContext
     {
         return $this->context;
     }
 
-    public function getStartTime()
+    public function getStartTime(): ?int
     {
         return $this->startTime;
     }
@@ -73,18 +72,18 @@ final class MockSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function finish($finishTime = null)
+    public function finish($finishTime = null): void
     {
         $finishTime = ($finishTime ?: time());
         $this->duration = $finishTime - $this->startTime;
     }
 
-    public function isFinished()
+    public function isFinished(): bool
     {
         return $this->duration !== null;
     }
 
-    public function getDuration()
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
@@ -92,20 +91,20 @@ final class MockSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function overwriteOperationName($newOperationName)
+    public function overwriteOperationName(string $newOperationName): void
     {
-        $this->operationName = (string) $newOperationName;
+        $this->operationName = (string)$newOperationName;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setTag($key, $value)
+    public function setTag(string $key, $value): void
     {
         $this->tags[$key] = $value;
     }
 
-    public function getTags()
+    public function getTags(): array
     {
         return $this->tags;
     }
@@ -113,7 +112,7 @@ final class MockSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function log(array $fields = [], $timestamp = null)
+    public function log(array $fields = [], $timestamp = null): void
     {
         $this->logs[] = [
             'timestamp' => $timestamp ?: time(),
@@ -121,7 +120,7 @@ final class MockSpan implements Span
         ];
     }
 
-    public function getLogs()
+    public function getLogs(): array
     {
         return $this->logs;
     }
@@ -129,7 +128,7 @@ final class MockSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function addBaggageItem($key, $value)
+    public function addBaggageItem(string $key, string $value): void
     {
         $this->context = $this->context->withBaggageItem($key, $value);
     }
@@ -137,7 +136,7 @@ final class MockSpan implements Span
     /**
      * {@inheritdoc}
      */
-    public function getBaggageItem($key)
+    public function getBaggageItem(string $key): ?string
     {
         return $this->context->getBaggageItem($key);
     }

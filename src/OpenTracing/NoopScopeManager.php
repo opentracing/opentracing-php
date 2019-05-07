@@ -4,7 +4,10 @@ namespace OpenTracing;
 
 final class NoopScopeManager implements ScopeManager
 {
-    public static function create()
+    /**
+     * @return ScopeManager
+     */
+    public static function create(): ScopeManager
     {
         return new self();
     }
@@ -12,14 +15,15 @@ final class NoopScopeManager implements ScopeManager
     /**
      * {@inheritdoc}
      */
-    public function activate(Span $span, $finishSpanOnClose = ScopeManager::DEFAULT_FINISH_SPAN_ON_CLOSE)
+    public function activate(Span $span, bool $finishSpanOnClose = ScopeManager::DEFAULT_FINISH_SPAN_ON_CLOSE): Scope
     {
+        return NoopScope::create();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getActive()
+    public function getActive(): ?Scope
     {
         return NoopScope::create();
     }

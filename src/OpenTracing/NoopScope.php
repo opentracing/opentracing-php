@@ -4,7 +4,10 @@ namespace OpenTracing;
 
 final class NoopScope implements Scope
 {
-    public static function create()
+    /**
+     * @return NoopScope
+     */
+    public static function create(): Scope
     {
         return new self();
     }
@@ -12,14 +15,14 @@ final class NoopScope implements Scope
     /**
      * {@inheritdoc}
      */
-    public function close()
+    public function close(): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSpan()
+    public function getSpan(): Span
     {
         return NoopSpan::create();
     }

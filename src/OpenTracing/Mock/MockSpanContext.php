@@ -27,7 +27,7 @@ final class MockSpanContext implements SpanContext
      */
     private $items;
 
-    private function __construct($traceId, $spanId, $isSampled, array $items)
+    private function __construct(int $traceId, int $spanId, bool $isSampled, array $items)
     {
         $this->traceId = $traceId;
         $this->spanId = $spanId;
@@ -35,34 +35,34 @@ final class MockSpanContext implements SpanContext
         $this->items = $items;
     }
 
-    public static function create($traceId, $spanId, $sampled = true, array $items = [])
+    public static function create(int $traceId, int $spanId, bool $sampled = true, array $items = []): SpanContext
     {
         return new self($traceId, $spanId, $sampled, $items);
     }
 
-    public static function createAsRoot($sampled = true, array $items = [])
+    public static function createAsRoot(bool $sampled = true, array $items = []): SpanContext
     {
         $traceId = $spanId = self::nextId();
         return new self($traceId, $spanId, $sampled, $items);
     }
 
-    public static function createAsChildOf(MockSpanContext $spanContext)
+    public static function createAsChildOf(MockSpanContext $spanContext): SpanContext
     {
         $spanId = self::nextId();
         return new self($spanContext->traceId, $spanId, $spanContext->isSampled, $spanContext->items);
     }
 
-    public function getTraceId()
+    public function getTraceId(): int
     {
         return $this->traceId;
     }
 
-    public function getSpanId()
+    public function getSpanId(): int
     {
         return $this->spanId;
     }
 
-    public function isSampled()
+    public function isSampled(): bool
     {
         return $this->isSampled;
     }
@@ -70,7 +70,7 @@ final class MockSpanContext implements SpanContext
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
     }
@@ -78,7 +78,7 @@ final class MockSpanContext implements SpanContext
     /**
      * {@inheritdoc}
      */
-    public function getBaggageItem($key)
+    public function getBaggageItem(string $key): ?string
     {
         return array_key_exists($key, $this->items) ? $this->items[$key] : null;
     }
@@ -86,12 +86,12 @@ final class MockSpanContext implements SpanContext
     /**
      * {@inheritdoc}
      */
-    public function withBaggageItem($key, $value)
+    public function withBaggageItem(string $key, string $value): ?SpanContext
     {
         return new self($this->traceId, $this->spanId, $this->isSampled, array_merge($this->items, [$key => $value]));
     }
 
-    private static function nextId()
+    private static function nextId(): int
     {
         return mt_rand(0, 99999);
     }

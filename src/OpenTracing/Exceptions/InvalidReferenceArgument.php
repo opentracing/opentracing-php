@@ -12,7 +12,7 @@ final class InvalidReferenceArgument extends InvalidArgumentException
     /**
      * @return InvalidReferenceArgument
      */
-    public static function forEmptyType()
+    public static function forEmptyType(): InvalidReferenceArgument
     {
         return new self('Reference type can not be an empty string');
     }
@@ -21,7 +21,7 @@ final class InvalidReferenceArgument extends InvalidArgumentException
      * @param mixed $context
      * @return InvalidReferenceArgument
      */
-    public static function forInvalidContext($context)
+    public static function forInvalidContext($context): InvalidReferenceArgument
     {
         return new self(sprintf(
             'Reference expects \OpenTracing\Span or \OpenTracing\SpanContext as context, got %s',

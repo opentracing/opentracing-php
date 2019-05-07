@@ -30,7 +30,7 @@ final class MockScope implements Scope
     public function __construct(
         MockScopeManager $scopeManager,
         Span $span,
-        $finishSpanOnClose
+        bool $finishSpanOnClose
     ) {
         $this->scopeManager = $scopeManager;
         $this->span = $span;
@@ -40,12 +40,12 @@ final class MockScope implements Scope
     /**
      * {@inheritdoc}
      */
-    public function close()
+    public function close(): void
     {
         if ($this->finishSpanOnClose) {
             $this->span->finish();
         }
-        
+
         $this->scopeManager->deactivate($this);
     }
 
@@ -53,7 +53,7 @@ final class MockScope implements Scope
      * {@inheritdoc}
      * @return Span|MockSpan
      */
-    public function getSpan()
+    public function getSpan(): Span
     {
         return $this->span;
     }

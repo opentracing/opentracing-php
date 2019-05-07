@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 final class MockSpanContextTest extends TestCase
 {
-    private const TRACE_ID = 'test_trace_id';
-    private const SPAN_ID = 'test_span_id';
+    private const TRACE_ID = 123987;
+    private const SPAN_ID = 555632;
     private const IS_SAMPLED = true;
     private const BAGGAGE_ITEM_KEY = 'test_key';
     private const BAGGAGE_ITEM_VALUE = 'test_value';

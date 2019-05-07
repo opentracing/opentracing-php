@@ -21,7 +21,7 @@ interface ScopeManager
      * @return Scope instance to control the end of the active period for the {@link Span}. It is a
      * programming error to neglect to call {@link Scope#close()} on the returned instance.
      */
-    public function activate(Span $span, $finishSpanOnClose = self::DEFAULT_FINISH_SPAN_ON_CLOSE);
+    public function activate(Span $span, bool $finishSpanOnClose = self::DEFAULT_FINISH_SPAN_ON_CLOSE): Scope;
 
     /**
      * Return the currently active {@link Scope} which can be used to access the
@@ -34,5 +34,5 @@ interface ScopeManager
      *
      * @return Scope|null
      */
-    public function getActive();
+    public function getActive(): ?Scope;
 }

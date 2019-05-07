@@ -13,7 +13,7 @@ final class UnsupportedFormat extends UnexpectedValueException
      * @param string $format
      * @return UnsupportedFormat
      */
-    public static function forFormat($format)
+    public static function forFormat(string $format): UnsupportedFormat
     {
         return new self(sprintf('The format \'%s\' is not supported.', $format));
     }
