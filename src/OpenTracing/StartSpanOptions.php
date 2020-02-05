@@ -111,7 +111,6 @@ final class StartSpanOptions
 
                 default:
                     throw InvalidSpanOption::forUnknownOption($key);
-                    break;
             }
         }
 

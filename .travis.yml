@@ -15,4 +15,5 @@ install:
 
 script:
   - composer lint
+  - composer static-check
   - composer test
