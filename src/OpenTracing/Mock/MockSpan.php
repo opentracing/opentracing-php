@@ -13,7 +13,7 @@ final class MockSpan implements Span
     private $operationName;
 
     /**
-     * @var MockSpanContext
+     * @var SpanContext
      */
     private $context;
 
