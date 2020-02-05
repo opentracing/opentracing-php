@@ -45,7 +45,7 @@ final class Reference
      * @return Reference when context is invalid
      * @throws InvalidReferenceArgument on empty type
      */
-    public static function create(string $type, $context)
+    public static function create(string $type, $context): Reference
     {
         if (empty($type)) {
             throw InvalidReferenceArgument::forEmptyType();
