@@ -3,3 +3,4 @@ parameters:
     - src
 
   level: 4
+  treatPhpDocTypesAsCertain: false
