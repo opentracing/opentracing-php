@@ -39,6 +39,6 @@
     "fix-lint": "phpcbf --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./",
     "lint": "phpcs --standard=ZEND --standard=PSR2 --ignore=*/vendor/* ./",
     "test": "phpunit tests",
-    "static-check": "phpstan analyse src --level 4"
+    "static-check": "phpstan analyse"
   }
 }
