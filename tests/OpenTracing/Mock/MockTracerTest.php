@@ -1,10 +1,12 @@
 <?php
 
-namespace OpenTracing\Mock\Tests;
+namespace OpenTracing\Tests\Mock;
 
+use OpenTracing\Exceptions\InvalidReferenceArgument;
 use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\Mock\MockTracer;
 use OpenTracing\NoopSpanContext;
+use OpenTracing\Reference;
 use OpenTracing\SpanContext;
 use PHPUnit\Framework\TestCase;
 
@@ -32,6 +34,33 @@ final class MockTracerTest extends TestCase
         $activeSpan = $tracer->getActiveSpan();
 
         $this->assertNull($activeSpan);
+    }
+
+    public function testStartSpanWithReference(): void
+    {
+        $tracer = new MockTracer();
+        $tracer->startSpan('parent_name');
+        $parentSpan = $tracer->getSpans()[0];
+        $tracer->startSpan(
+            self::OPERATION_NAME,
+            ['references' => [Reference::create(Reference::CHILD_OF, $parentSpan)]]
+        );
+        $activeSpan = $tracer->getActiveSpan();
+
+        self::assertNull($activeSpan);
+    }
+
+    public function testStartSpanWithReferenceWithoutExpectedContextType(): void
+    {
+        $tracer = new MockTracer();
+        $notAMockContext = NoopSpanContext::create();
+
+        $this->expectException(InvalidReferenceArgument::class);
+
+        $tracer->startSpan(
+            self::OPERATION_NAME,
+            ['references' => [Reference::create(Reference::CHILD_OF, $notAMockContext)]]
+        );
     }
 
     public function testInjectWithNoInjectorsFails()

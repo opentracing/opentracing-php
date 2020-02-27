@@ -39,7 +39,7 @@ final class MockSpan implements Span
 
     public function __construct(
         string $operationName,
-        MockSpanContext $context,
+        SpanContext $context,
         ?int $startTime = null
     ) {
         $this->operationName = $operationName;
