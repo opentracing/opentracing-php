@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTracing\Mock\Tests;
+namespace OpenTracing\Tests\Mock;
 
 use OpenTracing\Mock\MockScopeManager;
 use OpenTracing\Mock\MockTracer;
