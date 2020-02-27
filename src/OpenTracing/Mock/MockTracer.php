@@ -2,6 +2,7 @@
 
 namespace OpenTracing\Mock;
 
+use OpenTracing\Exceptions\InvalidReferenceArgument;
 use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\Scope;
 use OpenTracing\ScopeManager;
@@ -69,7 +70,11 @@ final class MockTracer implements Tracer
         if (empty($options->getReferences())) {
             $spanContext = MockSpanContext::createAsRoot();
         } else {
-            $spanContext = MockSpanContext::createAsChildOf($options->getReferences()[0]);
+            $referenceContext = $options->getReferences()[0]->getContext();
+            if (!$referenceContext instanceof MockSpanContext) {
+                throw InvalidReferenceArgument::forInvalidContext($referenceContext);
+            }
+            $spanContext = MockSpanContext::createAsChildOf($referenceContext);
         }
 
         $span = new MockSpan($operationName, $spanContext, $options->getStartTime());
