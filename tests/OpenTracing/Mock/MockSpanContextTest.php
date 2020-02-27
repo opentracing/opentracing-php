@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTracing\Mock\Tests;
+namespace OpenTracing\Tests\Mock;
 
 use OpenTracing\Mock\MockSpanContext;
 use PHPUnit\Framework\TestCase;
