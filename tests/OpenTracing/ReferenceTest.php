@@ -6,6 +6,7 @@ use OpenTracing\Exceptions\InvalidReferenceArgument;
 use OpenTracing\NoopSpanContext;
 use OpenTracing\Reference;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 /**
  * @covers Reference
@@ -18,11 +19,8 @@ final class ReferenceTest extends TestCase
     {
         $context = 'invalid_context';
 
-        $this->expectException(InvalidReferenceArgument::class);
-        $this->expectExceptionMessage(
-            'Reference expects \OpenTracing\Span or \OpenTracing\SpanContext as context, got string'
-        );
-        Reference::create('child_of', $context);
+        $this->expectException(TypeError::class);
+        new Reference('child_of', $context);
     }
 
     public function testCreateAReferenceFailsOnEmptyType()
@@ -31,15 +29,15 @@ final class ReferenceTest extends TestCase
 
         $this->expectException(InvalidReferenceArgument::class);
         $this->expectExceptionMessage('Reference type can not be an empty string');
-        Reference::create('', $context);
+        new Reference('', $context);
     }
 
     public function testAReferenceCanBeCreatedAsACustomType()
     {
         $context = new NoopSpanContext();
-        $reference = Reference::create(self::REFERENCE_TYPE, $context);
+        $reference = new Reference(self::REFERENCE_TYPE, $context);
 
-        $this->assertSame($context, $reference->getContext());
+        $this->assertSame($context, $reference->getSpanContext());
         $this->assertTrue($reference->isType(self::REFERENCE_TYPE));
     }
 }
