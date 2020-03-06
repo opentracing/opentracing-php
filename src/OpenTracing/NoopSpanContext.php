@@ -7,14 +7,6 @@ use EmptyIterator;
 final class NoopSpanContext implements SpanContext
 {
     /**
-     * @return SpanContext
-     */
-    public static function create(): SpanContext
-    {
-        return new self();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getIterator()

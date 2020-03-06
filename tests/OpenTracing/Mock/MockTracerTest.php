@@ -7,6 +7,7 @@ use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\Mock\MockTracer;
 use OpenTracing\NoopSpanContext;
 use OpenTracing\Reference;
+use OpenTracing\Span;
 use OpenTracing\SpanContext;
 use PHPUnit\Framework\TestCase;
 
@@ -40,10 +41,11 @@ final class MockTracerTest extends TestCase
     {
         $tracer = new MockTracer();
         $tracer->startSpan('parent_name');
+        /** @var Span $parentSpan */
         $parentSpan = $tracer->getSpans()[0];
         $tracer->startSpan(
             self::OPERATION_NAME,
-            ['references' => [Reference::create(Reference::CHILD_OF, $parentSpan)]]
+            ['references' => [Reference::createForSpan(Reference::CHILD_OF, $parentSpan)]]
         );
         $activeSpan = $tracer->getActiveSpan();
 
@@ -53,13 +55,13 @@ final class MockTracerTest extends TestCase
     public function testStartSpanWithReferenceWithoutExpectedContextType(): void
     {
         $tracer = new MockTracer();
-        $notAMockContext = NoopSpanContext::create();
+        $notAMockContext = new NoopSpanContext();
 
         $this->expectException(InvalidReferenceArgument::class);
 
         $tracer->startSpan(
             self::OPERATION_NAME,
-            ['references' => [Reference::create(Reference::CHILD_OF, $notAMockContext)]]
+            ['references' => [new Reference(Reference::CHILD_OF, $notAMockContext)]]
         );
     }
 
@@ -108,7 +110,7 @@ final class MockTracerTest extends TestCase
 
         $extractor = function ($carrier) use (&$actualCarrier) {
             $actualCarrier = $carrier;
-            return NoopSpanContext::create();
+            return new NoopSpanContext();
         };
 
         $tracer = new MockTracer([], [self::FORMAT => $extractor]);
