@@ -177,11 +177,11 @@ final class StartSpanOptions
     private static function buildChildOf($value): Reference
     {
         if ($value instanceof Span) {
-            return Reference::create(Reference::CHILD_OF, $value->getContext());
+            return Reference::createForSpan(Reference::CHILD_OF, $value);
         }
 
         if ($value instanceof SpanContext) {
-            return Reference::create(Reference::CHILD_OF, $value);
+            return new Reference(Reference::CHILD_OF, $value);
         }
 
         throw InvalidSpanOption::forInvalidChildOf($value);

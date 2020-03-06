@@ -5,19 +5,11 @@ namespace OpenTracing;
 final class NoopTracer implements Tracer
 {
     /**
-     * @return Tracer
-     */
-    public static function create(): Tracer
-    {
-        return new self();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getActiveSpan(): ?Span
     {
-        return NoopSpan::create();
+        return new NoopSpan();
     }
 
     /**
@@ -33,7 +25,7 @@ final class NoopTracer implements Tracer
      */
     public function startSpan(string $operationName, $options = []): Span
     {
-        return NoopSpan::create();
+        return new NoopSpan();
     }
 
     /**
@@ -41,7 +33,7 @@ final class NoopTracer implements Tracer
      */
     public function startActiveSpan(string $operationName, $options = []): Scope
     {
-        return NoopScope::create();
+        return new NoopScope();
     }
 
     /**
@@ -56,7 +48,7 @@ final class NoopTracer implements Tracer
      */
     public function extract(string $format, $carrier): ?SpanContext
     {
-        return NoopSpanContext::create();
+        return new NoopSpanContext();
     }
 
     /**
