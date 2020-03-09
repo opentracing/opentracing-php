@@ -27,39 +27,39 @@ final class Reference
     /**
      * @var SpanContext
      */
-    private $context;
+    private $spanContext;
 
     /**
      * @param string $type
-     * @param SpanContext $context
+     * @param SpanContext $spanContext
      */
-    private function __construct(string $type, SpanContext $context)
-    {
-        $this->type = $type;
-        $this->context = $context;
-    }
-
-    /**
-     * @param string $type
-     * @param SpanContext|Span $context
-     * @return Reference when context is invalid
-     * @throws InvalidReferenceArgument on empty type
-     */
-    public static function create(string $type, $context): Reference
+    public function __construct(string $type, SpanContext $spanContext)
     {
         if (empty($type)) {
             throw InvalidReferenceArgument::forEmptyType();
         }
 
-        return new self($type, self::extractContext($context));
+        $this->type = $type;
+        $this->spanContext = $spanContext;
+    }
+
+    /**
+     * @param string $type
+     * @param Span $span
+     * @return Reference when context is invalid
+     * @throws InvalidReferenceArgument on empty type
+     */
+    public static function createForSpan(string $type, Span $span): Reference
+    {
+        return new self($type, $span->getContext());
     }
 
     /**
      * @return SpanContext
      */
-    public function getContext(): SpanContext
+    public function getSpanContext(): SpanContext
     {
-        return $this->context;
+        return $this->spanContext;
     }
 
     /**
@@ -71,23 +71,5 @@ final class Reference
     public function isType(string $type): bool
     {
         return $this->type === $type;
-    }
-
-    /**
-     * @param SpanContext|Span $context
-     * @return SpanContext
-     * @throws InvalidReferenceArgument
-     */
-    private static function extractContext($context): SpanContext
-    {
-        if ($context instanceof SpanContext) {
-            return $context;
-        }
-
-        if ($context instanceof Span) {
-            return $context->getContext();
-        }
-
-        throw InvalidReferenceArgument::forInvalidContext($context);
     }
 }

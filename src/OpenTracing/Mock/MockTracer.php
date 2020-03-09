@@ -70,7 +70,7 @@ final class MockTracer implements Tracer
         if (empty($options->getReferences())) {
             $spanContext = MockSpanContext::createAsRoot();
         } else {
-            $referenceContext = $options->getReferences()[0]->getContext();
+            $referenceContext = $options->getReferences()[0]->getSpanContext();
             if (!$referenceContext instanceof MockSpanContext) {
                 throw InvalidReferenceArgument::forInvalidContext($referenceContext);
             }

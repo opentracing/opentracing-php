@@ -65,17 +65,17 @@ final class StartSpanOptionsTest extends TestCase
 
     public function testSpanOptionsCanBeCreatedWithValidReference()
     {
-        $context = NoopSpanContext::create();
+        $context = new NoopSpanContext();
 
         $options = [
-            'references' => Reference::create(self::REFERENCE_TYPE, $context),
+            'references' => new Reference(self::REFERENCE_TYPE, $context),
         ];
 
         $spanOptions = StartSpanOptions::create($options);
         $references = $spanOptions->getReferences()[0];
 
         $this->assertTrue($references->isType(self::REFERENCE_TYPE));
-        $this->assertSame($context, $references->getContext());
+        $this->assertSame($context, $references->getSpanContext());
     }
 
     public function testSpanOptionsDefaultCloseOnFinishValue()
@@ -96,17 +96,17 @@ final class StartSpanOptionsTest extends TestCase
 
     public function testSpanOptionsAddsANewReference()
     {
-        $context1 = NoopSpanContext::create();
+        $context1 = new NoopSpanContext();
         $spanOptions = StartSpanOptions::create([
             'child_of' => $context1,
         ]);
         $this->assertCount(1, $spanOptions->getReferences());
 
-        $context2 = NoopSpanContext::create();
+        $context2 = new NoopSpanContext();
         $spanOptions = $spanOptions->withParent($context2);
 
         $this->assertCount(1, $spanOptions->getReferences());
-        $this->assertSame($context2, $spanOptions->getReferences()[0]->getContext());
+        $this->assertSame($context2, $spanOptions->getReferences()[0]->getSpanContext());
     }
 
     public function testDefaultIgnoreActiveSpan()
