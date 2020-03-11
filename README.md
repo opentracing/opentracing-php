@@ -52,7 +52,7 @@ use OpenTracing\GlobalTracer;
 
 // extract the span context
 $spanContext = GlobalTracer::get()->extract(
-    Formats\HTTP_HEADERS,
+    Formats::HTTP_HEADERS,
     getallheaders()
 );
 
@@ -184,7 +184,7 @@ use OpenTracing\Formats;
 $tracer = GlobalTracer::get();
 
 $spanContext = $tracer->extract(
-    Formats\HTTP_HEADERS,
+    Formats::HTTP_HEADERS,
     getallheaders()
 );
 
@@ -197,7 +197,7 @@ try {
 
     $tracer->inject(
         $span->getContext(),
-        Formats\HTTP_HEADERS,
+        Formats::HTTP_HEADERS,
         $headers
     );
 
@@ -221,7 +221,7 @@ use OpenTracing\GlobalTracer;
 use OpenTracing\Formats;
 
 $tracer = GlobalTracer::get();
-$spanContext = $tracer->extract(Formats\HTTP_HEADERS, getallheaders());
+$spanContext = $tracer->extract(Formats::HTTP_HEADERS, getallheaders());
 $tracer->startSpan('my_span', [
     'child_of' => $spanContext,
 ]);

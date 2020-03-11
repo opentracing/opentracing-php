@@ -24,11 +24,7 @@
   "autoload": {
     "psr-4": {
       "OpenTracing\\": "src/OpenTracing/"
-    },
-    "files": [
-      "src/OpenTracing/Tags.php",
-      "src/OpenTracing/Formats.php"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {

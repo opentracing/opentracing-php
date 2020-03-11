@@ -17,7 +17,7 @@ interface Tracer
 
     /**
      * Returns the active {@link Span}. This is a shorthand for
-     * Tracer::getScopeManager()->getActive()->getSpan(),
+     * `Tracer::getScopeManager()->getActive()->getSpan()`,
      * and null will be returned if {@link Scope#active()} is null.
      *
      * @return Span|null
@@ -30,18 +30,20 @@ interface Tracer
      * It's also possible to not finish the {@see \OpenTracing\Span} when
      * {@see \OpenTracing\Scope} context expires:
      *
+     * <code>
      *     $scope = $tracer->startActiveSpan('...', [
      *         'finish_span_on_close' => false,
      *     ]);
      *     $span = $scope->getSpan();
      *     try {
-     *         $span->setTag(Tags\HTTP_METHOD, 'GET');
+     *         $span->setTag(Tags::HTTP_METHOD, 'GET');
      *         // ...
      *     } finally {
      *         $scope->close();
      *     }
      *     // $span->finish() is not called as part of Scope deactivation as
      *     // finish_span_on_close is false
+     * </code>
      *
      * @param string $operationName
      * @param array|StartSpanOptions $options Same as for startSpan() with
@@ -63,9 +65,11 @@ interface Tracer
      *
      * Starting a span with explicit parent:
      *
+     * <code>
      *     $tracer->startSpan('...', [
      *         'child_of' => $parentSpan,
      *     ]);
+     * </code>
      *
      * @param string $operationName
      * @param array|StartSpanOptions $options See StartSpanOptions for
