@@ -80,7 +80,7 @@ final class MockTracerTest extends TestCase
         $actualSpanContext = null;
         $actualCarrier = null;
 
-        $injector = function ($spanContext, $carrier) use (&$actualSpanContext, &$actualCarrier) {
+        $injector = function ($spanContext, &$carrier) use (&$actualSpanContext, &$actualCarrier) {
             $actualSpanContext = $spanContext;
             $actualCarrier = $carrier;
         };
