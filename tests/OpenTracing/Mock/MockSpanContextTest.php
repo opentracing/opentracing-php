@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OpenTracing\Tests\Mock;
 
 use OpenTracing\Mock\MockSpanContext;
