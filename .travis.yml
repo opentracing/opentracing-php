@@ -13,6 +13,9 @@ cache:
 install:
   - composer install
 
+before_script: 
+  - phpenv config-add .travis/php.ini
+
 script:
   - composer lint
   - composer static-check
