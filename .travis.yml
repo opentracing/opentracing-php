@@ -15,6 +15,7 @@ install:
 
 before_script: 
   - phpenv config-add .travis/php.ini
+  - php -i # displays PHP config
 
 script:
   - composer lint
