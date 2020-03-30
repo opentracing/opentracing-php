@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OpenTracing\Mock;
 
 use OpenTracing\Exceptions\InvalidReferenceArgument;
