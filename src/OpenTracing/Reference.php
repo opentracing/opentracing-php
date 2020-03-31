@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTracing;
 
-use OpenTracing\Exceptions\InvalidReferenceArgument;
+use OpenTracing\Exceptions\InvalidReferenceArgumentException;
 
 final class Reference
 {
@@ -38,7 +38,7 @@ final class Reference
     public function __construct(string $type, SpanContext $spanContext)
     {
         if (empty($type)) {
-            throw InvalidReferenceArgument::forEmptyType();
+            throw InvalidReferenceArgumentException::forEmptyType();
         }
 
         $this->type = $type;
@@ -49,7 +49,7 @@ final class Reference
      * @param string $type
      * @param Span $span
      * @return Reference when context is invalid
-     * @throws InvalidReferenceArgument on empty type
+     * @throws InvalidReferenceArgumentException on empty type
      */
     public static function createForSpan(string $type, Span $span): Reference
     {

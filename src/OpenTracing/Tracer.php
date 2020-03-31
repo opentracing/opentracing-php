@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenTracing;
 
-use OpenTracing\Exceptions\InvalidReferencesSet;
-use OpenTracing\Exceptions\InvalidSpanOption;
-use OpenTracing\Exceptions\UnsupportedFormat;
+use OpenTracing\Exceptions\InvalidReferencesSetException;
+use OpenTracing\Exceptions\InvalidSpanOptionException;
+use OpenTracing\Exceptions\UnsupportedFormatException;
 
 interface Tracer
 {
@@ -75,8 +75,8 @@ interface Tracer
      *
      * @return Span
      *
-     * @throws InvalidSpanOption for invalid option
-     * @throws InvalidReferencesSet for invalid references set
+     * @throws InvalidSpanOptionException for invalid option
+     * @throws InvalidReferencesSetException for invalid references set
      * @see \OpenTracing\StartSpanOptions
      */
     public function startSpan(string $operationName, $options = []): Span;
@@ -87,7 +87,7 @@ interface Tracer
      * @param mixed $carrier
      * @return void
      *
-     * @throws UnsupportedFormat when the format is not recognized by the tracer
+     * @throws UnsupportedFormatException when the format is not recognized by the tracer
      * implementation
      * @see Formats
      */
@@ -98,7 +98,7 @@ interface Tracer
      * @param mixed $carrier
      * @return SpanContext|null
      *
-     * @throws UnsupportedFormat when the format is not recognized by the tracer
+     * @throws UnsupportedFormatException when the format is not recognized by the tracer
      * implementation
      * @see Formats
      */

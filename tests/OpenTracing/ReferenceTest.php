@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTracing\Tests;
 
-use OpenTracing\Exceptions\InvalidReferenceArgument;
+use OpenTracing\Exceptions\InvalidReferenceArgumentException;
 use OpenTracing\NoopSpanContext;
 use OpenTracing\Reference;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +29,7 @@ final class ReferenceTest extends TestCase
     {
         $context = new NoopSpanContext();
 
-        $this->expectException(InvalidReferenceArgument::class);
+        $this->expectException(InvalidReferenceArgumentException::class);
         $this->expectExceptionMessage('Reference type can not be an empty string');
         new Reference('', $context);
     }
