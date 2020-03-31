@@ -99,7 +99,7 @@ final class MockTracer implements Tracer
             throw UnsupportedFormat::forFormat($format);
         }
 
-        call_user_func($this->injectors[$format], $spanContext, $carrier);
+        $this->injectors[$format]($spanContext, $carrier);
     }
 
     /**
@@ -111,7 +111,7 @@ final class MockTracer implements Tracer
             throw UnsupportedFormat::forFormat($format);
         }
 
-        return call_user_func($this->extractors[$format], $carrier);
+        return $this->extractors[$format]($carrier);
     }
 
     /**
