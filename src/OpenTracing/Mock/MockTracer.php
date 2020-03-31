@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenTracing\Mock;
 
-use OpenTracing\Exceptions\InvalidReferenceArgument;
-use OpenTracing\Exceptions\UnsupportedFormat;
+use OpenTracing\Exceptions\InvalidReferenceArgumentException;
+use OpenTracing\Exceptions\UnsupportedFormatException;
 use OpenTracing\Scope;
 use OpenTracing\ScopeManager;
 use OpenTracing\Span;
@@ -74,7 +74,7 @@ final class MockTracer implements Tracer
         } else {
             $referenceContext = $options->getReferences()[0]->getSpanContext();
             if (!$referenceContext instanceof MockSpanContext) {
-                throw InvalidReferenceArgument::forInvalidContext($referenceContext);
+                throw InvalidReferenceArgumentException::forInvalidContext($referenceContext);
             }
             $spanContext = MockSpanContext::createAsChildOf($referenceContext);
         }
@@ -96,7 +96,7 @@ final class MockTracer implements Tracer
     public function inject(SpanContext $spanContext, string $format, &$carrier): void
     {
         if (!array_key_exists($format, $this->injectors)) {
-            throw UnsupportedFormat::forFormat($format);
+            throw UnsupportedFormatException::forFormat($format);
         }
 
         $this->injectors[$format]($spanContext, $carrier);
@@ -108,7 +108,7 @@ final class MockTracer implements Tracer
     public function extract(string $format, $carrier): ?SpanContext
     {
         if (!array_key_exists($format, $this->extractors)) {
-            throw UnsupportedFormat::forFormat($format);
+            throw UnsupportedFormatException::forFormat($format);
         }
 
         return $this->extractors[$format]($carrier);

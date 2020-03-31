@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenTracing\Tests\Mock;
 
-use OpenTracing\Exceptions\InvalidReferenceArgument;
-use OpenTracing\Exceptions\UnsupportedFormat;
+use OpenTracing\Exceptions\InvalidReferenceArgumentException;
+use OpenTracing\Exceptions\UnsupportedFormatException;
 use OpenTracing\Mock\MockTracer;
 use OpenTracing\NoopSpanContext;
 use OpenTracing\Reference;
@@ -59,7 +59,7 @@ final class MockTracerTest extends TestCase
         $tracer = new MockTracer();
         $notAMockContext = new NoopSpanContext();
 
-        $this->expectException(InvalidReferenceArgument::class);
+        $this->expectException(InvalidReferenceArgumentException::class);
 
         $tracer->startSpan(
             self::OPERATION_NAME,
@@ -73,7 +73,7 @@ final class MockTracerTest extends TestCase
         $span = $tracer->startSpan(self::OPERATION_NAME);
         $carrier = [];
 
-        $this->expectException(UnsupportedFormat::class);
+        $this->expectException(UnsupportedFormatException::class);
         $tracer->inject($span->getContext(), self::FORMAT, $carrier);
     }
 
@@ -101,7 +101,7 @@ final class MockTracerTest extends TestCase
         $tracer = new MockTracer();
         $carrier = [];
 
-        $this->expectException(UnsupportedFormat::class);
+        $this->expectException(UnsupportedFormatException::class);
         $tracer->extract(self::FORMAT, $carrier);
     }
 
