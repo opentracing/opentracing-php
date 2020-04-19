@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace OpenTracing\Tests;
 
 use DateTime;
-use OpenTracing\Exceptions\InvalidSpanOption;
+use OpenTracing\Exceptions\InvalidSpanOptionException;
 use OpenTracing\NoopSpanContext;
 use OpenTracing\Reference;
 use OpenTracing\StartSpanOptions;
@@ -20,7 +20,7 @@ final class StartSpanOptionsTest extends TestCase
 
     public function testSpanOptionsCanNotBeCreatedDueToInvalidOption()
     {
-        $this->expectException(InvalidSpanOption::class);
+        $this->expectException(InvalidSpanOptionException::class);
 
         StartSpanOptions::create([
             'unknown_option' => 'value'
@@ -29,7 +29,7 @@ final class StartSpanOptionsTest extends TestCase
 
     public function testSpanOptionsWithInvalidCloseOnFinishOption()
     {
-        $this->expectException(InvalidSpanOption::class);
+        $this->expectException(InvalidSpanOptionException::class);
 
         StartSpanOptions::create([
             'finish_span_on_close' => 'value'
@@ -38,7 +38,7 @@ final class StartSpanOptionsTest extends TestCase
 
     public function testSpanOptionsCanNotBeCreatedBecauseInvalidStartTime()
     {
-        $this->expectException(InvalidSpanOption::class);
+        $this->expectException(InvalidSpanOptionException::class);
 
         StartSpanOptions::create([
             'start_time' => 'abc'

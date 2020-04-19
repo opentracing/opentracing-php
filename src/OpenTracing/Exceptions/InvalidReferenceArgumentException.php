@@ -9,21 +9,21 @@ use InvalidArgumentException;
 /**
  * Thrown when passing an invalid argument for a reference
  */
-final class InvalidReferenceArgument extends InvalidArgumentException
+final class InvalidReferenceArgumentException extends InvalidArgumentException
 {
     /**
-     * @return InvalidReferenceArgument
+     * @return InvalidReferenceArgumentException
      */
-    public static function forEmptyType(): InvalidReferenceArgument
+    public static function forEmptyType(): InvalidReferenceArgumentException
     {
         return new self('Reference type can not be an empty string');
     }
 
     /**
      * @param mixed $context
-     * @return InvalidReferenceArgument
+     * @return InvalidReferenceArgumentException
      */
-    public static function forInvalidContext($context): InvalidReferenceArgument
+    public static function forInvalidContext($context): InvalidReferenceArgumentException
     {
         return new self(sprintf(
             'Reference expects \OpenTracing\Span or \OpenTracing\SpanContext as context, got %s',
