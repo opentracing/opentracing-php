@@ -5,13 +5,19 @@ php:
   - '7.2'
   - '7.3'
   - '7.4'
+  - '8.0'
+
+env:
+  matrix:
+    - COMPOSER_INSTALL_FLAGS="--prefer-lowest"
+    - COMPOSER_INSTALL_FLAGS=""
 
 cache:
   directories:
     - $HOME/.composer/cache
 
 install:
-  - composer install
+  - composer update $COMPOSER_INSTALL_FLAGS
 
 before_script: 
   - phpenv config-add .travis/php.ini
