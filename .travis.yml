@@ -7,17 +7,12 @@ php:
   - '7.4'
   - '8.0'
 
-env:
-  matrix:
-    - COMPOSER_INSTALL_FLAGS="--prefer-lowest"
-    - COMPOSER_INSTALL_FLAGS=""
-
 cache:
   directories:
     - $HOME/.composer/cache
 
 install:
-  - composer update $COMPOSER_INSTALL_FLAGS
+  - composer install
 
 before_script: 
   - phpenv config-add .travis/php.ini
