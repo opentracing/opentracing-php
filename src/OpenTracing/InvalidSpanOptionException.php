@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTracing\Exceptions;
+namespace OpenTracing;
 
 use InvalidArgumentException;
 

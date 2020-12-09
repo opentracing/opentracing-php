@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenTracing;
 
-use OpenTracing\Exceptions\InvalidReferencesSetException;
-use OpenTracing\Exceptions\InvalidSpanOptionException;
-use OpenTracing\Exceptions\UnsupportedFormatException;
+use OpenTracing\UnsupportedFormatException;
+use OpenTracing\InvalidSpanOptionException;
+use OpenTracing\InvalidReferencesSetException;
 
 interface Tracer
 {

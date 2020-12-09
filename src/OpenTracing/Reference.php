@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTracing;
 
-use OpenTracing\Exceptions\InvalidReferenceArgumentException;
+use OpenTracing\InvalidReferenceArgumentException;
 
 final class Reference
 {
@@ -12,14 +12,14 @@ final class Reference
      * A Span may be the ChildOf a parent Span. In a ChildOf reference,
      * the parent Span depends on the child Span in some capacity.
      */
-    const CHILD_OF = 'child_of';
+    public const CHILD_OF = 'child_of';
 
     /**
      * Some parent Spans do not depend in any way on the result of their
      * child Spans. In these cases, we say merely that the child Span
      * FollowsFrom the parent Span in a causal sense.
      */
-    const FOLLOWS_FROM = 'follows_from';
+    public const FOLLOWS_FROM = 'follows_from';
 
     /**
      * @var string

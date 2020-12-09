@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenTracing\Tests;
 
-use OpenTracing\Exceptions\InvalidReferenceArgumentException;
-use OpenTracing\NoopSpanContext;
-use OpenTracing\Reference;
-use PHPUnit\Framework\TestCase;
 use TypeError;
+use PHPUnit\Framework\TestCase;
+use OpenTracing\Reference;
+use OpenTracing\NoopSpanContext;
+use OpenTracing\InvalidReferenceArgumentException;
 
 /**
  * @covers Reference
