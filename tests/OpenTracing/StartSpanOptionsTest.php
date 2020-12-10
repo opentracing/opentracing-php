@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace OpenTracing\Tests;
 
 use DateTime;
-use OpenTracing\Exceptions\InvalidSpanOptionException;
+use OpenTracing\InvalidSpanOptionException;
 use OpenTracing\NoopSpanContext;
 use OpenTracing\Reference;
 use OpenTracing\StartSpanOptions;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenTracing\Tests\Mock;
 
-use OpenTracing\Exceptions\InvalidReferenceArgumentException;
-use OpenTracing\Exceptions\UnsupportedFormatException;
+use OpenTracing\InvalidReferenceArgumentException;
+use OpenTracing\UnsupportedFormatException;
 use OpenTracing\Mock\MockTracer;
 use OpenTracing\NoopSpanContext;
 use OpenTracing\Reference;

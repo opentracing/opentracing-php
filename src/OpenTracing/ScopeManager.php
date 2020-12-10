@@ -9,7 +9,7 @@ namespace OpenTracing;
  */
 interface ScopeManager
 {
-    const DEFAULT_FINISH_SPAN_ON_CLOSE = true;
+    public const DEFAULT_FINISH_SPAN_ON_CLOSE = true;
 
     /**
      * Activates an `Span`, so that it is used as a parent when creating new spans.

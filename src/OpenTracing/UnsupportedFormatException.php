@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTracing\Exceptions;
+namespace OpenTracing;
 
 use UnexpectedValueException;
 
@@ -17,6 +17,6 @@ final class UnsupportedFormatException extends UnexpectedValueException
      */
     public static function forFormat(string $format): UnsupportedFormatException
     {
-        return new self(sprintf('The format \'%s\' is not supported.', $format));
+        return new self(sprintf('The format "%s" is not supported.', $format));
     }
 }

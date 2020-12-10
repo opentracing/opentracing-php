@@ -6,8 +6,8 @@ namespace OpenTracing;
 
 use DateTime;
 use DateTimeInterface;
-use OpenTracing\Exceptions\InvalidReferencesSetException;
-use OpenTracing\Exceptions\InvalidSpanOptionException;
+use OpenTracing\InvalidReferencesSetException;
+use OpenTracing\InvalidSpanOptionException;
 
 final class StartSpanOptions
 {
