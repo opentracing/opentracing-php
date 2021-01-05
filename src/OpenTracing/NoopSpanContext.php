@@ -27,7 +27,7 @@ final class NoopSpanContext implements SpanContext
     /**
      * {@inheritdoc}
      */
-    public function withBaggageItem(string $key, string $value): ?SpanContext
+    public function withBaggageItem(string $key, string $value): SpanContext
     {
         return new self();
     }

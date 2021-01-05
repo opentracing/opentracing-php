@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenTracing\Mock;
 
-use ArrayIterator;
 use OpenTracing\SpanContext;
+use ArrayIterator;
 
 final class MockSpanContext implements SpanContext
 {
@@ -88,7 +88,7 @@ final class MockSpanContext implements SpanContext
     /**
      * {@inheritdoc}
      */
-    public function withBaggageItem(string $key, string $value): ?SpanContext
+    public function withBaggageItem(string $key, string $value): SpanContext
     {
         return new self($this->traceId, $this->spanId, $this->isSampled, array_merge($this->items, [$key => $value]));
     }
