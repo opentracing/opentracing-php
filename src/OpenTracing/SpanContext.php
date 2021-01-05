@@ -33,5 +33,5 @@ interface SpanContext extends IteratorAggregate
      * @param string $value
      * @return SpanContext
      */
-    public function withBaggageItem(string $key, string $value): ?SpanContext;
+    public function withBaggageItem(string $key, string $value): SpanContext;
 }
