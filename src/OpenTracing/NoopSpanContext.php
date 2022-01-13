@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace OpenTracing;
 
 use EmptyIterator;
+use Traversable;
 
 final class NoopSpanContext implements SpanContext
 {
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new EmptyIterator();
     }
