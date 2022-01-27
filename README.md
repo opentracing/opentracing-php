@@ -1,6 +1,6 @@
 # OpenTracing API for PHP
 
-[![Build Status](https://travis-ci.org/opentracing/opentracing-php.svg?branch=master)](https://travis-ci.org/opentracing/opentracing-php)
+[![Build](https://github.com/opentracing/opentracing-php/actions/workflows/ci.yml/badge.svg)](https://github.com/opentracing/opentracing-php/actions/workflows/ci.yml)
 [![OpenTracing Badge](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
 [![Total Downloads](https://poser.pugx.org/opentracing/opentracing/downloads)](https://packagist.org/packages/opentracing/opentracing)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg)](https://php.net/)
